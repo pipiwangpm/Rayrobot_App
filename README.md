@@ -1,6 +1,6 @@
 # 机器人平台原型版本
 
-本仓库保存 V01–V22 的独立 HTML 原型。打开 `index.html` 可从版本目录进入任意版本。V04 为机器人配色素材展示页。
+本仓库保存 V01–V23 的独立 HTML 原型。打开 `index.html` 可从版本目录进入任意版本。V04 为机器人配色素材展示页。
 
 网站发布地址：https://pipiwangpm.github.io/Rayrobot_App/
 

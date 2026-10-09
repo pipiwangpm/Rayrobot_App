@@ -1,0 +1,25 @@
+.activation-progress{display:grid;gap:8px;margin:0 0 19px}
+.activation-progress>span{font-size:11px;color:#ff9974}
+.activation-progress>strong{font-size:20px}
+.activation-progress .stepper{margin:5px 0 0}
+.network-choice{min-height:88px}
+.network-choice>span{flex:1}
+.identify-stage{aspect-ratio:1.8;margin-bottom:15px}
+.ap-network{display:flex;align-items:center;gap:11px;padding:17px;margin:0 0 20px;background:#202c32;border:1px solid #48616b;border-radius:14px;color:#ff986f}
+.ap-network span{flex:1;font-size:12px;color:#b8c5c9}
+.ap-network strong{color:#f3f5f5;font-size:17px}
+.ap-steps{padding-left:24px;color:#c5d0d3;line-height:2.5;font-size:13px;margin:0 0 24px}
+.activation-device{display:flex;align-items:center;gap:13px;padding:15px}
+.activation-device strong,.activation-device small{display:block}
+.activation-device small{color:#99aab1;font-size:11px;margin-top:4px}
+.wifi-list{display:grid;gap:10px;margin:0 0 22px}
+.wifi-option{position:relative;display:flex;align-items:center;gap:13px;min-height:70px;padding:13px 15px;border:1px solid #3d4c54;border-radius:13px;background:#1d292f;cursor:pointer}
+.wifi-option.selected{border-color:#ff7044;background:#302823}
+.wifi-option:focus-within{outline:2px solid #ff9871;outline-offset:2px}
+.wifi-option input{position:absolute;opacity:0;width:1px;height:1px}
+.wifi-option-icon{color:#ff865e;flex:none}
+.wifi-option-copy{display:grid;gap:4px;flex:1;min-width:0}
+.wifi-option-copy strong{font-size:14px;overflow-wrap:anywhere}
+.wifi-option-copy small{font-size:11px;color:#9baeb7}
+.wifi-option-check{width:22px;height:22px;display:grid;place-items:center;border:1px solid #697980;border-radius:50%;color:transparent;font-size:12px;flex:none}
+.wifi-option.selected .wifi-option-check{border-color:#ff7044;background:#ff7044;color:#171d20}

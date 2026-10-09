@@ -1,0 +1,10 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>其他操作 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"><link rel="stylesheet" href="assets/phone-frame-v18.css"></head><body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,section,toast,confirmAction,$}=Fleet;
+const offline=d.state==='offline';
+const card=(label,ico,url,disabled=false)=>`<a class="action-card ${disabled?'is-disabled':''}" href="${url}" ${disabled?'aria-disabled="true" tabindex="-1"':''}>${icon(ico)}<span>${label}</span></a>`;
+const body=`<div class="page-intro"><h1>其他操作</h1><p>${esc(d.name)}</p></div>${section('内容与任务',`<div class="quick-actions compact-actions">${card('广告投放','video',href('device-actions','&type=ad'),d.id!=='A03'||offline)}${card('口播任务','volume',href('device-actions','&type=voice'),d.id!=='A03'||offline)}${card('关联任务','robot','task-center.html')}${card('连接方式','wifi',href('server-connection'))}</div>`)}${section('维护',`<div class="menu-panel"><button class="menu-link" id="locate">${icon('pin')}<span><strong>定位机器人</strong><small>查看当前所在位置</small></span><span class="chevron">›</span></button><button class="menu-link" id="upgrade">${icon('power')}<span><strong>检查升级</strong><small>查看软件版本</small></span><span class="chevron">›</span></button></div>`)}<button class="button outline block" id="stop" style="margin-top:18px" ${offline?'disabled':''}>紧急停止</button>`;
+shell('其他操作',body,`<a class="icon-button" href="${href('device')}" aria-label="机器人详情">${icon('robot')}</a>`,href('device'));
+$('locate').onclick=()=>location.href=href('robot-map');
+$('upgrade').onclick=()=>toast('当前已是最新版本');
+$('stop').onclick=()=>confirmAction('确认紧急停止？','此操作将停止机器人活动，请确认机器人状态安全。',()=>toast('操作已确认'));
+</script></body></html>
