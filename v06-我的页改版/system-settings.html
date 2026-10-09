@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <title>系统设置 · RoboOps V2</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="mode.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+    <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+        <header class="px-5 pt-7 pb-3">
+            <div class="flex items-center gap-3">
+                <a href="profile.html" class="text-slate-400"><iconify-icon icon="solar:arrow-left-linear"
+                        width="22"></iconify-icon></a>
+                <div class="min-w-0">
+                    <h1 class="text-xl font-bold">系统设置</h1>
+                    <p data-c class="mt-1 text-[11px] text-slate-500">本机显示与流量偏好 · 不改动云端档案与设备配置</p>
+                    <p data-l class="mt-1 text-[11px] text-slate-500">本机显示与流量偏好 · 仅保存在本机（内网形态）</p>
+                </div>
+            </div>
+        </header>
+
+        <section
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden px-5 pb-6 space-y-4">
+            <!-- 媒体与流量 -->
+            <h2 class="pt-2 text-sm font-bold text-slate-300">媒体与流量</h2>
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-300 flex items-center justify-center"><iconify-icon
+                            icon="solar:gallery-wide-linear" width="20"></iconify-icon></span>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm">设备图加载方式</p>
+                        <p id="netHint" class="mt-0.5 text-[11px] text-slate-500"></p>
+                    </div>
+                </div>
+                <div class="mt-4 space-y-2">
+                    <button onclick="setImg('always',this)"
+                        class="opt w-full flex items-center gap-3 rounded-2xl bg-slate-800/70 p-3.5 border border-transparent text-left">
+                        <iconify-icon icon="solar:download-linear" class="text-cyan-300" width="20"></iconify-icon>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium">始终加载</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5">任何网络都自动加载设备图</p>
+                        </div>
+                        <iconify-icon icon="solar:check-circle-bold" class="sel-ic text-cyan-400"
+                            width="20"></iconify-icon>
+                    </button>
+                    <button onclick="setImg('wifi',this)"
+                        class="opt w-full flex items-center gap-3 rounded-2xl bg-slate-800/70 p-3.5 border border-transparent text-left">
+                        <iconify-icon icon="solar:wi-fi-router-linear" class="text-emerald-300"
+                            width="20"></iconify-icon>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium">仅 Wi-Fi 加载</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5">蜂窝网络与弱网下不加载大图</p>
+                        </div>
+                        <iconify-icon icon="solar:check-circle-bold" class="sel-ic text-cyan-400 hidden"
+                            width="20"></iconify-icon>
+                    </button>
+                    <button onclick="setImg('off',this)"
+                        class="opt w-full flex items-center gap-3 rounded-2xl bg-slate-800/70 p-3.5 border border-transparent text-left">
+                        <iconify-icon icon="solar:eye-closed-linear" class="text-slate-400" width="20"></iconify-icon>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium">关闭自动加载</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5">卡片使用轻量占位，最省流量</p>
+                        </div>
+                        <iconify-icon icon="solar:check-circle-bold" class="sel-ic text-cyan-400 hidden"
+                            width="20"></iconify-icon>
+                    </button>
+                </div>
+                <p class="mt-4 text-[11px] leading-5 text-slate-500">
+                    设备图存于云端档案，按策略加载可节省流量；弱网下即使选择「始终加载」也会自动降级为轻量占位。单台设备的图片可在「设备详情 → 媒体」中查看 / 更换。</p>
+            </div>
+
+            <!-- 关于（部署形态不在此重复：统一走「我的 → 连接与部署形态」） -->
+            <h2 class="pt-3 text-sm font-bold text-slate-300">关于</h2>
+            <div class="rounded-2xl overflow-hidden bg-slate-900 divide-y divide-slate-800">
+                <div class="px-4 py-4 flex items-center"><iconify-icon class="text-emerald-300"
+                        icon="solar:info-circle-linear" width="21"></iconify-icon><span class="ml-3 flex-1 text-sm">App
+                        版本</span><span class="text-xs text-slate-500">v0.6.0 · 原型</span>
+                </div>
+            </div>
+
+            <p class="pt-1 text-[11px] leading-5 text-slate-600">说明：系统设置只作用于本机 App；设备侧的相机、音量等参数请在「设备详情 → 设备设置」中调整；云端 /
+                本地形态切换见「我的 → 连接与部署形态」。</p>
+        </section>
+
+        <div id="toast"
+            class="hidden absolute bottom-24 left-5 right-5 bg-slate-700 rounded-xl p-3 text-center text-xs">
+        </div>
+    </main>
+    <script>
+        /* 设备图加载方式：与 home.html / profile.html 共用 localStorage('robops.imgMode') */
+        const LS = 'robops.imgMode';
+        const weakNet = true; // 演示：当前页面处于弱网（与 home.html 一致）
+
+        function cur() { try { return localStorage.getItem(LS) || 'always' } catch (e) { return 'always' } }
+
+        function label(m) { return { always: '始终加载', wifi: '仅 Wi-Fi 加载', off: '关闭自动加载' }[m] || '始终加载' }
+
+        function paint() {
+            const m = cur();
+            document.querySelectorAll('.opt').forEach(b => {
+                const on = (b.getAttribute('onclick') || '').indexOf("'" + m + "'") > -1;
+                b.classList.toggle('border-cyan-400/60', on);
+                b.querySelector('.sel-ic').classList.toggle('hidden', !on)
+            });
+            document.getElementById('netHint').textContent = (m === 'off')
+                ? '当前生效：关闭自动加载（卡片使用轻量占位）'
+                : (m === 'wifi' && weakNet ? '当前网络：弱网 → 已降级为轻量占位' : '当前生效：' + label(m))
+        }
+
+        function setImg(m, btn) {
+            try { localStorage.setItem(LS, m) } catch (e) { }
+            paint();
+            toast(m === 'off'
+                ? '已关闭自动加载：卡片将使用轻量占位'
+                : (m === 'wifi' && weakNet ? '仅 Wi-Fi 加载 · 当前弱网 → 卡片已降级为轻量占位' : '设备图加载方式：' + label(m)))
+        }
+
+        function toast(t) { let x = document.getElementById('toast'); x.textContent = t; x.classList.remove('hidden'); setTimeout(() => x.classList.add('hidden'), 2200) }
+
+        paint()
+    </script>
+</body>
+
+</html>

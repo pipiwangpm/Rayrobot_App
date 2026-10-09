@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <title>任务中心 · RoboOps V2</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="mode.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+    <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+        <!-- 头部 -->
+        <header class="px-5 pt-7 pb-4 flex items-start justify-between">
+            <div class="min-w-0">
+                <p data-l class="text-xs text-amber-300/90">本地模式 · 内网 · 设备本地能力清单</p>
+                <div class="mt-1 flex items-center gap-2">
+                    <h1 class="text-2xl font-bold">任务中心</h1>
+                    <button onclick="openAbout()" title="任务说明（类型 / 下发规则 / 执行记录）"
+                        class="shrink-0 w-6 h-6 rounded-full border border-slate-600 text-slate-400 text-[12px] font-bold flex items-center justify-center active:border-cyan-400 active:text-cyan-300">?</button>
+                </div>
+            </div>
+            <a data-c href="task-create.html"
+                class="shrink-0 flex items-center gap-1.5 rounded-xl bg-cyan-500 text-slate-950 px-3 py-2 text-sm font-semibold">
+                <iconify-icon icon="solar:add-circle-bold" width="18"></iconify-icon>新建</a>
+            <a data-l href="task-create.html?m=local"
+                class="shrink-0 flex items-center gap-1.5 rounded-xl bg-amber-400/15 border border-amber-400/30 text-amber-300 px-3 py-2 text-sm font-semibold">
+                <iconify-icon icon="solar:add-circle-bold" width="18"></iconify-icon>清单新建</a>
+        </header>
+        <section
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6 space-y-4">
+
+            <!-- 今日总览（云模式 · 云端 Task×Run 聚合） -->
+            <div data-c class="rounded-2xl bg-slate-900 p-4">
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500">今日任务</p>
+                        <b class="text-3xl">8 <span class="text-sm text-slate-500 font-normal">/ 12</span></b>
+                    </div>
+                    <div class="text-right text-[11px] text-slate-400">
+                        <p><span class="text-emerald-300">6</span> 成功 · <span class="text-cyan-300">2</span> 执行中</p>
+                        <p class="text-slate-500">完成率 67%</p>
+                    </div>
+                </div>
+                <div class="mt-3 h-2 rounded-full bg-slate-800 overflow-hidden">
+                    <i class="block w-2/3 h-full bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full"></i>
+                </div>
+            </div>
+
+            <!-- 本地能力清单总览（本地模式） -->
+            <div data-l class="rounded-2xl bg-slate-900 p-4">
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500">本地能力清单</p>
+                        <b class="text-3xl">6 <span class="text-sm text-slate-500 font-normal">个 / 3 台</span></b>
+                    </div>
+                    <div class="text-right text-[11px] text-slate-400">
+                        <p><span class="text-emerald-300">5</span> 可执行 · <span class="text-cyan-300">1</span> 执行中</p>
+                        <p class="text-amber-300/80">素材 9 个已缓存</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 任务分组（云模式 · JS 渲染：任务 × 执行记录） -->
+            <div data-c id="groups" class="space-y-5"></div>
+            <!-- 本地模式：按设备本地能力清单（JS 渲染） -->
+            <div data-l id="localTasks" class="space-y-5"></div>
+            <!-- 本地模式：本地素材 -->
+            <div data-l id="mat">
+                <h2 class="text-xs font-semibold text-slate-400 flex items-center gap-1.5 mb-2"><iconify-icon
+                        icon="solar:gallery-wide-linear" class="text-violet-300" width="14"></iconify-icon>设备本地素材（9）
+                </h2>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-3 rounded-xl bg-slate-900 px-3 py-2.5">
+                        <span
+                            class="w-8 h-8 rounded-lg bg-violet-500/15 text-violet-300 flex items-center justify-center"><iconify-icon
+                                icon="solar:gallery-wide-linear" width="15"></iconify-icon></span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs text-slate-200">夏季新品轮播 · 横屏</p>
+                            <p class="text-[9px] text-slate-500">mp4 · 30s · 已缓存至 A03/U2</p>
+                        </div>
+                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300">已缓存</span>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-xl bg-slate-900 px-3 py-2.5">
+                        <span
+                            class="w-8 h-8 rounded-lg bg-violet-500/15 text-violet-300 flex items-center justify-center"><iconify-icon
+                                icon="solar:gallery-wide-linear" width="15"></iconify-icon></span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs text-slate-200">开业酬宾 · 竖屏</p>
+                            <p class="text-[9px] text-slate-500">mp4 · 20s · 已缓存至 A03</p>
+                        </div>
+                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300">已缓存</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部导航 -->
+        <nav class="h-20 shrink-0 border-t border-slate-800 flex justify-around items-center bg-slate-950">
+            <a class="flex flex-col items-center text-slate-500" href="home.html"><iconify-icon
+                    icon="solar:widget-5-linear" width="21"></iconify-icon><span class="text-[10px]">设备</span></a>
+            <a data-c data-c class="flex flex-col items-center text-slate-500" href="agents.html"><iconify-icon
+                    icon="solar:chat-round-dots-linear" width="21"></iconify-icon><span
+                    class="text-[10px]">智能体</span></a>
+            <a class="flex flex-col items-center text-slate-500" href="alerts.html"><iconify-icon
+                    icon="solar:bell-linear" width="21"></iconify-icon><span class="text-[10px]">消息</span></a>
+            <a class="flex flex-col items-center text-cyan-300" href="task-center.html"><iconify-icon
+                    icon="solar:checklist-bold" width="21"></iconify-icon><span class="text-[10px]">任务</span></a>
+            <a class="flex flex-col items-center text-slate-500" href="profile.html"><iconify-icon
+                    icon="solar:user-linear" width="21"></iconify-icon><span class="text-[10px]">我的</span></a>
+        </nav>
+
+        <!-- 任务说明（点标题旁 ? 打开）：原来头部的模式说明 + 素材提示收进这里 -->
+        <div id="about" class="hidden absolute inset-0 z-40 bg-slate-950/70 flex items-end"
+            onclick="if(event.target===this)closeAbout()">
+            <div
+                class="w-full rounded-t-3xl bg-slate-900 p-5 pb-7 max-h-[80%] overflow-y-auto [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-300 flex items-center justify-center"><iconify-icon
+                            icon="solar:checklist-linear" width="20"></iconify-icon></span>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm">任务怎么下发</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">下发即判定 · 占用即拒 · 不排队</p>
+                    </div>
+                    <button onclick="closeAbout()" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear"
+                            width="22"></iconify-icon></button>
+                </div>
+                <div class="mt-4 space-y-2">
+                    <div class="rounded-xl bg-slate-800/60 p-3">
+                        <p class="text-xs font-medium text-slate-200">四类任务</p>
+                        <p class="mt-1 text-[11px] leading-5 text-slate-400"><b
+                                class="font-medium text-slate-300">脚本任务</b>
+                            —— 脚本 × 设备角色，一个角色可绑多台；<b class="font-medium text-slate-300">广告任务</b> ——
+                            每台设备一组素材播放列表（按序循环）；<b class="font-medium text-slate-300">跟随任务</b> ——
+                            固定引导员 / 目标跟随；<b class="font-medium text-slate-300">口播任务</b> ——
+                            输入一段文字，用选定音色语音播报（只发声、不触发动作）。</p>
+                    </div>
+                    <div class="rounded-xl bg-rose-500/10 border border-rose-400/20 p-3">
+                        <p class="text-xs font-medium text-rose-100">下发即判定（无排队 / 无待执行）</p>
+                        <p class="mt-1 text-[11px] leading-5 text-rose-100/90">设备空闲 → 执行中；设备被其它任务占用 →
+                            拒绝该次执行；设备离线 → 拒绝。被拒绝会记一条失败记录并写明原因，<b class="font-medium">不排队等待</b>；首版不做定时 /
+                            周期排期。</p>
+                    </div>
+                    <div data-c class="rounded-xl bg-slate-800/60 p-3">
+                        <p class="text-xs font-medium text-slate-200">任务 = 任务 × 执行记录</p>
+                        <p class="mt-1 text-[11px] leading-5 text-slate-400">
+                            点卡片可展开历史执行记录（最新在前，含状态、时间、耗时、设备、失败原因）；「再次执行」同样按上述规则判定，也可能被拒绝。</p>
+                    </div>
+                    <div data-c class="rounded-xl bg-slate-800/60 p-3">
+                        <p class="text-xs font-medium text-slate-200">云模式</p>
+                        <p class="mt-1 text-[11px] leading-5 text-slate-400">任务与执行记录由云端聚合（顶部今日总览：成功 / 执行中 /
+                            完成率）；新建任务可绑设备后立即下发。</p>
+                    </div>
+                    <div data-l class="rounded-xl bg-amber-500/10 border border-amber-400/20 p-3">
+                        <p class="text-xs font-medium text-amber-100">本地模式</p>
+                        <p class="mt-1 text-[11px] leading-5 text-amber-100/90">
+                            只展示设备已缓存的任务与素材，可轻量组合后本地下发（占用即拒）；本地不可上传素材，需先在云模式或 Web
+                            预下发到设备缓存。</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-800/60 p-3">
+                        <p class="text-xs font-medium text-slate-200">编辑边界</p>
+                        <p class="mt-1 text-[11px] leading-5 text-slate-400">App 内只做「选类型 → 配置 → 绑设备 → 立即下发」；脚本与素材的编辑 /
+                            上传在 Web 端完成。</p>
+                    </div>
+                </div>
+                <a href="task-create.html"
+                    class="mt-5 block w-full py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm text-center">新建任务</a>
+            </div>
+        </div>
+        <div id="toast"
+            class="hidden absolute bottom-24 left-5 right-5 bg-slate-700 rounded-xl p-3 text-center text-xs">
+        </div>
+    </main>
+    <script>
+        /* 任务 Task × 执行记录 Run 模型 */
+        const ST = {
+            run: { t: '执行中', dot: 'bg-cyan-400', txt: 'text-cyan-300', chip: 'bg-cyan-500/15 text-cyan-300' },
+            ok: { t: '成功', dot: 'bg-emerald-400', txt: 'text-emerald-300', chip: 'bg-emerald-500/15 text-emerald-300' },
+            fail: { t: '失败', dot: 'bg-rose-400', txt: 'text-rose-300', chip: 'bg-rose-500/15 text-rose-300' },
+            cancel: { t: '已取消', dot: 'bg-slate-400', txt: 'text-slate-400', chip: 'bg-slate-500/15 text-slate-300' }
+        };
+        /* runs 倒序：最新在前；任务状态 = runs[0].s（无待执行：下发即判定，占用即拒绝） */
+        const TASKS = [
+            {
+                id: 't1', n: '大厅迎宾 · 秋日主题', ty: '脚本', ic: 'solar:document-text-linear', c: 'cyan', devs: ['A03'], sub: '迎宾导览 v3 · 角色 迎宾大使 → A03', runs: [
+                    { s: 'run', at: '今 10:02', du: '进行中', dv: 'A03 · 迎宾', nt: '立即下发 · 正在执行' },
+                    { s: 'ok', at: '今 07:30', du: '12 分钟', dv: 'A03 · 迎宾', nt: '' }]
+            },
+            {
+                id: 't2', n: 'B1 动线巡检', ty: '脚本', ic: 'solar:document-text-linear', c: 'cyan', devs: ['K12'], sub: '夜间巡检 v2 · 角色 巡检员 1 → K12', runs: [
+                    { s: 'run', at: '今 10:08', du: '进行中', dv: 'K12 · 巡检', nt: '立即下发 · 正在执行' }]
+            },
+            {
+                id: 't3', n: '早间迎宾', ty: '脚本', ic: 'solar:document-text-linear', c: 'cyan', devs: ['A03'], sub: '迎宾导览 v3 · A03', runs: [
+                    { s: 'ok', at: '今 07:30', du: '8 分钟', dv: 'A03 · 迎宾', nt: '' },
+                    { s: 'fail', at: '今 06:58', du: '0 分钟', dv: 'A03 · 迎宾', nt: '已拒绝下发：设备 A03 正被其它任务占用' },
+                    { s: 'ok', at: '昨日 16:00', du: '9 分钟', dv: 'A03 · 迎宾', nt: '' }]
+            },
+            {
+                id: 't4', n: '货架盘点', ty: '脚本', ic: 'solar:document-text-linear', c: 'cyan', devs: ['K12'], sub: '夜间巡检 v2 · K12', runs: [
+                    { s: 'fail', at: '今 08:12', du: '0 分钟', dv: 'K12 · 巡检', nt: '设备离线：K12 断开连接，拒绝下发' },
+                    { s: 'ok', at: '昨日 21:00', du: '6 分钟', dv: 'K12 · 巡检', nt: '' }]
+            },
+            {
+                id: 't5', n: '品牌快闪 · 广告轮播', ty: '广告', ic: 'solar:gallery-wide-linear', c: 'violet', devs: ['A03', 'U2'], sub: '素材：新品轮播 ×2 支 · A03 / U2（按序循环）', runs: [
+                    { s: 'ok', at: '昨日 13:00', du: '30 分钟', dv: 'A03、U2', nt: '播放列表：夏季新品 + 开业酬宾' }]
+            },
+            {
+                id: 't6', n: '餐区配送引导', ty: '脚本', ic: 'solar:document-text-linear', c: 'cyan', devs: ['D07'], sub: '配送流程 v1 · 角色 配送员 → D07', runs: [
+                    { s: 'ok', at: '今 09:20', du: '7 分钟', dv: 'D07 · 配送', nt: '' }]
+            },
+            {
+                id: 't7', n: '贵宾厅 VIP 跟随', ty: '跟随', ic: 'solar:route-linear', c: 'amber', devs: ['U2'], sub: '跟随 固定引导员（U2）', runs: [
+                    { s: 'ok', at: '昨日 15:30', du: '20 分钟', dv: 'U2', nt: '策略：贴身跟随 ~1.5m' }]
+            },
+            {
+                id: 't8', n: '闭馆温馨提醒口播', ty: '口播', ic: 'solar:microphone-linear', c: 'sky', devs: ['A03'], sub: '默认音色 · 播报 42 字', runs: [
+                    { s: 'ok', at: '今 09:40', du: '38 秒', dv: 'A03', nt: '' },
+                    { s: 'fail', at: '昨日 17:35', du: '0 分钟', dv: 'A03', nt: '已拒绝下发：设备 A03 正被其它任务占用' }]
+            }
+        ];
+        let open = {};
+
+        function toast(t) { const x = document.getElementById('toast'); x.textContent = t; x.classList.remove('hidden'); setTimeout(() => x.classList.add('hidden'), 2600) }
+        function latest(t) { return t.runs[0] }
+        function grp(t) { return latest(t).s === 'run' ? 'run' : 'done' }
+        function nowHM() { const d = new Date(); return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) }
+        function occupied(id) {
+            const me = TASKS.find(x => x.id === id);
+            const hit = TASKS.find(x => x.id !== id && x.runs[0].s === 'run' && x.devs.some(d => me.devs.includes(d)));
+            return hit ? hit.n : null
+        }
+        function rerun(id) {
+            const t = TASKS.find(x => x.id === id); if (!t) return;
+            const prev = latest(t), own = occupied(id);
+            if (own) {
+                t.runs.unshift({ s: 'fail', at: '今 ' + nowHM(), du: '0 分钟', dv: prev.dv, nt: '已拒绝下发：设备被「' + own + '」占用' });
+                toast('「' + t.n + '」已被拒绝：设备正忙（不排队）')
+            } else {
+                t.runs.unshift({ s: 'run', at: '今 ' + nowHM(), du: '进行中', dv: prev.dv, nt: '立即下发 · 正在执行' });
+                toast('已开始执行「' + t.n + '」')
+            }
+            render()
+        }
+        function tg(id) { open[id] = !open[id]; render() }
+        function runCard(r) {
+            const s = ST[r.s];
+            return `<div class="flex items-start gap-2.5 rounded-xl bg-slate-800/60 px-3 py-2.5">
+                <span class="w-2 h-2 rounded-full ${s.dot} mt-1.5 shrink-0"></span>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="text-[11px] text-slate-200">${r.at} · ${r.du}</p>
+                        <span class="text-[9px] px-1.5 py-0.5 rounded ${s.chip} shrink-0">${s.t}</span>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-0.5">设备：${r.dv}</p>
+                    ${r.nt ? (r.s === 'fail' ? `<p class="text-[10px] text-rose-300 mt-0.5">原因：${r.nt}</p>` : `<p class="text-[10px] text-slate-500 mt-0.5">${r.nt}</p>`) : ''}
+                </div>
+                <button onclick="toast('${(r.nt || '执行成功')} · 详情见 Web')" class="text-[10px] text-cyan-300 shrink-0">详情</button>
+            </div>`
+        }
+        function card(t) {
+            const s = ST[latest(t).s], o = !!open[t.id];
+            const running = s.t === '执行中';
+            const actBtn = running
+                ? `<button disabled class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-800 text-slate-500">执行中</button>`
+                : `<button onclick="event.stopPropagation();rerun('${t.id}')" class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-500 text-slate-950 font-semibold">↻ 再次执行</button>`;
+            return `<article class="rounded-2xl bg-slate-900 overflow-hidden border-l-2 border-${s.dot.slice(3)}">
+                <button class="w-full text-left px-4 pt-3.5 pb-2.5" onclick="tg('${t.id}')">
+                    <div class="flex items-center justify-between gap-2">
+                        <h3 class="font-semibold text-sm flex items-center gap-1.5"><iconify-icon icon="${t.ic}" class="text-${t.c}-300" width="15"></iconify-icon>${t.n}</h3>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full ${s.chip} shrink-0">${s.t}</span>
+                    </div>
+                    <p class="mt-1 text-xs text-slate-500 flex items-center gap-1">${t.ty}任务 · ${t.sub}</p>
+                    <p class="mt-1 text-[10px] text-slate-600">${latest(t).at} · ${t.runs.length} 条执行记录${o ? ' · 收起 ▲' : ' · 展开 ▾'}</p>
+                </button>
+                <div id="runs-${t.id}" class="${o ? '' : 'hidden'} px-4 pb-1 space-y-1.5">${t.runs.map(runCard).join('')}</div>
+                <div class="flex items-center justify-between px-4 py-2.5 border-t border-slate-800/70">
+                    <span class="text-[10px] text-slate-500">上次执行 ${latest(t).at}</span>
+                    <div class="flex items-center gap-2">${actBtn}</div>
+                </div>
+            </article>`
+        }
+        function group(title, ic, cls, keys) {
+            const list = TASKS.filter(t => keys.includes(grp(t)));
+            if (!list.length) return '';
+            return `<section>
+                <h2 class="text-xs font-semibold text-slate-400 flex items-center gap-1.5 mb-2"><iconify-icon icon="${ic}" class="${cls}" width="14"></iconify-icon>${title}（${list.length}）</h2>
+                <div class="space-y-3">${list.map(card).join('')}</div>
+            </section>`
+        }
+        function render() {
+            groups.innerHTML = group('执行中', 'solar:play-circle-bold', 'text-cyan-300', ['run']) +
+                group('已完成', 'solar:check-circle-bold', 'text-emerald-300', ['done'])
+        }
+        render();
+
+        /* 本地模式：按设备浏览本地任务（v0.6.0） */
+        const LDEV = [
+            {
+                id: 'la', nm: 'A03 · 迎宾', short: 'A03', tasks: [
+                    { n: '大厅迎宾 · 秋日主题', ty: '脚本', sub: '缓存脚本 v3 · 本地素材齐备', st: 'ok' },
+                    { n: '品牌快闪 · 广告轮播', ty: '广告', sub: '本地素材：夏季新品 + 开业酬宾', st: 'ok' }]
+            },
+            {
+                id: 'lk', nm: 'K12 · 巡检', short: 'K12', tasks: [
+                    { n: 'B1 动线巡检', ty: '脚本', sub: '夜间巡检 v2 · 执行中', st: 'run' }]
+            },
+            {
+                id: 'lu', nm: 'U2 · 双轮足', short: 'U2', tasks: [
+                    { n: '贵宾厅 VIP 跟随', ty: '跟随', sub: '缓存路线 · 本地固定引导员', st: 'ok' }]
+            }
+        ];
+        function localTaskCard(t, d) {
+            const running = t.st === 'run';
+            const chip = running
+                ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300">执行中</span>'
+                : '<span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300">可执行</span>';
+            const btn = running
+                ? '<button disabled class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-800 text-slate-500">执行中</button>'
+                : '<button onclick="localRun(\'' + t.n + '\',\'' + d + '\')" class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-500 text-slate-950 font-semibold">立即下发</button>';
+            return '<article class="rounded-2xl bg-slate-900 overflow-hidden border-l-2 ' + (running ? 'border-cyan-400' : 'border-emerald-400') + '">'
+                + '<div class="px-4 pt-3.5 pb-3"><div class="flex items-center justify-between gap-2"><h3 class="font-semibold text-sm">' + t.n + '</h3>' + chip + '</div>'
+                + '<p class="mt-1 text-xs text-slate-500">' + t.ty + '任务 · ' + t.sub + '</p></div>'
+                + '<div class="flex items-center justify-between px-4 py-2.5 border-t border-slate-800/70">'
+                + '<span class="text-[10px] text-slate-500">缓存于本机 · 随取随下发</span>' + btn + '</div></article>'
+        }
+        function renderLocal() {
+            if (!window.__isLocal) return;
+            localTasks.innerHTML = LDEV.map(d => '<section>'
+                + '<h2 class="text-xs font-semibold text-slate-400 flex items-center gap-1.5 mb-2"><iconify-icon icon="solar:server-square-linear" class="text-amber-300" width="14"></iconify-icon>' + d.nm + ' · 已缓存 ' + d.tasks.length + ' 个任务</h2>'
+                + '<div class="space-y-3">' + d.tasks.map(t => localTaskCard(t, d.short)).join('') + '</div></section>').join('')
+        }
+        function localRun(n, dev) {
+            if (dev === 'K12') { toast('「' + n + '」已拒绝：K12 正执行其它本地任务（不排队）') }
+            else { toast('已下发「' + n + '」至 ' + dev + ' · 本地占用判定通过') }
+        }
+        renderLocal();
+
+        function openAbout() {
+            const s = document.getElementById('about');
+            s.classList.remove('hidden');
+            s.classList.add('flex')
+        }
+
+        function closeAbout() {
+            const s = document.getElementById('about');
+            s.classList.add('hidden');
+            s.classList.remove('flex')
+        }
+    </script>
+</body>
+
+</html>

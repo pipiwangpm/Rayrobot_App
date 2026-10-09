@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>机器人平台原型 · 版本目录</title><meta name="description" content="机器人平台原型 V01–V22 历史版本目录">
+<style>
+:root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#101715;color:#e9f0e9}
+*{box-sizing:border-box}body{margin:0}main{max-width:1120px;margin:auto;padding:72px 28px 96px}
+.eyebrow{color:#9cc6aa;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:clamp(36px,6vw,64px);line-height:1.08;letter-spacing:-.045em;margin:16px 0 20px}p{color:#aabbb0;line-height:1.7;margin:0}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:32px;align-items:end;padding-bottom:42px;border-bottom:1px solid #34433a}
+.stat{text-align:right}.stat strong{display:block;font-size:72px;line-height:1;letter-spacing:-.07em;color:#c6e6cc}.stat span{font-size:13px;color:#9eb4a5}
+.toolbar{display:flex;justify-content:space-between;gap:20px;align-items:center;margin:34px 0 24px}.toolbar h2{font-size:18px;margin:0;font-weight:600}
+input{width:min(100%,310px);background:#1b2520;color:#f1f6f1;border:1px solid #3a5140;border-radius:9px;padding:13px 15px;font:inherit;outline:none}input:focus{border-color:#a9d9b4;box-shadow:0 0 0 3px #a9d9b426}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{display:flex;flex-direction:column;min-height:220px;padding:22px;border:1px solid #34473a;border-radius:12px;background:#1a241e;color:inherit;text-decoration:none;transition:background .18s,border-color .18s,transform .18s}.card:hover,.card:focus-visible{background:#26382b;border-color:#8dc49b;transform:translateY(-2px)}.card[hidden]{display:none}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.card-top strong{font-size:13px;color:#b3dfbc;letter-spacing:.12em}.card-top small{font-size:11px;color:#879e8c}.card-name{font-size:20px;font-weight:700;line-height:1.3;margin:22px 0 8px}.card-desc{font-size:12px;line-height:1.65;color:#a7b7aa}.card-open{margin-top:auto;padding-top:24px;font-size:12px;font-weight:700;color:#c5ebcd}.card-open span{font-size:17px;margin-left:4px}
+footer{padding-top:36px;color:#849b8a;font-size:12px}#empty{display:none;padding:60px 0;text-align:center}#empty.visible{display:block}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.stat{text-align:left}.stat strong{font-size:46px}}
+@media(max-width:560px){main{padding:40px 18px 64px}.grid{grid-template-columns:1fr}.toolbar{align-items:stretch;flex-direction:column}.toolbar input{width:100%}.card{min-height:190px}}
+</style></head><body><main>
+<section class="hero"><div><div class="eyebrow">Prototype archive · 2026</div><h1>机器人平台<br>原型版本</h1><p>从早期探索到当前版本。每一版独立保存，可随时打开对比。</p></div><div class="stat"><strong>22</strong><span>个独立版本 · 最新 V22</span></div></section>
+<div class="toolbar"><h2>全部版本 <span id="count">22</span></h2><input id="search" type="search" placeholder="搜索版本或改动内容" aria-label="搜索版本"></div>
+<div class="grid" id="versions"><a class="card" href="v22-%E5%8D%A1%E7%89%87%E5%BF%AB%E6%8D%B7%E6%93%8D%E4%BD%9C/home.html" data-search="v22 卡片快捷操作 电量与网络收进机器人卡片状态区，原信息行改为遥操和模式切换快捷键">
+      <span class="card-top"><strong>V22</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">卡片快捷操作</span>
+      <span class="card-desc">电量与网络收进机器人卡片状态区，原信息行改为遥操和模式切换快捷键</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v21-%E5%88%97%E8%A1%A8%E4%B8%8E%E9%85%8D%E7%BD%91%E4%BA%A4%E4%BA%92/auth.html" data-search="v21 列表与配网交互 精简电量与登录文案；wi-fi 改为附近网络选择；列表滚动时收放搜索与分组">
+      <span class="card-top"><strong>V21</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">列表与配网交互</span>
+      <span class="card-desc">精简电量与登录文案；Wi-Fi 改为附近网络选择；列表滚动时收放搜索与分组</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v20-%E4%B8%9C%E9%83%8A%E8%AE%B0%E5%BF%86%E7%99%BB%E5%BD%95%E8%83%8C%E6%99%AF/auth.html" data-search="v20 东郊记忆登录背景 登录主视觉换为东郊记忆与白、蓝、绿三台机器人，保留 v19 其他页面">
+      <span class="card-top"><strong>V20</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">东郊记忆登录背景</span>
+      <span class="card-desc">登录主视觉换为东郊记忆与白、蓝、绿三台机器人，保留 V19 其他页面</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v19-%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%86%85%E5%AE%B9%E6%A0%A1%E6%AD%A3/auth.html" data-search="v19 流程与内容校正 登录、机器人列表与详情、联网接入、任务及个人页按批注调整">
+      <span class="card-top"><strong>V19</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">流程与内容校正</span>
+      <span class="card-desc">登录、机器人列表与详情、联网接入、任务及个人页按批注调整</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v18-%E7%BB%9F%E4%B8%80%E7%AB%96%E5%B1%8F%E7%94%BB%E6%A1%86/auth.html" data-search="v18 统一竖屏画框 登录背景连续过渡；竖屏页面统一高度并在画框内滚动">
+      <span class="card-top"><strong>V18</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">统一竖屏画框</span>
+      <span class="card-desc">登录背景连续过渡；竖屏页面统一高度并在画框内滚动</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v17-%E5%93%81%E7%89%8C%E8%9E%8D%E5%90%88%E7%99%BB%E5%BD%95/auth.html" data-search="v17 品牌融合登录 raydiculous 标识、主视觉与表单融合、文案及高度调整">
+      <span class="card-top"><strong>V17</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">品牌融合登录</span>
+      <span class="card-desc">Raydiculous 标识、主视觉与表单融合、文案及高度调整</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v16-%E7%AB%96%E5%B1%8F%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%99%BB%E5%BD%95/auth.html" data-search="v16 竖屏机器人登录 登录页固定手机竖屏单列布局，移除宽屏左右分栏">
+      <span class="card-top"><strong>V16</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">竖屏机器人登录</span>
+      <span class="card-desc">登录页固定手机竖屏单列布局，移除宽屏左右分栏</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v15-%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%BD%B1%E5%83%8F%E7%99%BB%E5%BD%95/auth.html" data-search="v15 机器人影像登录 三色机器人主视觉、表单重排、动效及协议入口">
+      <span class="card-top"><strong>V15</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">机器人影像登录</span>
+      <span class="card-desc">三色机器人主视觉、表单重排、动效及协议入口</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v14-%E8%BF%90%E7%BB%B4%E5%88%86%E9%85%8D%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95/auth.html" data-search="v14 运维分配账号登录 深色账号密码登录页；运维分配账号；移除自行注册入口">
+      <span class="card-top"><strong>V14</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">运维分配账号登录</span>
+      <span class="card-desc">深色账号密码登录页；运维分配账号；移除自行注册入口</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v13-%E6%B5%85%E8%89%B2%E4%B8%BB%E7%95%8C%E9%9D%A2/home.html" data-search="v13 浅色主界面 日常页面改为暖灰与白色，遥操和视频监控保留深色">
+      <span class="card-top"><strong>V13</strong><small>2026-10-09 · 页面</small></span>
+      <span class="card-name">浅色主界面</span>
+      <span class="card-desc">日常页面改为暖灰与白色，遥操和视频监控保留深色</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v12-%E6%88%91%E7%9A%84%E9%A1%B5%E8%BA%AB%E4%BB%BD%E5%8D%A1%E5%AF%B9%E9%BD%90%E4%BF%AE%E6%AD%A3/profile.html" data-search="v12 我的页身份卡对齐修正 修复“我的”页机构与底栏重叠，调整机器人图片位置">
+      <span class="card-top"><strong>V12</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">我的页身份卡对齐修正</span>
+      <span class="card-desc">修复“我的”页机构与底栏重叠，调整机器人图片位置</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v11-%E6%A8%AA%E5%B1%8F%E9%81%A5%E6%93%8D%E4%B8%8E%E8%A7%86%E8%A7%89%E6%94%B6%E6%95%9B/home.html" data-search="v11 横屏遥操与视觉收敛 收紧列表与详情布局；横屏双摇杆遥操；精简模式与“我的”页">
+      <span class="card-top"><strong>V11</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">横屏遥操与视觉收敛</span>
+      <span class="card-desc">收紧列表与详情布局；横屏双摇杆遥操；精简模式与“我的”页</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v10-%E5%8D%A1%E7%89%87%E4%B8%8E%E8%AF%A6%E6%83%85%E5%B1%82%E7%BA%A7%E4%BC%98%E5%8C%96/home.html" data-search="v10 卡片与详情层级优化 精简机器人卡片与智能体页，重设机器人详情、独立遥操和“我的”页">
+      <span class="card-top"><strong>V10</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">卡片与详情层级优化</span>
+      <span class="card-desc">精简机器人卡片与智能体页，重设机器人详情、独立遥操和“我的”页</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v09-%E5%85%A8%E9%A1%B5%E9%9D%A2%E7%BB%9F%E4%B8%80%E6%94%B9%E7%89%88/home.html" data-search="v09 全页面统一改版 重构原始原型所有页面，统一消息、任务、智能体编辑和账户设置流程">
+      <span class="card-top"><strong>V09</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">全页面统一改版</span>
+      <span class="card-desc">重构原始原型所有页面，统一消息、任务、智能体编辑和账户设置流程</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v08-%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%88%97%E8%A1%A8%E4%B8%8E%E4%BF%A1%E6%81%AF%E6%94%B6%E6%8B%A2/home.html" data-search="v08 机器人列表与信息收拢 中文化、整卡进入详情、wi-fi/ap 双图标信号、关于本机与其他操作">
+      <span class="card-top"><strong>V08</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">机器人列表与信息收拢</span>
+      <span class="card-desc">中文化、整卡进入详情、Wi-Fi/AP 双图标信号、关于本机与其他操作</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v07-%E8%AE%BE%E5%A4%87%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/home.html" data-search="v07 设备完整流程 补全设备详情、遥操、设置、监控、连接与接入流程；四台设备各自对应">
+      <span class="card-top"><strong>V07</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">设备完整流程</span>
+      <span class="card-desc">补全设备详情、遥操、设置、监控、连接与接入流程；四台设备各自对应</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v06-%E6%88%91%E7%9A%84%E9%A1%B5%E6%94%B9%E7%89%88/profile.html" data-search="v06 我的页改版 整合设备、智能体与我的页面">
+      <span class="card-top"><strong>V06</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">我的页改版</span>
+      <span class="card-desc">整合设备、智能体与我的页面</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v05-%E7%9C%9F%E5%AE%9E%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%9E%8D%E5%85%A5/home.html" data-search="v05 真实机器人融入 四张实机外形配色接入设备页">
+      <span class="card-top"><strong>V05</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">真实机器人融入</span>
+      <span class="card-desc">四张实机外形配色接入设备页</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v04-%E7%9C%9F%E5%AE%9E%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%A4%9A%E9%85%8D%E8%89%B2/index.html" data-search="v04 真实机器人多配色 基于实机照片的四种配色透明 png，仅素材">
+      <span class="card-top"><strong>V04</strong><small>2026-10-08 · 素材</small></span>
+      <span class="card-name">真实机器人多配色</span>
+      <span class="card-desc">基于实机照片的四种配色透明 PNG，仅素材</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v03-%E6%99%BA%E8%83%BD%E4%BD%93%E9%A1%B5%E6%94%B9%E7%89%88/agents.html" data-search="v03 智能体页改版 智能体首页重构，设备页沿用 v02">
+      <span class="card-top"><strong>V03</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">智能体页改版</span>
+      <span class="card-desc">智能体首页重构，设备页沿用 V02</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v02-%E5%A4%9A%E9%85%8D%E8%89%B2%E6%9C%BA%E5%99%A8%E4%BA%BA/home.html" data-search="v02 多配色机器人 同款机器人橙、绿、白、蓝四种配色，固定界面主题">
+      <span class="card-top"><strong>V02</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">多配色机器人</span>
+      <span class="card-desc">同款机器人橙、绿、白、蓝四种配色，固定界面主题</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="card" href="v01-%E6%B7%B1%E8%89%B2%E6%9C%BA%E5%99%A8%E4%BA%BA%E9%A3%8E%E6%A0%BC/home.html" data-search="v01 深色机器人风格 单列设备卡片、搜索筛选和批量分组">
+      <span class="card-top"><strong>V01</strong><small>2026-10-08 · 页面</small></span>
+      <span class="card-name">深色机器人风格</span>
+      <span class="card-desc">单列设备卡片、搜索筛选和批量分组</span>
+      <span class="card-open">打开版本 <span aria-hidden="true">↗</span></span>
+    </a></div><p id="empty">没有找到匹配的版本</p>
+<footer>原型仅用于设计演示；页面中的登录与设备操作不连接真实服务。</footer>
+</main><script>
+const search=document.getElementById('search'),cards=[...document.querySelectorAll('.card')];
+search.addEventListener('input',()=>{let count=0;const q=search.value.trim().toLowerCase();for(const card of cards){const show=card.dataset.search.includes(q);card.hidden=!show;if(show)count++}document.getElementById('count').textContent=count;document.getElementById('empty').classList.toggle('visible',count===0)});
+</script></body></html>

@@ -1,0 +1,14 @@
+.activation-progress{display:grid;gap:8px;margin:0 0 19px}
+.activation-progress>span{font-size:11px;color:#ff9974}
+.activation-progress>strong{font-size:20px}
+.activation-progress .stepper{margin:5px 0 0}
+.network-choice{min-height:88px}
+.network-choice>span{flex:1}
+.identify-stage{aspect-ratio:1.8;margin-bottom:15px}
+.ap-network{display:flex;align-items:center;gap:11px;padding:17px;margin:0 0 20px;background:#202c32;border:1px solid #48616b;border-radius:14px;color:#ff986f}
+.ap-network span{flex:1;font-size:12px;color:#b8c5c9}
+.ap-network strong{color:#f3f5f5;font-size:17px}
+.ap-steps{padding-left:24px;color:#c5d0d3;line-height:2.5;font-size:13px;margin:0 0 24px}
+.activation-device{display:flex;align-items:center;gap:13px;padding:15px}
+.activation-device strong,.activation-device small{display:block}
+.activation-device small{color:#99aab1;font-size:11px;margin-top:4px}

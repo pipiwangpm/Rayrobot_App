@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <title>局域网直连 · RoboOps V2</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <script src="mode.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+    <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+        <header class="px-5 pt-7 pb-3">
+            <div class="flex items-center gap-3">
+                <a href="profile.html" class="text-slate-400"><iconify-icon icon="solar:arrow-left-linear"
+                        width="22"></iconify-icon></a>
+                <h1 class="text-xl font-bold">局域网直连</h1>
+            </div>
+            <p data-c class="mt-1 text-[11px] text-slate-500">云模式：弱网 / 内网可主动直连（mDNS 发现，需租户授权）</p>
+            <p data-l class="mt-1 text-[11px] text-slate-500">本地模式：本通道即本地形态的接入通道 · 随形态启用</p>
+        </header>
+
+        <section
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6 space-y-4">
+            <!-- 本地形态说明条 -->
+            <div data-l class="rounded-xl p-3 bg-emerald-500/10 border border-emerald-400/20 flex items-center gap-2">
+                <iconify-icon icon="solar:shield-check-linear" class="text-emerald-300 shrink-0"
+                    width="16"></iconify-icon>
+                <p class="text-[11px] text-emerald-100/90">本地模式已启用：本通道用于纯内网发现与直连（同一局域网段 mDNS 可达）</p>
+            </div>
+            <!-- 主开关 -->
+            <div class="rounded-2xl bg-slate-900 p-4 flex items-center gap-3">
+                <span
+                    class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-300 flex items-center justify-center"><iconify-icon
+                        icon="solar:wi-fi-router-linear" width="20"></iconify-icon></span>
+                <div class="flex-1">
+                    <p class="text-sm font-semibold">局域网直连</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">开启后扫描本 Wi-Fi 网段内的设备</p>
+                </div>
+                <button onclick="tg(this)" data-on="1"
+                    class="w-11 h-6 rounded-full relative transition bg-emerald-400"><i
+                        class="absolute top-0.5 left-[22px] w-5 h-5 bg-white rounded-full transition-all"></i></button>
+            </div>
+
+            <!-- 扫描状态 -->
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold">发现设备</p>
+                    <button onclick="scan()" class="text-[11px] text-cyan-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:refresh-linear" width="13"></iconify-icon>重新扫描</button>
+                </div>
+                <p id="scanNote" class="text-[10px] text-slate-500 mt-1">已发现 3 个节点 · 本机 192.168.1.104</p>
+                <div class="mt-3 space-y-2">
+                    <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-2.5">
+                        <span
+                            class="w-8 h-8 rounded-lg bg-cyan-500/15 text-cyan-300 text-[10px] font-bold flex items-center justify-center">A03</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs text-slate-200">迎宾机器人 A03 · tangpa</p>
+                            <p class="text-[9px] text-emerald-300">robot-TP-A03-202609.local · 192.168.1.27 · 在线</p>
+                        </div>
+                        <button onclick="direct('迎宾机器人 A03')"
+                            class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-500/15 text-cyan-300">直连</button>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-2.5">
+                        <span
+                            class="w-8 h-8 rounded-lg bg-violet-500/15 text-violet-300 text-[10px] font-bold flex items-center justify-center">U2</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs text-slate-200">双轮足 U2 · dual_wheel</p>
+                            <p class="text-[9px] text-emerald-300">robot-DW-U2-202607.local · 192.168.1.31 · 在线</p>
+                        </div>
+                        <button onclick="direct('双轮足 U2')"
+                            class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-500/15 text-cyan-300">直连</button>
+                    </div>
+                    <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-2.5">
+                        <span
+                            class="w-8 h-8 rounded-lg bg-slate-700 text-slate-400 text-[10px] font-bold flex items-center justify-center">GW</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs text-slate-200">通信网关服务 · chric-dds</p>
+                            <p class="text-[9px] text-emerald-300">botstudio-gw.local · 192.168.1.1:8080 · 在线</p>
+                        </div>
+                        <button onclick="direct('通信网关服务')"
+                            class="text-[10px] px-2.5 py-1 rounded-lg bg-cyan-500/15 text-cyan-300">直连</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 调试入口（预留） -->
+            <div class="rounded-2xl bg-slate-900 p-4 flex items-center gap-3 opacity-60">
+                <iconify-icon icon="solar:bug-linear" width="20" class="text-slate-400"></iconify-icon>
+                <div class="flex-1">
+                    <p class="text-sm text-slate-300">mDNS 调试</p>
+                    <p class="text-[10px] text-slate-500">服务查询 / 排障日志</p>
+                </div>
+                <span class="text-[10px] text-amber-300">调试权限</span>
+            </div>
+
+            <p data-c class="pt-1 text-[11px] text-slate-600 leading-5">提示：直连仅在同一局域网内（同一网段 mDNS
+                可达）有效；直连后按权限执行安全操控，离线操作留痕并联网补报。</p>
+            <p data-l class="pt-1 text-[11px] text-slate-600 leading-5">本地模式下直连即本地操控通道；操作留痕存机器人本地（本地模式不经云端，无联网补报概念）。</p>
+        </section>
+
+        <div id="toast"
+            class="hidden absolute bottom-24 left-5 right-5 bg-slate-700 rounded-xl p-3 text-center text-xs">
+        </div>
+    </main>
+    <script>
+        function toast(t) { let x = document.getElementById('toast'); x.textContent = t; x.classList.remove('hidden'); setTimeout(() => x.classList.add('hidden'), 2200) }
+        function tg(b) {
+            const on = b.dataset.on !== '1';
+            b.dataset.on = on ? '1' : '0';
+            b.classList.toggle('bg-emerald-400', on);
+            b.classList.toggle('bg-slate-700', !on);
+            b.querySelector('i').className = 'absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all' + (on ? ' left-[22px]' : ' left-0.5');
+            toast(on ? '已开启局域网直连，开始扫描…' : '已关闭局域网直连')
+        }
+        function scan() { toast('扫描中…（演示约 1.5s）'); setTimeout(() => toast('扫描完成 · 发现 3 个节点'), 1500) }
+        function direct(n) { toast('已直连 ' + n + ' · 延迟 6ms（局域网）') }
+    </script>
+</body>
+
+</html>

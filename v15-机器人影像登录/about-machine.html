@@ -1,0 +1,7 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>关于本机 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"></head><body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,section,row}=Fleet;
+const method=d.connection==='wifi'?'Wi-Fi':d.connection==='ap'?'AP 局域网':'未连接';
+const strength=d.connection?(d.signal>=4?'强':d.signal>=2?'中':'弱'):'无信号';
+const body=`<div class="page-intro"><h1>关于本机</h1><p>${esc(d.name)} · ${esc(d.model)}</p></div>${section('运行信息',`<div class="panel">${row('机器人状态',d.status)}${row('当前模式',d.mode)}${row('关联智能体',d.agent)}${row('当前任务',d.task)}${row('剩余电量',d.battery===null?'未知':d.battery+'%')}${row('在线时长',d.state==='offline'?'—':d.hours)}${row('最后在线',d.lastSeen)}</div>`)}${section('机器人档案',`<div class="panel">${row('型号',d.model)}${row('序列号',d.sn)}${row('所在分组',d.group)}${row('网络地址',d.ip)}${row('连接方式',method)}${row('信号强度',strength)}${row('外观配色',d.color)}</div>`)}${section('版本信息',`<div class="panel">${row('上位机版本',d.id==='A03'?'v2.1.3':'待接入')}${row('下位机版本',d.id==='A03'?'v1.6.4':'待接入')}</div>`)}`;
+shell('关于本机',body,`<a class="icon-button" href="${href('device')}" aria-label="机器人详情">${icon('robot')}</a>`,href('device'));
+</script></body></html>

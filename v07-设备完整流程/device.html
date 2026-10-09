@@ -1,0 +1,16 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>设备详情 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"></head><body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,section,row,toast,confirmAction,$}=Fleet;
+const isOffline=d.state==='offline',isFault=d.state==='fault';
+const action=(label,ico,url,disabled=false)=>`<a class="action-card ${disabled?'is-disabled':''}" href="${url}" ${disabled?'aria-disabled="true" tabindex="-1"':''}>${icon(ico)}<span>${label}</span></a>`;
+const hero=`<div class="device-hero"><div class="hero-copy"><div class="hero-id">DEVICE / ${esc(d.id)}</div><h1>${esc(d.name)}</h1><p>${esc(d.model)}</p><span class="state-pill ${esc(d.state)}">${esc(d.status)}</span></div><img class="robot-image" src="assets/${esc(d.image)}" alt="${esc(d.color)}设备外观效果图"><div class="hero-bottom"><div class="hero-metric"><strong>${d.battery===null?'—':d.battery+'<small>%</small>'}</strong><span class="track"><i style="width:${d.battery??0}%"></i></span><span>剩余电量</span></div><div class="hero-metric"><strong>${esc(d.hours)}</strong><span>在线时长</span></div></div></div>`;
+const notice=isFault?`<div class="notice">${icon('alert')}<div>设备在线，但存在故障。原型未提供故障码，处理前请核实实机状态。</div></div>`:isOffline?`<div class="notice info">${icon('wifi')}<div>设备当前离线，监控和遥操入口暂不可用。最后在线时间为原型演示数据，请以设备实际记录为准。</div></div>`:'';
+const quick=section('快捷操作',`<div class="quick-actions">${action('遥操与模式','control',href('control'),isOffline||isFault)}${action('远程监控','video',href('monitor'),isOffline)}${action('设备设置','settings',href('device-settings'))}${action('广告投放','video',href('device-actions','&type=ad'),d.id!=='A03'||isOffline)}${action('口播任务','volume',href('device-actions','&type=voice'),d.id!=='A03'||isOffline)}<button class="action-card" id="locate">${icon('pin')}<span>定位设备</span></button><a class="action-card" href="task-center.html">${icon('robot')}<span>关联任务</span></a><a class="action-card" href="server-connection.html">${icon('wifi')}<span>连接方式</span></a></div>`);
+const operating=section('运行信息',`<div class="panel">${row('当前模式',d.mode)}${row('关联智能体',d.agent)}${row('当前任务',d.task)}${row('设备状态',d.status)}${row('最后在线',d.lastSeen)}</div>`);
+const identity=section('设备档案',`<div class="panel">${row('设备型号',d.model)}${row('序列号 SN',d.sn)}${row('所在分组',d.group)}${row('IP 地址',d.ip)}${row('外观配色',d.color)}</div>`);
+const version=section('版本信息',`<div class="panel">${row('上位机版本',d.id==='A03'?'v2.1.3 · 原型示例':'待接入')}${row('下位机版本',d.id==='A03'?'v1.6.4 · 原型示例':'待接入')}</div>`);
+const maintenance=section('维护操作',`<div class="button-row"><button class="button secondary" id="upgrade">检查升级</button><button class="button outline" id="stop" ${isOffline?'disabled':''}>紧急停止</button></div><p class="subtle" style="margin-top:12px;font-size:11px">操作仅用于原型演示，未连接真实设备。</p>`);
+shell('设备详情',hero+notice+quick+operating+identity+version+maintenance+`<p class="flow-footer">当前页面展示演示数据。设备操作不会下发至实机。</p>`,`<a class="icon-button" href="${href('device-settings')}" aria-label="设备设置">${icon('settings')}</a>`);
+$('locate').onclick=()=>toast('定位入口已展示，原型尚未接入位置数据');
+$('upgrade').onclick=()=>toast('原型演示：暂无版本检查接口');
+$('stop').onclick=()=>confirmAction('确认紧急停止？','原型仅展示确认流程，不会向真实设备下发急停指令。',()=>toast('已完成急停流程演示，实机状态未改变'));
+</script></body></html>

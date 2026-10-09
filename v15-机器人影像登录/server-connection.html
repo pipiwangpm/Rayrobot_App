@@ -1,0 +1,9 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>连接与部署 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"></head><body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,section,row,toast,$}=Fleet;
+const scoped=new URLSearchParams(location.search).has('id');
+let mode=localStorage.getItem('robops.mode')||localStorage.getItem('fleet-network-mode')||'cloud';
+const body=`<div class="page-intro"><h1>连接与部署</h1><p>查看机器人连接状态，选择演示部署方式。</p></div><div class="notice info">${icon('wifi')}<div>部署连接未建立。</div></div>${scoped?section('机器人连接',`<div class="panel">${row('机器人',d.name)}${row('在线状态',d.status)}${row('IP 地址',d.ip)}${row('通信状态',d.state==='offline'?'未连接':'待验证')}</div>`):section('当前方案',`<div class="panel">${row('管理范围','全部机器人')}${row('服务状态','未连接')}</div>`)}${section('部署方式',`<div class="segment" id="segments"><button data-mode="cloud">云端连接</button><button data-mode="local">局域网直连</button></div><div id="modeInfo" class="notice info" style="margin-top:12px"></div>`)}<div class="button-row"><a class="button secondary" href="${scoped?href('device'):'profile.html'}">${scoped?'机器人详情':'返回我的'}</a><a class="button primary" href="${scoped?href('lan-direct'):'lan-direct.html'}">局域网连接设置</a></div>`;
+shell('连接与部署',body,'',scoped?href('device'):'profile.html');
+function render(){document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('modeInfo').innerHTML=`${icon(mode==='cloud'?'wifi':'link')}<div>${mode==='cloud'?'云端连接用于跨网络机器人管理。当前仅展示方案，不检查服务状态。':'局域网直连要求手机与机器人处于同一网络，具体可用能力由实机接口决定。'}</div>`}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;localStorage.setItem('fleet-network-mode',mode);localStorage.setItem('robops.mode',mode);render();toast('展示方式已切换')});render();
+</script></body></html>

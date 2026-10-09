@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <title>连接与部署形态 · RoboOps V2</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="mode.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+    <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+        <header class="px-5 pt-7 pb-3">
+            <div class="flex items-center gap-3">
+                <a href="profile.html" class="text-slate-400"><iconify-icon icon="solar:arrow-left-linear"
+                        width="22"></iconify-icon></a>
+                <h1 class="text-xl font-bold">连接与部署形态</h1>
+            </div>
+            <p class="mt-1 text-[11px] text-slate-500">云模式 ⇄ 本地模式 · 手动切换（不自动）</p>
+        </header>
+
+        <section
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6 space-y-4">
+            <!-- 当前形态状态（云模式视角） -->
+            <div data-c class="rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-4">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center"><iconify-icon
+                            icon="solar:server-linear" width="20"></iconify-icon></span>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                            <p class="text-sm font-semibold">当前形态 · 云模式</p>
+                            <span
+                                class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300"><i
+                                    class="w-1.5 h-1.5 rounded-full bg-emerald-400"></i>已连接</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-0.5">api.robops.internal · 延迟 43ms · 多端同步</p>
+                    </div>
+                    <iconify-icon icon="solar:check-circle-bold" class="text-emerald-400" width="20"></iconify-icon>
+                </div>
+                <div class="mt-3 pt-3 border-t border-emerald-500/10 text-[11px] flex justify-between text-slate-400">
+                    <span>心跳</span><span class="text-emerald-300">正常 · 12:04:33</span>
+                </div>
+            </div>
+
+            <!-- 部署形态选择（云 ⇄ 本地，手动切换） -->
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-sm font-semibold mb-3">部署形态 <span class="text-[10px] text-slate-500 font-normal">手动切换 ·
+                        二次确认</span></p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button data-c onclick="switchMode('cloud',this)"
+                        class="text-left rounded-2xl p-3 border border-emerald-400/60 bg-emerald-500/10">
+                        <iconify-icon icon="solar:cloud-linear" width="20" class="text-emerald-300"></iconify-icon>
+                        <p class="mt-1.5 text-sm font-semibold text-emerald-200">云模式</p>
+                        <p class="text-[10px] text-slate-400">平台托管 · 多端同步</p>
+                        <span
+                            class="mt-1 inline-block text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300">当前</span>
+                    </button>
+                    <button onclick="switchMode('local',this)"
+                        class="text-left rounded-2xl p-3 border border-amber-400/30 bg-amber-500/5">
+                        <iconify-icon icon="solar:wi-fi-router-linear" width="20" class="text-amber-300"></iconify-icon>
+                        <p class="mt-1.5 text-sm font-semibold text-slate-200">本地模式</p>
+                        <p class="text-[10px] text-slate-500">纯内网 · mDNS 直连</p>
+                    </button>
+                </div>
+                <p class="mt-3 text-[10px] leading-4 text-slate-600">本地模式＝App 与设备同一局域网段且 mDNS 可达（路由器不出网即本地）。切换后：智能体 /
+                    云端任务 / 推送不可用。</p>
+            </div>
+
+            <!-- 本地模式已开启卡 -->
+            <div data-l class="rounded-2xl bg-amber-500/10 border border-amber-400/30 p-4">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center"><iconify-icon
+                            icon="solar:wi-fi-router-linear" width="20"></iconify-icon></span>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold">当前形态 · 本地模式</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">凭机器人本地凭证 · 留痕存本机</p>
+                    </div>
+                    <span class="shrink-0 text-[10px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300">内网</span>
+                </div>
+                <div class="mt-3 pt-3 border-t border-amber-400/10 text-[11px] space-y-1.5 text-slate-400">
+                    <p class="flex items-center gap-1"><iconify-icon icon="solar:server-square-linear" width="13"
+                            class="text-amber-300"></iconify-icon>局域网可达节点：<span class="text-amber-200">3 台</span>（A03 ·
+                        K12 · U2）</p>
+                    <p class="flex items-center gap-1"><iconify-icon icon="solar:chat-round-dots-linear" width="13"
+                            class="text-slate-500"></iconify-icon>智能体 / 云端任务编排 / 云推送：<span
+                            class="text-amber-300">不可用</span></p>
+                    <p class="flex items-center gap-1"><iconify-icon icon="solar:shield-user-linear" width="13"
+                            class="text-slate-500"></iconify-icon>本地身份：赵楷（机器人本地凭证 · 有效）</p>
+                </div>
+                <button onclick="switchMode('cloud',this)"
+                    class="mt-3 w-full rounded-xl bg-slate-800 py-3 text-sm text-slate-200">切回云模式</button>
+            </div>
+
+            <!-- 云端服务器地址（仅云模式，只读） -->
+            <div data-c class="rounded-2xl bg-slate-900 p-4">
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold">云端服务器地址 <span
+                            class="text-[10px] text-slate-500 font-normal">只读</span></p>
+                    <button onclick="toast('地址修改：向租户管理员申请，App 仅展示')" class="text-[11px] text-cyan-300">修改</button>
+                </div>
+                <p class="mt-2 text-[11px] text-slate-400">api.robops.internal（HTTPS 443）</p>
+                <p class="text-[10px] text-slate-600 mt-1">弱网 / 断连时自动重试，超过阈值提示切换</p>
+            </div>
+
+            <!-- 连接操作（仅云模式） -->
+            <div data-c class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-sm font-semibold mb-3">连接操作</p>
+                <div class="flex gap-3">
+                    <button id="btnRe" onclick="reconnect()"
+                        class="flex-1 rounded-xl bg-cyan-500 text-slate-950 py-3 text-sm font-semibold">重新连接</button>
+                    <button onclick="test()"
+                        class="flex-1 rounded-xl bg-slate-800 py-3 text-sm text-slate-200">测试连接</button>
+                </div>
+                <p class="mt-3 text-[10px] text-slate-600">测试连接将校验地址连通性与延迟；数据源在切换后跟随。</p>
+            </div>
+
+            <!-- 本地模式通道与入口（仅本地形态） -->
+            <div data-l class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-sm font-semibold mb-3">本地通道与入口</p>
+                <a href="lan-direct.html?m=local" class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-3">
+                    <iconify-icon icon="solar:wi-fi-router-linear" width="18" class="text-amber-300"></iconify-icon>
+                    <span class="flex-1 text-sm text-slate-200">局域网直连（mDNS 发现）</span>
+                    <iconify-icon icon="solar:alt-arrow-right-linear" class="text-slate-500" width="16"></iconify-icon>
+                </a>
+                <a href="home.html?m=local" class="mt-2 flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-3">
+                    <iconify-icon icon="solar:widget-5-linear" width="18" class="text-cyan-300"></iconify-icon>
+                    <span class="flex-1 text-sm text-slate-200">本地设备列表（内网可达）</span>
+                    <iconify-icon icon="solar:alt-arrow-right-linear" class="text-slate-500" width="16"></iconify-icon>
+                </a>
+                <a href="task-center.html?m=local"
+                    class="mt-2 flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-3">
+                    <iconify-icon icon="solar:checklist-linear" width="18" class="text-cyan-300"></iconify-icon>
+                    <span class="flex-1 text-sm text-slate-200">本地任务（设备缓存）</span>
+                    <iconify-icon icon="solar:alt-arrow-right-linear" class="text-slate-500" width="16"></iconify-icon>
+                </a>
+            </div>
+        </section>
+
+        <div id="toast"
+            class="hidden absolute bottom-24 left-5 right-5 bg-slate-700 rounded-xl p-3 text-center text-xs">
+        </div>
+    </main>
+    <script>
+        function toast(t) { let x = document.getElementById('toast'); x.textContent = t; x.classList.remove('hidden'); setTimeout(() => x.classList.add('hidden'), 2200) }
+        /* 部署形态切换（手动、不自动）：云模式 ⇄ 本地模式 */
+        function switchMode(m, el) {
+            const isLocal = window.__isLocal;
+            if ((m === 'local') === isLocal) { toast(isLocal ? '已在本地模式' : '已保持云模式'); return }
+            if (m === 'local') {
+                if (confirm('切换到本地模式（纯内网）？\n智能体 / 云端任务 / 推送将不可用；操作留痕存机器人本地。')) {
+                    toast('正在切换本地模式…'); goMode('local')
+                }
+            } else { toast('正在切回云模式…'); goMode('cloud') }
+        }
+        function reconnect() {
+            const b = document.getElementById('btnRe'); const old = b.textContent;
+            b.textContent = '连接中…'; b.disabled = true;
+            setTimeout(() => { b.textContent = old; b.disabled = false; toast('已重新连接 · api.robops.internal · 延迟 32ms') }, 1200)
+        }
+        function test() { toast('连接正常 · 延迟 32ms · 心跳 OK') }
+    </script>
+</body>
+
+</html>

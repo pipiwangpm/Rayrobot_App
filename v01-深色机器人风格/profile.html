@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+  <title>个人中心 · RoboOps V2</title>
+  <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+  <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+  <script src="mode.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+  <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950">
+    <header class="px-5 pt-7">
+      <p data-l class="text-xs text-amber-300/90">本地模式 · 内网（本地会话）</p>
+      <h1 class="mt-1 text-2xl font-bold">我的</h1>
+    </header>
+    <section
+      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden px-5 pt-5 pb-6">
+      <div class="rounded-3xl bg-slate-900 p-5 flex gap-4 items-center">
+        <div
+          class="w-15 h-15 w-[60px] h-[60px] rounded-2xl bg-cyan-400 text-slate-950 text-xl font-bold flex justify-center items-center">
+          赵</div>
+        <div class="flex-1">
+          <h2 class="font-bold">赵楷</h2>
+          <p class="mt-1 text-xs text-slate-400">现场运营专员</p>
+          <p class="mt-1 text-xs text-slate-400">成都人形机器人创新中心</p>
+          <span class="mt-2 inline-block text-[10px] px-2 py-1 rounded bg-cyan-400/10 text-cyan-300">设备运营权限</span>
+        </div><button onclick="toast('资料编辑入口已获得授权')"><iconify-icon class="text-slate-400" icon="solar:pen-linear"
+            width="19"></iconify-icon></button>
+      </div>
+      <h2 class="mt-7 mb-3 text-sm font-bold text-slate-300">通知与连接</h2>
+      <div class="rounded-2xl overflow-hidden bg-slate-900 divide-y divide-slate-800"><a
+          class="w-full px-4 py-4 flex items-center text-left" href="notification-settings.html"><iconify-icon
+            class="text-cyan-300" icon="solar:bell-linear" width="21"></iconify-icon><span
+            class="ml-3 flex-1 text-sm">通知设置</span><span class="text-xs text-slate-500">已开启</span><iconify-icon
+            class="ml-2 text-slate-600" icon="solar:alt-arrow-right-linear" width="18"></iconify-icon></a><a
+          class="w-full px-4 py-4 flex items-center text-left" href="server-connection.html"><iconify-icon
+            class="text-violet-300" icon="solar:server-path-linear" width="21"></iconify-icon><span
+            class="ml-3 flex-1 text-sm">连接与部署形态</span><span data-c class="text-xs text-emerald-300">云端</span><span
+            data-l class="text-xs text-amber-300">本地 · 内网</span><iconify-icon class="ml-2 text-slate-600"
+            icon="solar:alt-arrow-right-linear" width="18"></iconify-icon></a><a
+          class="w-full px-4 py-4 flex items-center text-left" href="lan-direct.html"><iconify-icon
+            class="text-amber-300" icon="solar:wi-fi-router-linear" width="21"></iconify-icon><span
+            class="ml-3 flex-1 text-sm">局域网直连</span><span class="text-[10px] text-slate-500">权限可用</span><iconify-icon
+            class="ml-2 text-slate-600" icon="solar:alt-arrow-right-linear" width="18"></iconify-icon></a></div>
+      <h2 class="mt-7 mb-3 text-sm font-bold text-slate-300">系统</h2>
+      <div class="rounded-2xl overflow-hidden bg-slate-900 divide-y divide-slate-800"><a
+          class="w-full px-4 py-4 flex items-center text-left" href="system-settings.html"><iconify-icon
+            class="text-slate-300" icon="solar:settings-linear" width="21"></iconify-icon><span
+            class="ml-3 flex-1 text-sm">系统设置</span><span id="imgModeLabel"
+            class="text-xs text-slate-500">设备图</span><iconify-icon class="ml-2 text-slate-600"
+            icon="solar:alt-arrow-right-linear" width="18"></iconify-icon></a></div>
+      <h2 class="mt-7 mb-3 text-sm font-bold text-slate-300">帮助与安全</h2>
+      <div class="rounded-2xl overflow-hidden bg-slate-900 divide-y divide-slate-800"><a
+          class="px-4 py-4 flex items-center" href="about.html"><iconify-icon class="text-emerald-300"
+            icon="solar:book-2-linear" width="21"></iconify-icon><span
+            class="ml-3 flex-1 text-sm">教程与关于</span><iconify-icon class="text-slate-600"
+            icon="solar:alt-arrow-right-linear" width="18"></iconify-icon></a><button
+          class="w-full px-4 py-4 flex items-center text-left" onclick="logout()"><iconify-icon class="text-rose-300"
+            icon="solar:logout-2-linear" width="21"></iconify-icon><span
+            class="ml-3 flex-1 text-sm text-rose-200">退出当前账户</span></button></div>
+    </section>
+    <nav class="h-20 shrink-0 border-t border-slate-800 flex justify-around items-center"><a
+        class="flex flex-col items-center text-slate-500" href="home.html"><iconify-icon icon="solar:widget-5-linear"
+          width="21"></iconify-icon><span class="text-[10px]">设备</span></a><a data-c
+        class="flex flex-col items-center text-slate-500" href="agents.html"><iconify-icon
+          icon="solar:chat-round-dots-linear" width="21"></iconify-icon><span class="text-[10px]">智能体</span></a><a
+        class="flex flex-col items-center text-slate-500" href="alerts.html"><iconify-icon icon="solar:bell-linear"
+          width="21"></iconify-icon><span class="text-[10px]">消息</span></a><a
+        class="flex flex-col items-center text-slate-500" href="task-center.html"><iconify-icon
+          icon="solar:checklist-linear" width="21"></iconify-icon><span class="text-[10px]">任务</span></a><a
+        class="flex flex-col items-center text-cyan-300" href="profile.html"><iconify-icon icon="solar:user-bold"
+          width="21"></iconify-icon><span class="text-[10px]">我的</span></a></nav>
+    <div class="hidden absolute bottom-24 left-5 right-5 bg-slate-700 rounded-xl p-3 text-center text-xs" id="toast">
+    </div>
+  </main>
+  <script>
+    function toast(t) {
+      let x = document.getElementById('toast');
+      x.textContent = t;
+      x.classList.remove('hidden');
+      setTimeout(() => x.classList.add('hidden'), 2400)
+    }
+
+    function logout() {
+      if (confirm('确认退出？本地会话和敏感缓存将被清理。')) location.href = 'auth.html'
+    }
+
+    /* 系统设置摘要：显示当前生效的设备图加载策略（与 system-settings.html / home.html 共用 localStorage） */
+    (function () {
+      const map = { always: '设备图 · 始终加载', wifi: '设备图 · 仅 Wi-Fi', off: '设备图 · 不加载' };
+      let m = 'always';
+      try { m = localStorage.getItem('robops.imgMode') || 'always' } catch (e) { }
+      document.getElementById('imgModeLabel').textContent = map[m] || map.always
+    })();
+  </script>
+</body>
+
+</html>

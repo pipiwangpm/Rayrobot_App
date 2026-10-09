@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>当前位置 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"><link rel="stylesheet" href="assets/phone-frame-v18.css"><link rel="stylesheet" href="assets/device-v19.css"><link rel="stylesheet" href="assets/robot-map-v19.css"></head>
+<body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,$}=Fleet;
+const body=`<div class="page-intro"><h1>当前位置</h1><p>${esc(d.name)}</p></div>
+<section class="map-stage" aria-label="手机与机器人位置地图">
+ <div class="map-grid"></div>
+ <div class="map-building building-a">展厅 A</div><div class="map-building building-b">服务区</div><div class="map-building building-c">主入口</div>
+ <svg class="map-route" viewBox="0 0 360 360" preserveAspectRatio="none" aria-hidden="true"><path d="M82 273 C108 251 116 213 153 205 S220 183 260 118"/></svg>
+ <div class="map-point phone-point"><span class="point-pulse"></span><span class="point-icon">${icon('user',18)}</span><b>手机位置</b></div>
+ <div class="map-point robot-point"><span class="point-pulse"></span><span class="point-icon">${icon('robot',18)}</span><b>${esc(d.name)}</b></div>
+</section>
+<div class="map-legend"><span><i class="phone-dot"></i>手机位置</span><span><i class="robot-dot"></i>机器人位置</span></div>
+<div class="panel map-details"><div class="info-row"><span>机器人位置</span><strong>${esc(d.group)}</strong></div><div class="info-row"><span>定位状态</span><strong>${d.state==='offline'?'离线':'已定位'}</strong></div></div>
+<a class="button secondary block map-back" href="${href('device')}">返回机器人详情</a>`;
+shell('位置地图',body,'<span class="head-spacer" aria-hidden="true"></span>',href('device'));
+</script></body></html>

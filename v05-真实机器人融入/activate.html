@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+  <title>激活设备 · RoboOps V2</title>
+  <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+  <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+  <script src="mode.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+  <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950">
+    <header class="px-5 pt-7 flex items-center gap-4"><a
+        class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900" href="home.html"><iconify-icon
+          icon="solar:arrow-left-linear" width="20"></iconify-icon></a>
+      <div>
+        <p class="text-xs text-slate-500">接入新机器人</p>
+        <h1 class="font-bold">设备激活与配网</h1>
+      </div>
+    </header>
+    <section
+      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden px-5 pt-7">
+      <div class="flex items-center">
+        <div class="flex flex-col items-center text-cyan-300"><b
+            class="w-7 h-7 rounded-full bg-cyan-400 text-slate-950 text-xs flex items-center justify-center">1</b><span
+            class="mt-1 text-[10px]">识别设备</span></div><i class="h-px flex-1 bg-cyan-400"></i>
+        <div class="flex flex-col items-center text-slate-500"><b
+            class="w-7 h-7 rounded-full bg-slate-800 text-xs flex items-center justify-center">2</b><span
+            class="mt-1 text-[10px]">连接网络</span></div><i class="h-px flex-1 bg-slate-800"></i>
+        <div class="flex flex-col items-center text-slate-500"><b
+            class="w-7 h-7 rounded-full bg-slate-800 text-xs flex items-center justify-center">3</b><span
+            class="mt-1 text-[10px]">完成</span></div>
+      </div>
+      <div id="step1">
+        <p class="mt-6 text-xs text-slate-500">选择添加设备的方式</p>
+        <div class="mt-3 space-y-3">
+          <button onclick="pickWay('scan')"
+            class="w-full text-left rounded-2xl bg-slate-900 p-4 border border-slate-800 flex items-center gap-3">
+            <span
+              class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-300 flex items-center justify-center"><iconify-icon
+                icon="mdi:qrcode-scan" width="22"></iconify-icon></span>
+            <div class="flex-1">
+              <p class="font-semibold text-sm">扫码激活</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">扫描机身激活码，快速识别设备</p>
+            </div>
+            <iconify-icon icon="solar:alt-arrow-right-linear" class="text-slate-500" width="18"></iconify-icon>
+          </button>
+          <button onclick="pickWay('ble')"
+            class="w-full text-left rounded-2xl bg-slate-900 p-4 border border-slate-800 flex items-center gap-3">
+            <span
+              class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center"><iconify-icon
+                icon="mdi:bluetooth" width="22"></iconify-icon></span>
+            <div class="flex-1">
+              <p class="font-semibold text-sm">蓝牙发现</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">搜索附近待激活 / 可接入的机器人</p>
+            </div>
+            <iconify-icon icon="solar:alt-arrow-right-linear" class="text-slate-500" width="18"></iconify-icon>
+          </button>
+          <button onclick="pickWay('code')"
+            class="w-full text-left rounded-2xl bg-slate-900 p-4 border border-slate-800 flex items-center gap-3">
+            <span
+              class="w-10 h-10 rounded-xl bg-violet-500/15 text-violet-300 flex items-center justify-center"><iconify-icon
+                icon="mdi:keyboard-outline" width="22"></iconify-icon></span>
+            <div class="flex-1">
+              <p class="font-semibold text-sm">输入设备码</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">输入机身 / 包装卡上的设备序列号或激活码</p>
+            </div>
+            <iconify-icon icon="solar:alt-arrow-right-linear" class="text-slate-500" width="18"></iconify-icon>
+          </button>
+        </div>
+        <p class="mt-5 text-center text-xs text-slate-500">识别设备后需连接 Wi-Fi 配网，并绑定到当前租户</p>
+      </div>
+      <!-- 扫码子流程 -->
+      <div class="way hidden mt-6" id="way-scan">
+        <button onclick="backWay()" class="text-xs text-slate-400 flex items-center gap-1"><iconify-icon
+            icon="solar:arrow-left-linear" width="14"></iconify-icon>更换添加方式</button>
+        <div class="mt-4 rounded-3xl bg-slate-900 p-6 text-center">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-cyan-400/15 flex justify-center items-center"><iconify-icon
+              class="text-cyan-300" icon="mdi:qrcode-scan" width="36"></iconify-icon></div>
+          <h2 class="mt-5 font-bold">对准机身激活码</h2>
+          <p class="mt-2 text-xs leading-5 text-slate-500">激活码可在机身背部或包装卡上找到（演示：点击下方模拟识别）</p>
+          <button class="mt-6 w-full py-3 rounded-xl bg-cyan-400 text-slate-950 text-sm font-bold"
+            onclick="next()">打开扫码器并识别</button>
+        </div>
+      </div>
+      <!-- 蓝牙子流程 -->
+      <div class="way hidden mt-6" id="way-ble">
+        <button onclick="backWay()" class="text-xs text-slate-400 flex items-center gap-1"><iconify-icon
+            icon="solar:arrow-left-linear" width="14"></iconify-icon>更换添加方式</button>
+        <div class="mt-4 rounded-2xl bg-slate-900 p-4 flex items-center gap-3"><iconify-icon icon="mdi:bluetooth"
+            class="text-emerald-300" width="22"></iconify-icon>
+          <p class="text-xs text-slate-400">正在搜索附近设备…（演示）</p>
+        </div>
+        <p class="mt-4 text-xs text-slate-500">附近可接入设备</p>
+        <div class="mt-2 space-y-2">
+          <button onclick="pickDev(this)"
+            class="dev w-full text-left rounded-2xl bg-slate-900 p-3.5 border border-slate-800 flex items-center gap-3"><span
+              class="w-9 h-9 rounded-lg bg-cyan-400/15 text-cyan-300 flex items-center justify-center"><iconify-icon
+                icon="solar:bot-bold" width="20"></iconify-icon></span>
+            <div class="flex-1">
+              <p class="text-sm font-medium">迎宾机器人 · TP-A03</p>
+              <p class="text-[10px] text-emerald-300">未激活 · 支持配网</p>
+            </div>
+          </button>
+          <button onclick="pickDev(this)"
+            class="dev w-full text-left rounded-2xl bg-slate-900 p-3.5 border border-slate-800 flex items-center gap-3"><span
+              class="w-9 h-9 rounded-lg bg-violet-400/15 text-violet-300 flex items-center justify-center"><iconify-icon
+                icon="solar:bot-bold" width="20"></iconify-icon></span>
+            <div class="flex-1">
+              <p class="text-sm font-medium">巡检机器人 · KK-12</p>
+              <p class="text-[10px] text-emerald-300">未激活 · 支持配网</p>
+            </div>
+          </button>
+        </div>
+        <button id="bleGo" onclick="next()"
+          class="hidden mt-4 w-full py-3 rounded-xl bg-cyan-400 text-slate-950 text-sm font-bold">连接选中设备</button>
+      </div>
+      <!-- 输入设备码子流程 -->
+      <div class="way hidden mt-6" id="way-code">
+        <button onclick="backWay()" class="text-xs text-slate-400 flex items-center gap-1"><iconify-icon
+            icon="solar:arrow-left-linear" width="14"></iconify-icon>更换添加方式</button>
+        <div class="mt-4 rounded-3xl bg-slate-900 p-5">
+          <h2 class="font-bold">输入设备码</h2>
+          <p class="mt-1 text-xs text-slate-500">设备码在机身背部铭牌或包装卡上，格式如 TP-A03-202609</p>
+          <input
+            class="mt-4 w-full box-border bg-slate-800 border border-slate-800 rounded-xl p-3.5 text-sm outline-none focus:border-cyan-400"
+            placeholder="TP-A03-202609" />
+          <button class="mt-4 w-full py-3 rounded-xl bg-cyan-400 text-slate-950 text-sm font-bold"
+            onclick="next()">验证设备码</button>
+        </div>
+      </div>
+      <div class="hidden mt-8" id="step2">
+        <div class="rounded-3xl bg-slate-900 p-5">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-cyan-400/15 flex items-center justify-center"><iconify-icon
+                class="text-cyan-300" icon="solar:bot-bold" width="28"></iconify-icon></div>
+            <div>
+              <p class="font-semibold">tangpa · TP-A03</p>
+              <p class="mt-1 text-xs text-emerald-300">激活凭据校验通过</p>
+            </div>
+          </div>
+          <h2 class="mt-6 font-bold">选择 Wi-Fi 网络</h2><button
+            class="mt-3 w-full p-4 flex justify-between rounded-xl bg-slate-800 text-sm"><span><iconify-icon
+                class="align-middle mr-2 text-cyan-300" icon="solar:wi-fi-router-linear"
+                width="20"></iconify-icon>Robo-Guest-5G</span><span class="text-slate-500">已选</span></button><input
+            class="mt-3 w-full box-border bg-slate-800 rounded-xl p-3.5 text-sm outline-none" placeholder="请输入 Wi-Fi 密码"
+            type="password" /><button class="mt-5 w-full py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm"
+            onclick="finish()">开始连接设备</button>
+        </div>
+      </div>
+      <div class="hidden mt-12 text-center" id="step3">
+        <div class="w-20 h-20 mx-auto rounded-full bg-emerald-500/15 flex justify-center items-center"><iconify-icon
+            class="text-emerald-300" icon="solar:check-circle-bold" width="42"></iconify-icon></div>
+        <h2 class="mt-5 text-xl font-bold">设备已成功激活</h2>
+        <p class="mt-2 text-sm text-slate-500">迎宾机器人 · A03 已加入「大厅 A 区」</p><a
+          class="mt-7 inline-block px-8 py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm"
+          href="home.html">返回设备工作台</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    function pickWay(w) {
+      step1.classList.add('hidden');
+      document.querySelectorAll('.way').forEach(x => x.classList.add('hidden'));
+      document.getElementById('way-' + w).classList.remove('hidden')
+    }
+
+    function backWay() {
+      document.querySelectorAll('.way').forEach(x => x.classList.add('hidden'));
+      step1.classList.remove('hidden')
+    }
+
+    function pickDev(el) {
+      document.querySelectorAll('#way-ble .dev').forEach(x => { x.classList.remove('border-cyan-400/60'); x.classList.add('border-slate-800') });
+      el.classList.remove('border-slate-800'); el.classList.add('border-cyan-400/60');
+      bleGo.classList.remove('hidden')
+    }
+
+    function next() {
+      step1.classList.add('hidden');
+      document.querySelectorAll('.way').forEach(x => x.classList.add('hidden'));
+      step2.classList.remove('hidden')
+    }
+
+    function finish() {
+      step2.classList.add('hidden');
+      step3.classList.remove('hidden')
+    }
+  </script>
+</body>
+
+</html>

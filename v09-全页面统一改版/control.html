@@ -1,0 +1,16 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>遥操与模式 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"></head><body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,section,row,toast,confirmAction,save,$}=Fleet;
+const blocked=d.state==='offline'||d.state==='fault';
+const modes=[['自主交互','绑定智能体后接待与对话','robot'],['遥操模式','由操作员手动控制机器人','control'],['待机模式','暂停主动交互，等待任务','power']];
+const intro=`<div class="page-intro"><h1>遥操与模式</h1><p>${esc(d.name)} · ${esc(d.status)}</p></div>`;
+const alert=blocked?`<div class="notice">${icon('alert')}<div>${d.state==='offline'?'机器人离线，无法操作或切换运行模式。':'机器人处于故障状态，建议核查后再操作。'} 本页面保留模式配置预览。</div></div>`:`<div class="notice info">${icon('control')}<div>模式切换和遥操为原型交互，不会控制真实机器人。</div></div>`;
+const overview=section('当前状态',`<div class="panel">${row('当前模式',d.mode)}${row('关联智能体',d.agent)}${row('运行任务',d.task)}${row('网络地址',d.ip)}</div>`);
+const modeCards=section('机器人模式',`<p class="subtle" style="margin-bottom:13px">模式与单台机器人绑定。广告、巡检和脚本任务在任务中心编排。</p><div id="modes">${modes.map(([name,desc,ico])=>`<button type="button" class="mode-card ${d.mode===name?'selected':''}" data-mode="${name}" ${blocked?'disabled':''}>${icon(ico)}<span><strong>${name}</strong><small>${desc}</small></span>${d.mode===name?`<span class="check">${icon('check',18)}</span>`:''}</button>`).join('')}</div>`);
+const agent=section('自主交互配置',`<label class="form-field"><span>关联智能体</span><select class="form-input" id="agent" ${blocked?'disabled':''}><option>未绑定</option><option>晓雅</option><option>阿远</option></select></label><label class="form-field"><span>默认表情</span><select class="form-input" id="expression" ${blocked?'disabled':''}><option>微笑</option><option>平静</option><option>欢迎</option></select></label><button class="button secondary block" id="saveAgent" ${blocked?'disabled':''}>保存配置</button>`);
+const next=section('更多操作',`<div class="button-row"><a class="button secondary" href="task-center.html">去任务中心</a><a class="button secondary" href="server-connection.html">连接与部署</a></div><button class="button outline block" id="stop" style="margin-top:10px" ${d.state==='offline'?'disabled':''}>紧急停止</button>`);
+shell('遥操与模式',intro+alert+overview+modeCards+agent+next+`<p class="flow-footer">机器人参数和模式变化仅保存在当前浏览器，用于原型预览。</p>`,`<a class="icon-button" href="${href('device')}" aria-label="机器人详情">${icon('robot')}</a>`,href('device'));
+$('agent').value=d.agent;$('expression').value=localStorage.getItem('fleet-expression-'+d.id)||'微笑';
+$('modes').querySelectorAll('[data-mode]').forEach(button=>button.onclick=()=>confirmAction('切换至'+button.dataset.mode+'？','这是原型演示，切换结果仅保存在本机浏览器，不会下发给机器人。',()=>{save({mode:button.dataset.mode});$('modes').querySelectorAll('.mode-card').forEach(x=>x.classList.toggle('selected',x===button));document.querySelector('.info-row strong').textContent=button.dataset.mode;toast('已切换原型模式：'+button.dataset.mode)}));
+$('saveAgent').onclick=()=>{save({agent:$('agent').value});localStorage.setItem('fleet-expression-'+d.id,$('expression').value);toast('配置已保存到原型浏览器')};
+$('stop').onclick=()=>confirmAction('确认紧急停止？','原型不会向机器人发送急停指令。',()=>toast('已完成急停流程演示'));
+</script></body></html>

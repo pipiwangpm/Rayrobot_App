@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <title>智能体 · RoboOps V2</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <script src="mode.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+    <main data-c class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+        <!-- 头部 -->
+        <header class="px-5 pt-7 pb-4 flex items-start justify-between">
+            <div class="min-w-0">
+                <div class="mt-1 flex items-center gap-2">
+                    <h1 class="text-2xl font-bold">智能体</h1>
+                    <button onclick="openAbout()" title="智能体说明（组装四要素 / 用在哪里）"
+                        class="shrink-0 w-6 h-6 rounded-full border border-slate-600 text-slate-400 text-[12px] font-bold flex items-center justify-center active:border-cyan-400 active:text-cyan-300">?</button>
+                </div>
+            </div>
+            <a href="agent-builder.html"
+                class="shrink-0 flex items-center gap-1.5 rounded-xl bg-cyan-500 text-slate-950 px-3 py-2 text-sm font-semibold">
+                <iconify-icon icon="solar:add-circle-bold" width="18"></iconify-icon>新建</a>
+        </header>
+
+        <section
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6 space-y-3">
+            <!-- 资源概览 -->
+            <div class="rounded-2xl bg-slate-900 p-3 flex items-center justify-around text-center">
+                <div>
+                    <p class="text-lg font-bold text-violet-300">4</p>
+                    <p class="text-[10px] text-slate-500">知识库文档</p>
+                </div><i class="w-px h-8 bg-slate-800"></i>
+                <div>
+                    <p class="text-lg font-bold text-emerald-300">3</p>
+                    <p class="text-[10px] text-slate-500">已配模型</p>
+                </div><i class="w-px h-8 bg-slate-800"></i>
+                <div>
+                    <p class="text-lg font-bold text-rose-300">3</p>
+                    <p class="text-[10px] text-slate-500">声纹克隆</p>
+                </div>
+            </div>
+
+            <!-- 状态筛选 -->
+            <div class="flex gap-2">
+                <button onclick="flt('all',this)"
+                    class="rounded-lg bg-cyan-400 text-slate-950 px-3 py-1.5 text-xs font-bold">全部</button>
+                <button onclick="flt('used',this)"
+                    class="rounded-lg bg-slate-800 text-slate-300 px-3 py-1.5 text-xs">使用中</button>
+                <button onclick="flt('idle',this)"
+                    class="rounded-lg bg-slate-800 text-slate-300 px-3 py-1.5 text-xs">未绑定</button>
+            </div>
+
+            <!-- 智能体卡片（资源组装） -->
+            <a data-state="used" href="agent-builder.html?agent=xy"
+                class="block rounded-2xl bg-slate-900 p-4 border border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-12 h-12 rounded-2xl bg-cyan-500/15 flex items-center justify-center text-2xl">😊</span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-semibold text-sm">晓雅</h3>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300">迎宾接待</span>
+                            <span
+                                class="ml-auto text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 shrink-0">配置完整</span>
+                        </div>
+                        <p class="mt-0.5 text-[11px] text-slate-500 truncate">热情、耐心的迎宾大使，主动问候并引导访客</p>
+                    </div>
+                    <iconify-icon icon="solar:pen-linear" class="text-slate-500" width="15"></iconify-icon>
+                </div>
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-violet-500/10 text-violet-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:file-text-linear" width="11"></iconify-icon>展厅话术.docx</span>
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-violet-500/10 text-violet-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:document-text-linear" width="11"></iconify-icon>迎宾FAQ.pdf</span>
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-emerald-500/10 text-emerald-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:cpu-bolt-linear" width="11"></iconify-icon>GPT-4o</span>
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-rose-500/10 text-rose-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:microphone-linear" width="11"></iconify-icon>声纹·晓雅</span>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-[11px]">
+                    <span class="inline-flex items-center gap-1 text-emerald-300"><i
+                            class="w-1.5 h-1.5 rounded-full bg-emerald-400"></i>使用中 · 已绑 3 台设备</span>
+                    <span class="text-slate-600">开场白：欢迎光临～</span>
+                </div>
+            </a>
+
+            <a data-state="used" href="agent-builder.html?agent=ay"
+                class="block rounded-2xl bg-slate-900 p-4 border border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-12 h-12 rounded-2xl bg-violet-500/15 flex items-center justify-center text-2xl">🧑‍🏫</span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-semibold text-sm">阿远</h3>
+                            <span
+                                class="text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300">展厅讲解</span>
+                            <span
+                                class="ml-auto text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 shrink-0">配置完整</span>
+                        </div>
+                        <p class="mt-0.5 text-[11px] text-slate-500 truncate">专业沉稳，随行讲解展厅内容与产品卖点</p>
+                    </div>
+                    <iconify-icon icon="solar:pen-linear" class="text-slate-500" width="15"></iconify-icon>
+                </div>
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-violet-500/10 text-violet-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:document-text-linear" width="11"></iconify-icon>产品手册.pdf</span>
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-emerald-500/10 text-emerald-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:cloud-linear" width="11"></iconify-icon>通义千问</span>
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-rose-500/10 text-rose-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:microphone-linear" width="11"></iconify-icon>声纹·阿远</span>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-[11px]">
+                    <span class="inline-flex items-center gap-1 text-emerald-300"><i
+                            class="w-1.5 h-1.5 rounded-full bg-emerald-400"></i>使用中 · 已绑 2 台设备</span>
+                    <span class="text-slate-600">开场白：欢迎参观～</span>
+                </div>
+            </a>
+
+            <a data-state="idle" href="agent-builder.html?agent=yf"
+                class="block rounded-2xl bg-slate-900 p-4 border border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-12 h-12 rounded-2xl bg-emerald-500/15 flex items-center justify-center text-2xl">🤖</span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-semibold text-sm">云帆</h3>
+                            <span
+                                class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">通用助手</span>
+                            <span
+                                class="ml-auto text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 shrink-0">配置完整</span>
+                        </div>
+                        <p class="mt-0.5 text-[11px] text-slate-500 truncate">稳重周到的通用助手，处理日常咨询</p>
+                    </div>
+                    <iconify-icon icon="solar:pen-linear" class="text-slate-500" width="15"></iconify-icon>
+                </div>
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-violet-500/10 text-violet-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:file-text-linear" width="11"></iconify-icon>通用话术.docx</span>
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-emerald-500/10 text-emerald-300 flex items-center gap-1"><iconify-icon
+                            icon="solar:cpu-linear" width="11"></iconify-icon>DeepSeek-V3</span>
+                    <span
+                        class="text-[9px] px-1.5 py-1 rounded-md bg-slate-600/40 text-slate-400 flex items-center gap-1"><iconify-icon
+                            icon="solar:microphone-linear" width="11"></iconify-icon>默认音色</span>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-[11px]">
+                    <span class="inline-flex items-center gap-1 text-slate-500"><i
+                            class="w-1.5 h-1.5 rounded-full bg-slate-500"></i>未绑定 · 已配置</span>
+                    <button onclick="event.preventDefault();alert('设备控制 → 自主交互 → 更换智能体')"
+                        class="text-cyan-300">绑定到设备</button>
+                </div>
+            </a>
+
+            <a data-state="idle" href="agent-builder.html?agent=dd"
+                class="block rounded-2xl bg-slate-900 p-4 border border-amber-500/30">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-12 h-12 rounded-2xl bg-amber-500/15 flex items-center justify-center text-2xl">🦊</span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-semibold text-sm">点点</h3>
+                            <span
+                                class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300">儿童互动</span>
+                            <span
+                                class="ml-auto text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 shrink-0">待配置</span>
+                        </div>
+                        <p class="mt-0.5 text-[11px] text-slate-500 truncate">俏皮温柔，擅长与儿童游戏互动</p>
+                    </div>
+                    <iconify-icon icon="solar:pen-linear" class="text-slate-500" width="15"></iconify-icon>
+                </div>
+                <p class="mt-3 text-[11px] text-amber-300/90 flex items-center gap-1"><iconify-icon
+                        icon="solar:info-circle-linear" width="13"></iconify-icon>尚未配置：知识库 / 大模型 / 声纹</p>
+                <div class="mt-3 flex items-center justify-between text-[11px]">
+                    <span class="inline-flex items-center gap-1 text-slate-500"><i
+                            class="w-1.5 h-1.5 rounded-full bg-slate-500"></i>未绑定</span>
+                    <span class="text-cyan-300">去完成配置</span>
+                </div>
+            </a>
+        </section>
+
+        <!-- 底部导航 -->
+        <nav class="h-20 shrink-0 border-t border-slate-800 flex justify-around items-center bg-slate-950">
+            <a class="flex flex-col items-center gap-0.5 text-slate-500" href="home.html"><iconify-icon
+                    icon="solar:widget-5-linear" width="21"></iconify-icon><span class="text-[10px]">设备</span></a>
+            <a data-c class="flex flex-col items-center gap-0.5 text-cyan-300" href="agents.html"><iconify-icon
+                    icon="solar:chat-round-dots-bold" width="21"></iconify-icon><span class="text-[10px]">智能体</span></a>
+            <a class="flex flex-col items-center gap-0.5 text-slate-500" href="alerts.html"><iconify-icon
+                    icon="solar:bell-linear" width="21"></iconify-icon><span class="text-[10px]">消息</span></a>
+            <a class="flex flex-col items-center gap-0.5 text-slate-500" href="task-center.html"><iconify-icon
+                    icon="solar:checklist-linear" width="21"></iconify-icon><span class="text-[10px]">任务</span></a>
+            <a class="flex flex-col items-center gap-0.5 text-slate-500" href="profile.html"><iconify-icon
+                    icon="solar:user-linear" width="21"></iconify-icon><span class="text-[10px]">我的</span></a>
+        </nav>
+
+        <!-- 智能体说明（点标题旁 ? 打开）：原来常驻的两段提示文案收进这里 -->
+        <div id="about" class="hidden absolute inset-0 z-40 bg-slate-950/70 flex items-end"
+            onclick="if(event.target===this)closeAbout()">
+            <div
+                class="w-full rounded-t-3xl bg-slate-900 p-5 pb-7 max-h-[80%] overflow-y-auto [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-300 flex items-center justify-center"><iconify-icon
+                            icon="solar:chat-round-dots-linear" width="20"></iconify-icon></span>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-sm">智能体是什么</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">四类资源组装出的「可对话人设」</p>
+                    </div>
+                    <button onclick="closeAbout()" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear"
+                            width="22"></iconify-icon></button>
+                </div>
+                <div class="mt-4 space-y-2">
+                    <div class="rounded-xl bg-slate-800/60 p-3">
+                        <p class="text-xs font-medium text-slate-200">组装四要素</p>
+                        <p class="mt-1 text-[11px] leading-5 text-slate-400">① <b
+                                class="font-medium text-slate-300">人设</b>
+                            —— 名称 / 性格 / 开场白；② <b class="font-medium text-slate-300">知识库</b> —— 上传 docx 、 pdf
+                            文档自动解析；③ <b class="font-medium text-slate-300">大模型</b> —— 模型单选 + 租户级
+                            APIKey；④ <b class="font-medium text-slate-300">声纹克隆</b> —— 选克隆音色或用默认 TTS。</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-800/60 p-3">
+                        <p class="text-xs font-medium text-slate-200">用在哪里</p>
+                        <p class="mt-1 text-[11px] leading-5 text-slate-400">设备「自主交互」绑定后即可对话（一台设备同时只绑 1
+                            个）；也可被脚本任务的「虚拟角色」引用，一个智能体可同时绑多台设备。</p>
+                    </div>
+                    <div class="rounded-xl bg-slate-800/60 p-3">
+                        <p class="text-xs font-medium text-slate-200">配置完整度</p>
+                        <p class="mt-1 text-[11px] leading-5 text-slate-400">四要素齐全显示「配置完整」；缺项的标「待配置」，可先保存，但需配齐后才能绑定设备。
+                        </p>
+                    </div>
+                    <div class="rounded-xl bg-amber-500/10 border border-amber-400/20 p-3">
+                        <p class="text-[11px] leading-5 text-amber-100">智能体依赖云端大模型与编排，本地模式（内网）下不可用，需切回云模式；本地模式可继续用「本地任务
+                            / 本地素材」。</p>
+                    </div>
+                </div>
+                <button onclick="closeAbout();location.href='agent-builder.html'"
+                    class="mt-5 w-full py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm">去组装一个新智能体</button>
+            </div>
+        </div>
+    </main>
+    <!-- 本地模式：智能体不可用（仅云模式） -->
+    <div data-l
+        class="w-full h-full max-w-[393px] max-h-[852px] flex flex-col items-center justify-center bg-slate-950 text-center px-10">
+        <span class="w-16 h-16 rounded-3xl bg-slate-900 flex items-center justify-center"><iconify-icon
+                icon="solar:chat-round-dots-linear" width="30" class="text-slate-500"></iconify-icon></span>
+        <h2 class="mt-5 text-lg font-bold text-slate-200">智能体仅云模式可用</h2>
+        <p class="mt-2 text-xs leading-5 text-slate-500">智能体依赖云端大模型与编排。本地模式（内网）下不可用，切回云模式后可继续使用。</p>
+        <button onclick="goMode('cloud')"
+            class="mt-6 rounded-xl bg-cyan-500 text-slate-950 px-6 py-3 text-sm font-semibold">切回云模式</button>
+        <a href="home.html?m=local" class="mt-3 text-xs text-slate-500">返回本地设备列表</a>
+    </div>
+    <script>
+        function flt(k, b) {
+            document.querySelectorAll('section button').forEach(x => { x.className = 'rounded-lg px-3 py-1.5 text-xs' + (x === b ? ' bg-cyan-400 text-slate-950 font-bold' : ' bg-slate-800 text-slate-300') });
+            document.querySelectorAll('[data-state]').forEach(x => x.classList.toggle('hidden', k !== 'all' && x.dataset.state !== k))
+        }
+
+        function openAbout() {
+            const s = document.getElementById('about');
+            s.classList.remove('hidden');
+            s.classList.add('flex')
+        }
+
+        function closeAbout() {
+            const s = document.getElementById('about');
+            s.classList.add('hidden');
+            s.classList.remove('flex')
+        }
+    </script>
+</body>
+
+</html>

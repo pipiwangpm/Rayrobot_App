@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+  <title>RoboOps V2 · 注册</title>
+  <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+  <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <script src="mode.js"></script>
+  </head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+  <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950">
+    <header class="px-6 pt-8"><a class="w-10 h-10 inline-flex items-center justify-center rounded-xl bg-slate-900"
+        href="https://modao.cc/agent-py/workspace/6a992b616af5125add55281c/robotops-v2.html/auth.html?render_html=true"><iconify-icon
+          icon="solar:arrow-left-linear" width="21"></iconify-icon></a>
+      <h1 class="mt-6 text-3xl font-bold">创建您的租户</h1>
+      <p class="mt-2 text-sm text-slate-400">注册后将成为租户超级管理员</p>
+    </header>
+    <form
+      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden px-6 pt-7 pb-8 space-y-4"
+      onsubmit="create(event)"><label class="block text-xs text-slate-400">租户名称<input
+          class="mt-2 w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 text-sm outline-none focus:border-cyan-400"
+          required="" value="成都人形机器人创新中心" /></label><label class="block text-xs text-slate-400">联系人 / 用户名<input
+          class="mt-2 w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 text-sm outline-none focus:border-cyan-400"
+          placeholder="例如：张明" required="" /></label><label class="block text-xs text-slate-400">手机号<input
+          class="mt-2 w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 text-sm outline-none focus:border-cyan-400"
+          pattern="1[0-9]{10}" placeholder="请输入11位手机号" required="" /></label><label
+        class="block text-xs text-slate-400">设置密码<input
+          class="mt-2 w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 text-sm outline-none focus:border-cyan-400"
+          minlength="8" placeholder="至少8位，含字母、数字与符号" required="" type="password" /></label><label
+        class="block text-xs text-slate-400">确认密码<input
+          class="mt-2 w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 text-sm outline-none focus:border-cyan-400"
+          placeholder="再次输入密码" required="" type="password" /></label><label
+        class="flex gap-2.5 items-start py-2 text-xs leading-5 text-slate-400"><input class="mt-1 accent-cyan-400"
+          required="" type="checkbox" />我已阅读并同意<a class="text-cyan-300"
+          href="https://modao.cc/agent-py/workspace/6a992b616af5125add55281c/robotops-v2.html/auth.html?render_html=true">《用户协议》与《隐私政策》</a></label><button
+        class="w-full py-3.5 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm">提交并创建租户</button>
+      <p class="hidden rounded-xl bg-emerald-500/10 text-emerald-300 p-3 text-sm" id="success">租户创建成功，正在返回登录页…</p>
+    </form>
+  </main>
+  <script>
+    function create(e) {
+      e.preventDefault();
+      document.getElementById('success').classList.remove('hidden');
+      setTimeout(() => location.href = 'auth.html', 1400)
+    }
+  </script>
+</body>
+
+</html>

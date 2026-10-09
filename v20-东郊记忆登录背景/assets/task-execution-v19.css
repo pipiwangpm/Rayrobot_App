@@ -1,0 +1,14 @@
+.current-task{padding:18px 19px;border:1px solid #66503e;border-radius:16px;background:linear-gradient(120deg,#342a26,#1d282c);display:grid;gap:7px}
+.current-task>span{color:#b8a9a1;font-size:11px}
+.current-task>strong{font-size:20px}
+.current-state{display:flex;align-items:center;gap:6px;color:#73dfad;font-size:11px}
+.task-list{display:grid;gap:9px}
+.task-choice{display:flex;align-items:center;gap:12px;min-height:67px;padding:12px;border:1px solid #3b4b52;border-radius:12px;background:#1d282d;cursor:pointer}
+.task-choice:has(input:checked){border-color:#ff7448;background:#342a27}
+.task-choice input{accent-color:#ff6b3d}
+.task-choice-icon{color:#ff865e}
+.task-choice>span:last-child{flex:1}
+.task-choice strong,.task-choice small{display:block}
+.task-choice strong{font-size:13px}
+.task-choice small{font-size:10px;color:#97a6ac;margin-top:3px}
+.task-all-link{display:block;text-align:center;margin-top:14px}

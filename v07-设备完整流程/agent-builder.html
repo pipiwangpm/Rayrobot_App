@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <title>创建智能体 · RoboOps V2</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <script src="mode.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+    <maindata-c class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+        <header class="px-5 pt-7 pb-3">
+            <div class="flex items-center gap-3">
+                <a data-c href="agents.html" class="text-slate-400"><iconify-icon icon="solar:arrow-left-linear"
+                        width="22"></iconify-icon></a>
+                <h1 id="pageTitle" class="text-xl font-bold">创建智能体</h1>
+                <button id="btnEditExisting" onclick="toast('编辑模式：保存后覆盖该智能体')"
+                    class="ml-auto text-xs text-slate-500"><iconify-icon icon="solar:pen-linear"
+                        width="16"></iconify-icon> 编辑已有</button>
+            </div>
+            <p class="mt-1 text-[11px] leading-5 text-slate-500">一个智能体 = <b class="text-cyan-300">人设</b> ＋ <b
+                    class="text-violet-300">知识库</b>（docx/pdf）＋ <b class="text-emerald-300">大模型</b>（模型＋APIKey）＋ <b
+                    class="text-rose-300">声纹克隆</b>。创建后可在「设备控制 → 自主交互」绑定到设备。</p>
+        </header>
+
+        <section
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6 space-y-4">
+
+            <!-- ① 基础信息 -->
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-sm font-semibold flex items-center gap-2"><span
+                        class="w-5 h-5 rounded-full bg-cyan-500 text-slate-950 text-[11px] flex items-center justify-center font-bold">1</span>基础信息
+                </p>
+                <div id="emojiRow" class="mt-3 flex gap-3">
+                    <button onclick="pickEmoji(this)"
+                        class="w-12 h-12 rounded-2xl bg-cyan-400/15 text-2xl flex items-center justify-center">😊</button>
+                    <button onclick="pickEmoji(this)"
+                        class="w-12 h-12 rounded-2xl bg-slate-800 text-2xl flex items-center justify-center">🧑‍🏫</button>
+                    <button onclick="pickEmoji(this)"
+                        class="w-12 h-12 rounded-2xl bg-slate-800 text-2xl flex items-center justify-center">🦊</button>
+                    <button onclick="pickEmoji(this)"
+                        class="w-12 h-12 rounded-2xl bg-slate-800 text-2xl flex items-center justify-center">🤖</button>
+                    <button onclick="pickEmoji(this)"
+                        class="w-12 h-12 rounded-2xl bg-slate-800 text-2xl flex items-center justify-center">🧸</button>
+                </div>
+                <input id="inName" placeholder="智能体名称（必填）如：晓雅"
+                    class="mt-3 w-full rounded-xl bg-slate-800 px-3 py-2.5 text-sm placeholder:text-slate-600 outline-none" />
+                <textarea id="inLine" rows="1" placeholder="一句话人设 / 开场白（可选）"
+                    class="mt-2 w-full rounded-xl bg-slate-800 px-3 py-2.5 text-sm placeholder:text-slate-600 outline-none resize-none"></textarea>
+            </div>
+
+            <!-- ② 知识库 -->
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold flex items-center gap-2"><span
+                            class="w-5 h-5 rounded-full bg-violet-500 text-slate-950 text-[11px] flex items-center justify-center font-bold">2</span>知识库
+                    </p>
+                    <span class="text-[10px] text-slate-500">支持 docx / pdf</span>
+                </div>
+                <div id="kbList" class="mt-3 space-y-2"></div>
+                <input type="file" id="kbFile" accept=".docx,.doc,.pdf" class="hidden" multiple />
+                <div class="mt-3 grid grid-cols-2 gap-2">
+                    <button onclick="pickFile()"
+                        class="rounded-xl border border-dashed border-violet-400/40 py-2.5 text-xs text-violet-300 flex items-center justify-center gap-1"><iconify-icon
+                            icon="solar:cloud-upload-linear" width="16"></iconify-icon>上传文档</button>
+                    <button onclick="addSample()" class="rounded-xl bg-slate-800 py-2.5 text-xs text-slate-300">＋
+                        用示例文档</button>
+                </div>
+                <p id="kbNote" class="mt-2 text-[10px] text-slate-600">上传后由平台解析建索引，用于问答/检索增强（RAG）。可多选、可删除。</p>
+            </div>
+
+            <!-- ③ 大模型 -->
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-sm font-semibold flex items-center gap-2"><span
+                        class="w-5 h-5 rounded-full bg-emerald-500 text-slate-950 text-[11px] flex items-center justify-center font-bold">3</span>大模型
+                </p>
+                <div id="mdlList" class="mt-3 space-y-2"></div>
+                <p class="mt-3 text-xs text-slate-400">API Key</p>
+                <div class="mt-1.5 flex gap-2">
+                    <div class="relative flex-1">
+                        <input id="apiKey" type="password" placeholder="sk-…" autocomplete="off"
+                            class="w-full rounded-xl bg-slate-800 px-3 py-2.5 pr-9 text-sm placeholder:text-slate-600 outline-none" />
+                        <button onclick="toggleKey()"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500"><iconify-icon id="eyeIc"
+                                icon="solar:eye-linear" width="16"></iconify-icon></button>
+                    </div>
+                    <button onclick="testKey()"
+                        class="rounded-xl bg-slate-800 px-3 py-2.5 text-xs text-cyan-300">连接测试</button>
+                </div>
+                <p class="mt-2 text-[10px] text-slate-600">Key 仅存于本租户安全区（系统安全存储），不回传、不展示明文。</p>
+            </div>
+
+            <!-- ④ 声纹 -->
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold flex items-center gap-2"><span
+                            class="w-5 h-5 rounded-full bg-rose-500 text-slate-950 text-[11px] flex items-center justify-center font-bold">4</span>声纹克隆
+                    </p>
+                    <button onclick="toast('新建克隆：需录制约 10s 清晰语音样本（将打开录音页）')" class="text-[11px] text-rose-300">＋
+                        新建克隆</button>
+                </div>
+                <div id="voiceList" class="mt-3 space-y-2"></div>
+                <p class="mt-2 text-[10px] text-slate-600">选择已有克隆音色；未选择则使用平台默认音色（TTS）。</p>
+            </div>
+
+            <!-- ⑤ 绑定设备（编辑态：查看/解绑，不参与组装） -->
+            <div id="bindCard" class="rounded-2xl bg-slate-900 p-4 hidden">
+                <div class="flex items-center justify-between">
+                    <p class="text-sm font-semibold flex items-center gap-2"><iconify-icon
+                            icon="solar:link-circle-linear" width="16" class="text-slate-400"></iconify-icon>绑定设备<span
+                            id="bindCount"
+                            class="ml-1 text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">0 台</span></p>
+                    <button onclick="toast('为设备绑定：请到 设备控制 → 自主交互 中选择本智能体')"
+                        class="text-[11px] text-cyan-300">去绑定</button>
+                </div>
+                <div id="bindList" class="mt-3 space-y-2"></div>
+                <p class="mt-2 text-[10px] text-slate-600">一台设备同时只绑 1 个智能体；可在此解绑，换绑请到设备控制页。</p>
+            </div>
+        </section>
+
+        <!-- 底部 -->
+        <div class="h-24 shrink-0 border-t border-slate-800 px-5 py-3 flex items-center gap-3">
+            <button onclick="location.href='agents.html'" class="rounded-xl bg-slate-800 px-4 py-3 text-sm">取消</button>
+            <button id="saveBtn" onclick="save()"
+                class="flex-1 rounded-xl bg-cyan-500 text-slate-950 py-3 text-sm font-semibold">创建智能体</button>
+        </div>
+        <div id="toast"
+            class="hidden absolute bottom-24 left-5 right-5 bg-emerald-500 text-slate-950 font-semibold rounded-xl p-3 text-center text-sm">
+        </div>
+        </main>
+        <!-- 本地模式：仅云（智能体向导） -->
+        <div data-l
+            class="w-full h-full max-w-[393px] max-h-[852px] flex flex-col items-center justify-center bg-slate-950 text-center px-10">
+            <span class="w-16 h-16 rounded-3xl bg-slate-900 flex items-center justify-center"><iconify-icon
+                    icon="solar:chat-round-dots-linear" width="30" class="text-slate-500"></iconify-icon></span>
+            <h2 class="mt-5 text-lg font-bold text-slate-200">智能体仅云模式可用</h2>
+            <p class="mt-2 text-xs leading-5 text-slate-500">智能体（人设/知识库/大模型/声纹）依赖云端编排。本地模式下不可用。</p>
+            <button onclick="goMode('cloud')"
+                class="mt-6 rounded-xl bg-cyan-500 text-slate-950 px-6 py-3 text-sm font-semibold">切回云模式</button>
+        </div>
+
+
+        <script>
+            const SAMPLES = [
+                { name: '展厅话术 v3.docx', type: 'docx', size: '1.2MB' },
+                { name: '迎宾FAQ.pdf', type: 'pdf', size: '860KB' }
+            ];
+            const MODELS = [
+                { n: 'GPT-4o', d: 'OpenAI', ic: 'spark' },
+                { n: '通义千问-Plus', d: '阿里云', ic: 'cloud' },
+                { n: 'DeepSeek-V3', d: 'DeepSeek', ic: 'cpu' },
+                { n: '自定义（BaseURL）', d: '兼容 OpenAI 协议', ic: 'code' }
+            ];
+            const VOICES = [
+                { n: '晓雅 · 标准女声', v: '已克隆' },
+                { n: '阿远 · 磁性男声', v: '已克隆' },
+                { n: '云帆 · 通用女声', v: '已克隆' }
+            ];
+            const AGENTS = {
+                xy: { emoji: '😊', name: '晓雅', line: '热情、耐心的迎宾大使，欢迎光临～', docs: [SAMPLES[0], SAMPLES[1]], mdl: 0, key: 'sk-••••••（已存）', voice: 0, devices: [{ n: '迎宾机器人 A03', m: 'tangpa · 迎宾', on: 1, t: '刚刚' }, { n: '迎宾机器人 A05', m: 'tangpa · 迎宾', on: 1, t: '今天 09:12' }, { n: '大厅机器人 B01', m: 'konka1 · 通用', on: 0, t: '昨天' }] },
+                ay: { emoji: '🧑‍🏫', name: '阿远', line: '专业沉稳，随行讲解展厅内容与产品卖点', docs: [{ name: '产品手册.pdf', type: 'pdf', size: '3.6MB' }], mdl: 1, key: 'sk-••••••（已存）', voice: 1, devices: [{ n: '双轮足 U2', m: 'dual_wheel · 讲解', on: 1, t: '刚刚' }, { n: '双轮足 U5', m: 'dual_wheel · 讲解', on: 0, t: '昨天' }] },
+                yf: { emoji: '🤖', name: '云帆', line: '稳重周到的通用助手，处理日常咨询', docs: [{ name: '通用话术.docx', type: 'docx', size: '980KB' }], mdl: 2, key: 'sk-••••••（已存）', voice: -1, devices: [] },
+                dd: { emoji: '🦊', name: '点点', line: '俏皮温柔，擅长与儿童游戏互动', docs: [], mdl: -1, key: '', voice: -1, devices: [] }
+            };
+            const ED = AGENTS[new URLSearchParams(location.search).get('agent')] || null;
+            let emoji = '😊', docs = [], mdl = 0, voice = -1, showKey = false;
+
+            function emojiSelect(ch) {
+                emoji = ch;
+                emojiRow.querySelectorAll('button').forEach(b => {
+                    const on = b.textContent === ch;
+                    b.className = 'w-12 h-12 rounded-2xl text-2xl flex items-center justify-center ' + (on ? 'bg-cyan-400/15' : 'bg-slate-800')
+                })
+            }
+            function pickEmoji(x) { emojiSelect(x.textContent) }
+
+            /* 知识库 */
+            function renderKb() {
+                kbList.innerHTML = docs.length ? docs.map((d, i) =>
+                    `<div class="flex items-center gap-2 rounded-xl bg-slate-800/70 px-3 py-2"><iconify-icon icon="${d.type === 'pdf' ? 'solar:document-text-linear' : 'solar:file-text-linear'}" width="16" class="text-violet-300"></iconify-icon><div class="flex-1 min-w-0"><p class="text-xs text-slate-200 truncate">${d.name}</p><p class="text-[9px] text-slate-500">${d.type.toUpperCase()} · ${d.size}</p></div><button onclick="delDoc(${i})" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear" width="15"></iconify-icon></button></div>`).join('')
+                    : '<p class="text-[11px] text-slate-600">尚未添加知识库文档（可上传或先加示例）</p>'
+            }
+            function pickFile() { kbFile.click() }
+            function addSample() {
+                SAMPLES.forEach(s => { if (!docs.find(d => d.name === s.name)) docs.push({ ...s }) });
+                renderKb(); toast('已添加示例文档')
+            }
+            function delDoc(i) { docs.splice(i, 1); renderKb() }
+            kbFile.addEventListener('change', () => {
+                Array.from(kbFile.files).forEach(f => {
+                    if (!/\.(docx?|pdf)$/i.test(f.name)) { toast('仅支持 docx / pdf'); return }
+                    const kb = f.size > 1048576 ? (f.size / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(f.size / 1024)) + 'KB';
+                    const ext = (/\.pdf$/i.test(f.name)) ? 'pdf' : 'docx';
+                    docs.push({ name: f.name, type: ext, size: kb })
+                });
+                kbFile.value = ''; renderKb(); toast('上传完成，已开始解析建索引')
+            });
+
+            /* 大模型 */
+            function renderMdl() {
+                mdlList.innerHTML = MODELS.map((m, i) =>
+                    `<button onclick="mdl=${i};renderMdl()" class="w-full text-left rounded-xl p-3 flex items-center gap-2 ${mdl === i ? 'border border-emerald-400/60 bg-emerald-500/10' : 'border border-slate-800 bg-slate-800/60'}"><iconify-icon icon="solar:${m.ic}-linear" width="16" class="text-emerald-300"></iconify-icon><div class="flex-1 min-w-0"><p class="text-xs text-slate-200">${m.n}</p><p class="text-[9px] text-slate-500">${m.d}</p></div><iconify-icon icon="solar:check-circle-bold" class="${mdl === i ? 'text-emerald-400' : 'hidden'}" width="15"></iconify-icon></button>`).join('')
+            }
+            function toggleKey() {
+                showKey = !showKey; apiKey.type = showKey ? 'text' : 'password';
+                eyeIc.setAttribute('icon', showKey ? 'solar:eye-closed-linear' : 'solar:eye-linear')
+            }
+            function testKey() {
+                const k = apiKey.value.trim();
+                if (!k) { toast('请先输入 API Key'); return }
+                toast('连接成功：' + MODELS[mdl].n + ' 可用')
+            }
+
+            /* 声纹 */
+            function renderVoice() {
+                voiceList.innerHTML = VOICES.map((v, i) =>
+                    `<button onclick="voice=${i};renderVoice()" class="w-full text-left rounded-xl p-3 flex items-center gap-2 ${voice === i ? 'border border-rose-400/60 bg-rose-500/10' : 'border border-slate-800 bg-slate-800/60'}"><iconify-icon icon="solar:microphone-linear" width="16" class="${voice === i ? 'text-rose-300' : 'text-slate-500'}"></iconify-icon><div class="flex-1 min-w-0"><p class="text-xs text-slate-200">${v.n}</p><p class="text-[9px] text-slate-500">${v.v}</p></div><iconify-icon icon="solar:check-circle-bold" class="${voice === i ? 'text-rose-400' : 'hidden'}" width="15"></iconify-icon></button>`).join('')
+            }
+
+            function save() {
+                const n = inName.value.trim();
+                if (!n) { alert('请给智能体起个名字'); return }
+                if (ED) {
+                    ED.name = n;
+                    toast('已保存「' + n + '」的修改');
+                    setTimeout(() => { location.href = 'agents.html' }, 1500);
+                    return
+                }
+                const kbTxt = docs.length ? docs.length + ' 个文档' : '无知识库';
+                const vTxt = voice >= 0 ? VOICES[voice].n.split(' · ')[0] : '默认音色';
+                const mTxt = mdl >= 0 ? MODELS[mdl].n : '未选模型';
+                toast('智能体「' + n + '」已创建：' + mTxt + ' · ' + kbTxt + ' · 声纹 ' + vTxt);
+                setTimeout(() => { location.href = 'agents.html' }, 1500)
+            }
+            function toast(t) {
+                const x = document.getElementById('toast');
+                x.textContent = t; x.classList.remove('hidden');
+                setTimeout(() => x.classList.add('hidden'), 2600)
+            }
+            /* 绑定设备（编辑态查看/解绑） */
+            function renderBind() {
+                if (!ED) return;
+                bindCount.textContent = ED.devices.length + ' 台';
+                bindList.innerHTML = ED.devices.length ? ED.devices.map((d, i) =>
+                    `<div class="flex items-center gap-2 rounded-xl bg-slate-800/60 px-3 py-2"><i class="w-2 h-2 rounded-full ${d.on ? 'bg-emerald-400' : 'bg-slate-500'} shrink-0"></i><div class="flex-1 min-w-0"><p class="text-xs text-slate-200">${d.n}</p><p class="text-[9px] text-slate-500">${d.m} · ${d.on ? '在线' : '离线'} · ${d.t}</p></div><button onclick="unbind(${i})" class="text-[10px] text-rose-300 shrink-0">解绑</button></div>`).join('')
+                    : '<p class="text-[11px] text-slate-600">未绑定设备 · 可在 设备控制 → 自主交互 中选择本智能体</p>'
+            }
+            function unbind(i) {
+                const d = ED.devices[i];
+                if (!confirm('解绑「' + d.n + '」？解绑后该设备「自主交互」将无可绑定智能体。')) return;
+                ED.devices.splice(i, 1); renderBind(); toast('已解绑 ' + d.n)
+            }
+            /* 载入编辑态数据（列表卡片 ?agent= 进入） */
+            function init() {
+                if (ED) {
+                    pageTitle.textContent = '编辑智能体 · ' + ED.name;
+                    btnEditExisting.classList.add('hidden');
+                    saveBtn.textContent = '保存修改';
+                    emojiSelect(ED.emoji);
+                    inName.value = ED.name;
+                    inLine.value = ED.line;
+                    docs = ED.docs.slice();
+                    mdl = ED.mdl;
+                    voice = ED.voice;
+                    apiKey.value = ED.key;
+                    bindCard.classList.remove('hidden');
+                }
+                renderKb(); renderMdl(); renderVoice(); renderBind();
+            }
+            init();
+        </script>
+</body>
+
+</html>

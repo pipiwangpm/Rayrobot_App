@@ -1,0 +1,111 @@
+/* V13 — warm daylight workspace. The remote console and video monitor stay dark. */
+:root{color-scheme:light;--bg:#f3f3f0;--panel:#fff;--line:#d7dfe1;--muted:#67777e;--orange:#ed6033;--green:#067a55;--red:#bd4450;--amber:#a66d16;background:#e8ebea;color:#182329}
+html,body{background:#e8ebea;color:#182329}
+button,input,select,textarea{color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline-color:#e65d31}
+/* The shared page shell. */
+.flow-app,.app{background:#f3f3f0;color:#182329;border-color:#d9e0e2;box-shadow:0 22px 75px #4c5e641c}
+.flow-head{background:#f8f9f6f2;border-bottom:1px solid #d8dfe1;color:#182329}
+.flow-scroll{color:#182329}
+.head-title strong,.heading h1{color:#182329}
+.icon-button,.icon-btn{background:#fff;border-color:#cfd9dc;color:#24343b}
+.head-spacer{background:none}
+.full-bottom-nav,.bottom-nav{background:#ffffffef;border-top-color:#d5dddf;box-shadow:0 -7px 22px #4459610c}
+.full-bottom-nav a,.bottom-nav a{color:#6e7c82}
+.full-bottom-nav a.active,.bottom-nav a.active{color:#e75d33}
+.full-bottom-nav svg,.bottom-nav svg{stroke:currentColor}
+/* Robot list and filter controls. */
+.top{background:radial-gradient(ellipse at 100% -5%,#fce2d6 0,transparent 51%),#f3f3f0}
+.summary .stat{border-left-color:#cdd6d9}
+.summary .stat:first-child{border:0}
+.stat span,.list-label,.eyebrow{color:#67777e}
+.stat strong,.list-label b{color:#17242a}
+.stat.online strong{color:#067a55}.stat.alert strong{color:#bd4450}
+.search{background:#fff;border-color:#d4dcde;color:#687780;box-shadow:0 2px 10px #53656b09}
+.search input{color:#1b2930}.search input::placeholder{color:#87949a}
+.filter.active{border-color:#e7653c;color:#e7653c}
+.groups .chip,.chip{background:#f9faf8;color:#53646b;border-color:#cbd5d8}
+.groups .chip.selected,.chip.selected{background:#24343b;color:#fff;border-color:#24343b}
+.chip.plus{background:#fff}
+.text-btn{color:#53646b}
+.view-toggle{background:#e7ecec;border-color:#d0d9da}
+.view-toggle button{color:#6b7b82}.view-toggle button.on{background:#fff;color:#1f3037;box-shadow:0 1px 5px #4a5b5b25}
+.device{background:#fff;border-color:#d4dddf;box-shadow:0 9px 28px #54696b10}
+.device:hover{border-color:#ee9b7f}.device.fault{border-color:#e7b4ae}.device.offline{background:#f9faf9}
+.card-top:has(.robot-photo){background:linear-gradient(92deg,#fff 47%,#eaf0f0 100%)}
+.card-top:before{background:#ed6033}
+.device-name,.mode-info strong{color:#17252b}.device-sub{color:#697980}
+.badge{background:#e7f4ed;border-color:#c5e5d4;color:#067a55}
+.fault .badge{background:#fff0ed;border-color:#edcbc4;color:#b73d49}
+.offline .badge{background:#edf1f1;border-color:#d6ddde;color:#64747a}
+.robot-art.robot-photo::before{background:radial-gradient(ellipse at 50% 53%,#a6b9bd4a 0,#dce7e638 48%,transparent 76%)}
+.robot-art.robot-photo::after{background:linear-gradient(transparent,#eaf0f0)}
+.telemetry{background:#f7f9f8;border-top-color:#e0e6e6}
+.telemetry strong,.signal-row.active{color:#1d3037}
+.telemetry small,.signal-caption{color:#6b7b81}
+.battery-line{background:#d2dcdb}.battery-line span{background:#0aa16a}
+.signal-stack{border-left-color:#d7e0e1}.signal-row{color:#718087}.signal-row small{color:#067a55}
+.signal-bars i{background:#ccd8d8}.signal-bars i.on{background:#12a36e}
+.mode-row{border-color:#e2e8e9}.agent{color:#67777e}
+.status-note{color:#b5434d}
+.machine-mark{background:radial-gradient(circle,#e5eeee,transparent 65%);border-color:#c9d7da;color:#8b9da4}.machine-mark strong{color:#546970}
+.empty,.list-empty{color:#67777e;border-color:#cbd6d8}
+.batch-bar{background:#fff;border-top-color:#d7e0e1}.batch-bar small{color:#728188}
+.select-box{background:#fff;border-color:#8a9da4}
+.toast,.flow-toast{background:#213239;color:#fff;border-color:#374b53}
+.backdrop{background:#24353b80}.sheet,.modal-panel{background:#fff;color:#1c2a30;border-color:#d2dcde}
+.sheet-head button{background:#eef2f2;color:#24343b}.sheet p,.modal-panel p{color:#66767d}
+.sheet select,.sheet input{background:#f8faf9;border-color:#cbd8db;color:#1a2930}
+.detail-row,.info-row{border-color:#e1e7e8}.detail-row span,.info-row span{color:#6d7c83}
+/* Robot detail and standard secondary pages. */
+.detail-hero{background:radial-gradient(circle at 82% 35%,#e7eeee 0,#f7faf9 45%,#fff 78%);border-color:#d3dde0;box-shadow:0 9px 28px #5d727210}
+.detail-hero:before{background:#ed6033}
+.detail-index,.hero-id{color:#5e727b}.detail-index b{color:#db562e}
+.detail-hero h1,.detail-model,.detail-specs strong{color:#19272e}.detail-model{color:#657880}.detail-specs span{color:#75868d}
+.detail-watermark{opacity:.7;filter:drop-shadow(0 12px 18px #4f6b6b22)}
+.detail-status{background:#eef3f3e8;border-top-color:#dce5e5}.detail-battery strong{color:#1e3037}.detail-battery small{color:#687a81}.detail-connection{color:#344950}.detail-connection svg,.detail-connection strong{color:#07845a}
+.state-pill{background:#e5f4eb;color:#067a55}.state-pill.fault{background:#fff0ed;color:#bd4450}.state-pill.offline{background:#edf1f1;color:#64757a}
+.remote-entry{background:#ef653a;color:#1c262a}.remote-entry small{color:#6b3325}
+.utility-tile,.action-card{background:#fff;border-color:#d5dee0;color:#1d2c32}
+.utility-tile svg,.action-card svg{color:#e65e34}
+.flow-section .section-head h2,.section-head h2{color:#1a2930}.section-head span{color:#6a7b82}
+.menu-panel,.panel,.section-panel{background:#fff;border-color:#d4dddf;color:#1d2c32}
+.menu-link{color:#1d2c32}.menu-link+.menu-link{border-color:#e1e7e8}.menu-link small{color:#6f8087}.menu-icon{border-color:#d9e0e2;color:#db5b35;background:#fff5f0}.chevron{color:#87969d}
+.notice{background:#fff0ef;color:#9d3c48;border-color:#efcecc}.notice.info{background:#edf5f7;color:#365c69;border-color:#d1e1e5}
+.page-intro h1{color:#17262d}.page-intro p,.subtle,.page-lead{color:#697b83}
+.button.secondary,.quiet-button{background:#fff;border-color:#cdd9dc;color:#263740}
+.button.outline{border-color:#e2b0a1;color:#bf5536}
+.info-row strong{color:#23333b}
+.mode-card,.choice-card{background:#fff;border-color:#d2dcde;color:#1c2d34}
+.mode-card.selected,.choice-card.selected{background:#fff4ee;border-color:#e97853}
+.mode-card small,.choice-card small{color:#6b7c83}
+.form-field>span,.field-title{color:#5e7179}
+.form-input,.form-textarea{background:#fff;border-color:#ccd9dc;color:#1b2930}
+.form-input::placeholder,.form-textarea::placeholder{color:#8a999f}
+.toggle-row,.setting-line,.slider-field{border-color:#e0e7e8}.toggle-row small,.setting-note{color:#6e7f85}
+.segment{background:#e9efef;border-color:#d1dcdc}.segment button{color:#5b6f76}.segment button.active{color:#fff;background:#263941}
+.stat-grid{background:#d6e0e0;border-color:#d6e0e0}.stat-grid>div,.stat-grid>button{background:#fff;color:#1e2d33}.stat-grid small{color:#6b7c83}
+.tabs .tab{background:#fff;color:#5b6c74;border-color:#d0dcde}.tabs .tab.active{background:#263941;color:#fff;border-color:#263941}
+.list-card{background:#fff;border-color:#d3dddf;box-shadow:0 6px 20px #53686a0c}
+.list-card h2,.card-head h2{color:#1a2a31}.list-card p{color:#687981}.card-meta{color:#596c74}.card-meta span{background:#eef2f2}
+.link-row,.choice-line{background:#fff;border-color:#d3dddf;color:#203139}.link-row small,.choice-line small{color:#6b7e85}.choice-line.selected{background:#fff4ef;border-color:#ec8a69}
+.stepper i{background:#d2dfe0}.stepper i.done{background:#ed6033}
+.form-help,.tiny{color:#6c7f86}.pill{background:#fff;border-color:#d2dfe0;color:#48606a}.pill.active{background:#fff1eb;color:#bc5332;border-color:#e78b6d}
+.auth-wrap{background:radial-gradient(ellipse at 90% -12%,#ffe3d4 0,transparent 43%),#f3f3f0;border-color:#dce2e2;color:#1b2a31}
+.auth-wrap h1{color:#1b2a31}.auth-wrap .subtle{color:#697b81}.auth-brand strong{color:#203139}
+.about-hero{background:radial-gradient(circle at 88% 0,#ffe0d0,#fff 60%);border-color:#d6dfe0;color:#1e2c33}.about-hero p{color:#6a7b82}
+/* Agent roster and detail. */
+.agent-count{color:#647780}
+.roster-card{background:linear-gradient(115deg,#fff 0,#f8fbfa 75%);border-color:#d4dee0;box-shadow:0 8px 24px #5063660e}
+.roster-card:after{border-color:#ee71451b;box-shadow:0 0 0 27px #ed704509,0 0 0 57px #ed704505}
+.agent-portrait{background:radial-gradient(circle at 75% 15%,#ffd3bf,#fae9df 67%);border-color:#e88f6e;color:#a54127;box-shadow:inset 0 0 0 4px #fff7f2}
+.agent-name strong{color:#1b2930}.agent-name span{color:#6a7b82}.agent-ready{color:#067a55}
+.roster-card p{color:#50636b}.agent-facts{border-color:#dce5e6;color:#677980}.agent-facts span+span{border-color:#d9e2e3}.agent-facts b{color:#1d2c34}.agent-open{color:#df6038}
+.agent-detail-hero{background:radial-gradient(circle at 88% 18%,#ffdfcb,#f9f4ef 45%,#fff 87%);border-color:#e4c4b3;color:#19272f}
+.agent-detail-hero:after{border-color:#ec7e4a28}.agent-detail-glyph{background:#fff8f3;color:#a84629;border-color:#e88a64}.agent-detail-hero p{color:#6e7479}.agent-detail-desc{color:#3f5058}
+.agent-detail-panel{background:#fff;border-color:#d5dfe0}.agent-detail-row,.agent-document{border-color:#e1e7e8;color:#1e3038}.agent-detail-row span{color:#687b83}
+/* Profile uses the existing vivid identity card as the light theme's focal point. */
+.profile-section h2{color:#1c2b32}.profile-links{background:#fff;border-color:#d3dddf;box-shadow:0 8px 22px #5063650c}
+.profile-link{border-color:#e0e7e8;color:#1d2d35}.profile-link svg{color:#de623b}.profile-link em{color:#6a7c84}.profile-link .arrow{color:#84949a}
+.profile-exit{color:#b4474c}.profile-exit svg{color:#b4474c}
+.profile-modal{background:#25343a80}.profile-modal-panel{background:#fff;color:#1d2d35;border-color:#d2dddf}.profile-modal-panel label{color:#60737b}.profile-modal-panel input{background:#f9fbfa;border-color:#cad7da;color:#1d2d35}.profile-modal-actions button{background:#fff;border-color:#cad7da;color:#253840}.profile-modal-actions button[type=submit]{background:#ed6033;color:#fff;border-color:#ed6033}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+  <title>RoboOps V2 · 启动</title>
+  <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+  <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <script src="mode.js"></script>
+  </head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+  <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+    <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-cyan-400/10"></div>
+    <div class="absolute bottom-16 -left-20 w-56 h-56 rounded-full bg-blue-600/10"></div>
+    <section class="flex-1 flex flex-col justify-between px-7 pt-20 pb-11 relative" id="splash">
+      <div class="flex items-center gap-2 text-xs font-medium text-slate-500"><span
+          class="w-2 h-2 rounded-full bg-emerald-400"></span>控制平台已就绪</div>
+      <div>
+        <div class="w-20 h-20 rounded-[25px] bg-cyan-400 flex items-center justify-center shadow-lg shadow-cyan-400/20">
+          <iconify-icon class="text-slate-950" icon="solar:cpu-bolt-bold" width="43"></iconify-icon></div>
+        <h1 class="mt-7 text-4xl font-bold tracking-tight">RoboOps <span class="text-cyan-300">V2</span></h1>
+        <p class="mt-3 text-slate-400 leading-6">面向现场与运营团队的<br />多型号机器人管理平台</p>
+      </div>
+      <div>
+        <div class="h-1.5 rounded-full overflow-hidden bg-slate-800">
+          <div class="h-full w-2/3 bg-cyan-400 rounded-full"></div>
+        </div>
+        <p class="mt-4 text-xs text-slate-500">正在检查安全会话 · v0.2.0</p><button
+          class="mt-6 w-full py-3.5 rounded-2xl bg-white text-slate-950 font-bold text-sm"
+          onclick="showLogin()">进入工作台</button>
+      </div>
+    </section>
+    <section
+      class="hidden flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden px-6 pt-10 pb-7"
+      id="login"><button class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900 text-slate-300"
+        onclick="showSplash()"><iconify-icon icon="solar:arrow-left-linear" width="21"></iconify-icon></button>
+      <div class="mt-7">
+        <div class="w-12 h-12 bg-cyan-400 rounded-2xl flex items-center justify-center"><iconify-icon
+            class="text-slate-950" icon="solar:cpu-bolt-bold" width="27"></iconify-icon></div>
+        <h2 class="mt-5 text-3xl font-bold">欢迎回来</h2>
+        <p class="mt-2 text-sm text-slate-400">登录后继续管理您的机器人集群</p>
+      </div>
+      <div class="mt-7 flex bg-slate-900 rounded-xl p-1 text-sm font-medium"><button
+          class="flex-1 py-2.5 rounded-lg bg-slate-700 text-white" id="accountTab"
+          onclick="loginTab('account')">账号登录</button><button class="flex-1 py-2.5 text-slate-400" id="phoneTab"
+          onclick="loginTab('phone')">手机号登录</button></div>
+      <form class="mt-5 space-y-3" onsubmit="login(event)">
+        <div class="space-y-3" id="accountFields"><label class="block"><span
+              class="text-xs text-slate-400">账号</span><input
+              class="mt-2 w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 outline-none focus:border-cyan-400 text-sm"
+              id="account" placeholder="请输入账号" value="lin.yan" /></label><label class="block"><span
+              class="text-xs text-slate-400">密码</span><input
+              class="mt-2 w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 outline-none focus:border-cyan-400 text-sm"
+              id="password" placeholder="请输入密码" type="password" value="Robo@2026" /></label></div>
+        <div class="hidden space-y-3" id="phoneFields"><input
+            class="w-full box-border rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 outline-none text-sm"
+            placeholder="请输入手机号" />
+          <div class="flex gap-2"><input
+              class="flex-1 min-w-0 rounded-xl bg-slate-900 border border-slate-800 px-4 py-3.5 outline-none text-sm"
+              placeholder="验证码" /><button class="px-3 rounded-xl bg-slate-800 text-cyan-300 text-xs whitespace-nowrap"
+              onclick="this.textContent='59 秒后重试';this.disabled=true" type="button">获取验证码</button></div>
+        </div><label class="flex gap-2.5 items-start py-2 text-xs leading-5 text-slate-400"><input
+            class="mt-1 accent-cyan-400" id="agree" type="checkbox" /><span>我已阅读并同意<a class="text-cyan-300"
+              href="https://modao.cc/agent-py/workspace/6a992b616af5125add55281c/robotops-v2.html/auth.html?render_html=true">《用户协议》</a>与<a
+              class="text-cyan-300"
+              href="https://modao.cc/agent-py/workspace/6a992b616af5125add55281c/robotops-v2.html/auth.html?render_html=true">《隐私政策》</a></span></label>
+        <p class="hidden text-xs text-rose-300 bg-rose-500/10 p-3 rounded-xl" id="error">请先勾选用户协议后再继续</p><button
+          class="w-full py-3.5 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm">安全登录</button>
+      </form>
+      <div class="my-6 flex items-center gap-3 text-xs text-slate-600"><i class="flex-1 h-px bg-slate-800"></i>或<i
+          class="flex-1 h-px bg-slate-800"></i></div>
+      <div class="flex gap-3"><button class="flex-1 py-3 rounded-xl border border-slate-800 text-sm text-slate-300"
+          onclick="toast('扫码登录需要已授权的 Web 会话')"><iconify-icon class="align-middle mr-1" icon="solar:qr-code-linear"
+            width="18"></iconify-icon>扫码登录</button><a
+          class="flex-1 py-3 rounded-xl border border-slate-800 text-center text-sm text-slate-300"
+          href="https://modao.cc/agent-py/workspace/6a992b616af5125add55281c/robotops-v2.html/register.html?render_html=true">创建租户</a>
+      </div>
+    </section>
+    <div
+      class="hidden absolute bottom-8 left-6 right-6 z-20 text-center text-sm bg-slate-700 text-white py-3 rounded-xl shadow-xl"
+      id="toast"></div>
+  </main>
+  <script>
+    function showLogin() {
+      splash.classList.add('hidden');
+      login.classList.remove('hidden')
+    }
+
+    function showSplash() {
+      login.classList.add('hidden');
+      splash.classList.remove('hidden')
+    }
+
+    function loginTab(t) {
+      let a = t === 'account';
+      accountFields.classList.toggle('hidden', !a);
+      phoneFields.classList.toggle('hidden', a);
+      accountTab.className = 'flex-1 py-2.5 rounded-lg ' + (a ? 'bg-slate-700 text-white' : 'text-slate-400');
+      phoneTab.className = 'flex-1 py-2.5 rounded-lg ' + (!a ? 'bg-slate-700 text-white' : 'text-slate-400')
+    }
+
+    function login(e) {
+      e.preventDefault();
+      if (!agree.checked) {
+        error.classList.remove('hidden');
+        return
+      }
+      location.href = 'home.html'
+    }
+
+    function toast(t) {
+      let x = document.getElementById('toast');
+      x.textContent = t;
+      x.classList.remove('hidden');
+      setTimeout(() => x.classList.add('hidden'), 2600)
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>模式切换 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"><link rel="stylesheet" href="assets/light-theme.css"></head><body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,section,toast,save,$}=Fleet;
+const blocked=d.state==='offline'||d.state==='fault';
+const modes=[['自主交互','绑定智能体后接待与对话','robot'],['遥操模式','由操作员手动控制机器人','control'],['待机模式','暂停主动交互，等待任务','power']];
+const modeCards=section('运行模式',`<div id="modes">${modes.map(([name,desc,ico])=>`<button type="button" class="mode-card ${d.mode===name?'selected':''}" data-mode="${name}" ${blocked?'disabled':''}>${icon(ico)}<span><strong>${name}</strong><small>${desc}</small></span><span class="check" ${d.mode===name?'':'hidden'}>${icon('check',18)}</span></button>`).join('')}</div>`);
+const agent=section('自主交互配置',`<label class="form-field"><span>关联智能体</span><select class="form-input" id="agent" ${blocked?'disabled':''}><option>未绑定</option><option>晓雅</option><option>阿远</option></select></label><label class="form-field"><span>默认表情</span><select class="form-input" id="expression" ${blocked?'disabled':''}><option>微笑</option><option>平静</option><option>欢迎</option></select></label><button class="button secondary block" id="saveAgent" ${blocked?'disabled':''}>保存配置</button>`);
+shell('模式切换',modeCards+agent,`<a class="icon-button" href="${href('device')}" aria-label="机器人详情">${icon('robot')}</a>`,href('device'));
+$('agent').value=d.agent;$('expression').value=localStorage.getItem('fleet-expression-'+d.id)||'微笑';
+$('modes').querySelectorAll('[data-mode]').forEach(button=>button.onclick=()=>{save({mode:button.dataset.mode});$('modes').querySelectorAll('.mode-card').forEach(x=>{x.classList.toggle('selected',x===button);x.querySelector('.check').hidden=x!==button});toast('已选择'+button.dataset.mode)});
+$('saveAgent').onclick=()=>{save({agent:$('agent').value});localStorage.setItem('fleet-expression-'+d.id,$('expression').value);toast('配置已保存')};
+</script></body></html>

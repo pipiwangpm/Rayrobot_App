@@ -1,0 +1,8 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>远程监控 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"></head><body><script src="assets/device-flow.js"></script><script>
+const {device:d,href,icon,esc,shell,section,row,toast,$}=Fleet;
+const offline=d.state==='offline';
+const stage=`<div class="video-stage"><div class="video-top"><span>摄像头 1 · ${esc(d.id)}</span><span>${offline?'离线':'等待画面'}</span></div><div class="video-center">${icon('video',42)}<strong>${offline?'机器人离线':'等待视频信号'}</strong><span>${offline?'恢复连接后可打开监控':'演示页面未接入实时视频流'}</span></div></div>`;
+const body=`<div class="page-intro"><h1>远程监控</h1><p>${esc(d.name)} · ${esc(d.status)}</p></div>${stage}<div class="notice info">${icon('camera')}<div>当前为功能原型，没有连接摄像头、录像或真实视频流。</div></div>${section('机器人与视频',`<div class="panel">${row('机器人',d.name)}${row('网络地址',d.ip)}${row('监控状态',offline?'机器人离线':'待接入视频流')} ${row('最近画面','暂无')}</div>`)}<div class="button-row"><a class="button secondary" href="${href('device')}">返回机器人详情</a><button class="button primary" id="retry" ${offline?'disabled':''}>重试连接</button></div>`;
+shell('远程监控',body,'',href('device'));
+$('retry').onclick=()=>toast('原型演示：视频流尚未接入');
+</script></body></html>

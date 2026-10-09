@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+  <title>设备详情 · RoboOps V2</title>
+  <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+  <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+  <script src="mode.js"></script>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+  <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+    <header class="px-5 pt-7">
+      <div class="flex items-center justify-between"><a
+          class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center" href="home.html"><iconify-icon
+            icon="solar:arrow-left-linear" width="20"></iconify-icon></a>
+        <p class="text-sm text-slate-400">设备详情</p><a
+          class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center"
+          href="device-settings.html"><iconify-icon icon="solar:settings-linear" width="20"></iconify-icon></a>
+      </div>
+    </header>
+    <section
+      class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden px-5 pt-6 pb-6">
+      <div class="p-5 rounded-3xl bg-gradient-to-br from-cyan-400 to-cyan-600 text-slate-950">
+        <div class="flex justify-between items-center"><span
+            class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-950/10">tangpa</span><span data-c
+            class="text-xs font-semibold"><i
+              class="inline-block w-2 h-2 rounded-full bg-emerald-600 mr-1"></i>在线</span><span data-l
+            class="text-[10px] font-bold px-2 py-1 rounded-full bg-slate-950/20">内网可达 · 6ms</span></div>
+        <div class="mt-7 flex justify-between items-end">
+          <div>
+            <h1 class="text-2xl font-bold">迎宾机器人 · A03</h1>
+            <p class="mt-1 text-sm text-slate-800">大厅 A 区 · SN TP-A03-202609</p>
+          </div><iconify-icon icon="solar:bot-bold" width="54"></iconify-icon>
+        </div>
+      </div>
+      <div class="mt-4 grid grid-cols-3 gap-3">
+        <div class="rounded-2xl p-3 bg-slate-900"><iconify-icon class="text-emerald-300"
+            icon="solar:battery-charge-linear" width="20"></iconify-icon>
+          <p class="mt-2 text-lg font-bold">86%</p>
+          <p class="text-[11px] text-slate-500">剩余电量</p>
+        </div>
+        <div class="rounded-2xl p-3 bg-slate-900"><iconify-icon class="text-cyan-300" icon="solar:clock-circle-linear"
+            width="20"></iconify-icon>
+          <p class="mt-2 text-lg font-bold">4h 20m</p>
+          <p class="text-[11px] text-slate-500">在线时长</p>
+        </div>
+        <div class="rounded-2xl p-3 bg-slate-900"><iconify-icon class="text-violet-300" icon="solar:map-point-linear"
+            width="20"></iconify-icon>
+          <p class="mt-2 text-lg font-bold">A 区</p>
+          <p class="text-[11px] text-slate-500">当前位置</p>
+        </div>
+      </div>
+      <div data-c class="mt-4 rounded-2xl bg-slate-900 p-3 flex items-center gap-2.5">
+        <span class="w-8 h-8 rounded-lg bg-cyan-400/15 flex items-center justify-center shrink-0"><iconify-icon
+            class="text-cyan-300" icon="solar:chat-round-dots-linear" width="16"></iconify-icon></span>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs text-slate-300 truncate">自主交互 · 智能体 晓雅</p>
+          <p class="mt-0.5 text-[10px] text-slate-500 truncate">任务「秋日迎宾」内容策略执行中</p>
+        </div>
+        <span class="shrink-0 text-[10px] text-emerald-300">● 运行中</span>
+      </div>
+      <div data-l class="mt-4 rounded-2xl bg-slate-900 p-3 flex items-center gap-2.5">
+        <span class="w-8 h-8 rounded-lg bg-cyan-400/15 flex items-center justify-center shrink-0"><iconify-icon
+            class="text-cyan-300" icon="solar:checklist-minimalistic-linear" width="16"></iconify-icon></span>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs text-slate-300 truncate">本地任务执行中 · 秋日迎宾</p>
+          <p class="mt-0.5 text-[10px] text-slate-500 truncate">脚本缓存于本机 · 进度 72% · 留痕本机</p>
+        </div>
+        <span class="shrink-0 text-[10px] text-emerald-300">● 运行中</span>
+      </div>
+      <h2 class="mt-6 font-bold">快捷操作</h2>
+      <div class="mt-3 grid grid-cols-6 gap-1.5"><a class="rounded-xl bg-slate-900 p-2 text-center"
+          href="control.html"><iconify-icon class="text-teal-300" icon="solar:gamepad-minimalistic-linear"
+            width="19"></iconify-icon>
+          <p class="mt-1 text-[10px] text-slate-400">遥操</p>
+        </a><button class="rounded-xl bg-slate-900 p-2 text-center" onclick="toast('远程监控：正在打开 A03 实况画面')"><iconify-icon
+            class="text-sky-300" icon="solar:videocamera-linear" width="19"></iconify-icon>
+          <p class="mt-1 text-[10px] text-slate-400">实况</p>
+        </button><button data-c class="rounded-xl bg-slate-900 p-2 text-center"
+          onclick="toast('正在请求定位服务…')"><iconify-icon class="text-violet-300" icon="solar:map-point-linear"
+            width="19"></iconify-icon>
+          <p class="mt-1 text-[10px] text-slate-400">定位</p>
+        </button><button data-c class="rounded-xl bg-slate-900 p-2 text-center" onclick="openAd()"><iconify-icon
+            class="text-amber-300" icon="solar:play-circle-linear" width="19"></iconify-icon>
+          <p class="mt-1 text-[10px] text-slate-400">广告投放</p>
+        </button><button data-c class="rounded-xl bg-slate-900 p-2 text-center" onclick="openVoice()"><iconify-icon
+            class="text-sky-300" icon="solar:microphone-linear" width="19"></iconify-icon>
+          <p class="mt-1 text-[10px] text-slate-400">口播</p>
+        </button><button data-c class="rounded-xl bg-slate-900 p-2 text-center" onclick="toast('暂无待升级版本')"><iconify-icon
+            class="text-emerald-300" icon="solar:upload-linear" width="19"></iconify-icon>
+          <p class="mt-1 text-[10px] text-slate-400">升级</p>
+        </button></div>
+      <!-- 本地模式：本地素材投放 -->
+      <a data-l href="task-center.html?m=local#mat"
+        class="mt-3 rounded-xl bg-violet-500/10 border border-violet-400/20 px-4 py-3 flex items-center gap-2">
+        <iconify-icon icon="solar:gallery-wide-linear" class="text-violet-300" width="18"></iconify-icon>
+        <span class="flex-1 text-sm text-slate-200">从本机素材投放</span>
+        <span class="text-[10px] text-violet-300">素材 4 个</span>
+      </a>
+      <!-- 设备信息（与首页设备卡字段对齐：型号 / 编码 / 分组 / 网络） -->
+      <h2 class="mt-6 font-bold">设备信息</h2>
+      <div class="mt-3 rounded-2xl bg-slate-900 divide-y divide-slate-800 overflow-hidden">
+        <div class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-violet-500/15 text-violet-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:box-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">型号</span>
+          <span class="text-xs text-slate-200">tangpa · 迎宾</span>
+        </div>
+        <div class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:qr-code-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">编码（SN）</span>
+          <span class="text-xs font-mono text-slate-200">TP-A03-202609</span>
+        </div>
+        <div class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:folder-with-files-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">分组</span>
+          <span class="text-xs text-slate-200">大厅 A 区</span>
+        </div>
+        <!-- 网络类型：云模式走现场 Wi-Fi 出网；本地模式为同网段内网 -->
+        <div data-c class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:transmission-square-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">网络类型</span>
+          <span class="text-xs text-slate-200">Wi-Fi · Robo-Guest-5G</span>
+        </div>
+        <div data-l class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:transmission-square-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">网络类型</span>
+          <span class="text-xs text-slate-200">Wi-Fi · 内网直连</span>
+        </div>
+        <!-- 云模式：云端档案里的设备 IP -->
+        <div data-c class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-sky-500/15 text-sky-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:global-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">IP 地址</span>
+          <span class="text-xs font-mono text-slate-200">10.2.0.31</span>
+        </div>
+        <!-- 本地模式：内网 mDNS 与信号 -->
+        <div data-l class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-cyan-500/15 text-cyan-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:server-square-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400 shrink-0">内网主机名</span>
+          <span class="text-[11px] font-mono text-slate-200 truncate">robot-TP-A03-202609.local</span>
+        </div>
+        <div data-l class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-sky-500/15 text-sky-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:global-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">解析 IP</span>
+          <span class="text-xs font-mono text-slate-200">192.168.1.27</span>
+        </div>
+        <div data-l class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:wi-fi-router-linear" width="16"></iconify-icon></span>
+          <span class="flex-1 text-xs text-slate-400">信号强度</span>
+          <span class="text-xs text-slate-200">-52 dBm</span>
+        </div>
+      </div>
+      <!-- 版本信息：上位机（Edge Gateway 应用/调度）+ 下位机（运动控制 MCU） -->
+      <h2 class="mt-6 font-bold">版本信息</h2>
+      <div class="mt-3 rounded-2xl bg-slate-900 divide-y divide-slate-800 overflow-hidden">
+        <div class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-cyan-500/15 text-cyan-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:cpu-bolt-linear" width="16"></iconify-icon></span>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs text-slate-200">上位机版本</p>
+            <p class="mt-0.5 text-[10px] text-slate-500 truncate">Edge Gateway · RK3588 · 应用与调度</p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-xs font-semibold text-slate-200">v2.1.3</p>
+            <p class="text-[10px] text-emerald-300">最新</p>
+          </div>
+        </div>
+        <div class="px-4 py-3.5 flex items-center gap-3">
+          <span
+            class="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-300 flex items-center justify-center shrink-0"><iconify-icon
+              icon="solar:cpu-linear" width="16"></iconify-icon></span>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs text-slate-200">下位机版本</p>
+            <p class="mt-0.5 text-[10px] text-slate-500 truncate">运动控制 MCU · 电机脚本执行</p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-xs font-semibold text-slate-200">v1.6.4</p>
+            <p class="text-[10px] text-emerald-300">最新</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 rounded-2xl border border-rose-500/20 bg-rose-500/5 p-4 flex justify-between items-center">
+        <div>
+          <p class="text-sm font-semibold text-rose-200">设备急停</p>
+          <p class="mt-1 text-xs text-slate-500">立即停止运动与任务，需要确认</p>
+        </div><button class="px-3 py-2 rounded-lg bg-rose-500 text-white text-xs font-bold"
+          onclick="openStop()">急停</button>
+      </div>
+    </section>
+    <div class="hidden absolute inset-0 z-10 bg-slate-950/80 p-5 items-end" id="modal">
+      <div class="w-full rounded-3xl bg-slate-900 p-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/15 flex items-center justify-center"><iconify-icon
+            class="text-rose-300" icon="solar:danger-triangle-bold" width="26"></iconify-icon></div>
+        <h3 class="mt-4 text-lg font-bold">确认紧急停止？</h3>
+        <p class="mt-2 text-sm leading-6 text-slate-400">A03 将停止当前移动、互动与排队任务。此操作将写入审计记录。</p>
+        <div class="mt-6 flex gap-3"><button class="flex-1 py-3 rounded-xl bg-slate-800 text-sm"
+            onclick="closeStop()">取消</button><button class="flex-1 py-3 rounded-xl bg-rose-500 text-sm font-bold"
+            onclick="stop()">确认急停</button></div>
+      </div>
+    </div>
+    <!-- 单机广告投放（单台快捷，多台去任务中心） -->
+    <div id="adSheet" class="hidden absolute inset-0 z-20 bg-slate-950/70 flex items-end"
+      onclick="if(event.target===this)closeAd()">
+      <div class="w-full rounded-t-3xl bg-slate-900 p-5 pb-7">
+        <div class="flex items-start gap-3">
+          <div class="flex-1">
+            <p class="font-bold text-sm">单机广告投放</p>
+            <p class="mt-0.5 text-[11px] leading-5 text-slate-500">目标设备：迎宾机器人 · A03（单机）<br>多台投放 / 排期请在「任务中心」创建广告任务</p>
+          </div>
+          <button onclick="closeAd()" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear"
+              width="22"></iconify-icon></button>
+        </div>
+        <p class="mt-4 text-xs text-slate-400">选择素材（内容中心提供）</p>
+        <div id="adMats" class="mt-2 space-y-2"></div>
+        <p class="mt-4 text-xs text-slate-400">播放方式</p>
+        <div id="adMode" class="mt-2 grid grid-cols-3 gap-2">
+          <button onclick="modeAd('once',this)"
+            class="rounded-xl bg-cyan-500 text-slate-950 px-2 py-2 text-xs font-semibold">单次播放</button>
+          <button onclick="modeAd('multi',this)"
+            class="rounded-xl bg-slate-800 px-2 py-2 text-xs text-slate-300">指定次数</button>
+          <button onclick="modeAd('forever',this)"
+            class="rounded-xl bg-slate-800 px-2 py-2 text-xs text-slate-300">永久循环</button>
+        </div>
+        <div id="adNumBox" class="hidden mt-2 rounded-xl bg-slate-800/60 p-3 flex items-center justify-between">
+          <span class="text-xs text-slate-300">播放次数</span>
+          <div class="flex items-center gap-3">
+            <button onclick="stepAd(-1)"
+              class="w-7 h-7 rounded-lg bg-slate-700 text-slate-200 flex items-center justify-center">−</button>
+            <b id="adTimes" class="text-sm w-6 text-center text-cyan-300">5</b>
+            <button onclick="stepAd(1)"
+              class="w-7 h-7 rounded-lg bg-slate-700 text-slate-200 flex items-center justify-center">+</button>
+          </div>
+        </div>
+        <p id="adEst" class="mt-2 text-[11px] text-slate-500"></p>
+        <p class="mt-4 text-xs text-slate-400">执行时间</p>
+        <div class="mt-2 flex gap-2">
+          <button onclick="adTiming(this)"
+            class="flex-1 rounded-xl bg-cyan-500 text-slate-950 px-3 py-2.5 text-xs font-semibold">立即投放</button>
+          <button onclick="adTiming(this)"
+            class="flex-1 rounded-xl bg-slate-800 px-3 py-2.5 text-xs text-slate-300">定时投放</button>
+        </div>
+        <button onclick="submitAd()"
+          class="mt-4 w-full rounded-xl bg-emerald-500 text-slate-950 py-3 text-sm font-semibold">提交投放</button>
+      </div>
+    </div>
+    <!-- 单机口播任务（输入文字 → 机器人语音播报） -->
+    <div id="voiceSheet" class="hidden absolute inset-0 z-20 bg-slate-950/70 flex items-end"
+      onclick="if(event.target===this)closeVoice()">
+      <div class="w-full rounded-t-3xl bg-slate-900 p-5 pb-7">
+        <div class="flex items-start gap-3">
+          <div class="flex-1">
+            <p class="font-bold text-sm">口播任务</p>
+            <p class="mt-0.5 text-[11px] leading-5 text-slate-500">目标设备：迎宾机器人 · A03（单机）· 仅发声，不触发动作</p>
+          </div>
+          <button onclick="closeVoice()" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear"
+              width="22"></iconify-icon></button>
+        </div>
+        <p class="mt-4 text-xs text-slate-400">播报文本</p><textarea id="vInput" rows="4" oninput="onVoiceText()"
+          class="mt-2 w-full box-border bg-slate-800 rounded-xl p-3.5 text-sm leading-6 outline-none resize-none"
+          placeholder="输入要播报的文字，例如：尊敬的来宾您好，展厅将于 17:30 闭馆，请携带好随身物品。"></textarea>
+        <p id="vMeta" class="mt-1.5 text-[10px] text-slate-500"></p>
+        <p class="mt-4 text-xs text-slate-400">音色</p>
+        <div id="vVoices" class="mt-2 flex flex-wrap gap-2"></div>
+        <p class="mt-4 text-xs text-slate-400">播报次数</p>
+        <div id="vTimesBox" class="mt-2 flex flex-wrap gap-2"></div>
+        <button onclick="submitVoice()"
+          class="mt-5 w-full rounded-xl bg-sky-500 text-slate-950 py-3 text-sm font-semibold">提交口播</button>
+      </div>
+    </div>
+    <div
+      class="hidden absolute bottom-7 left-5 right-5 bg-emerald-500 text-slate-950 font-semibold rounded-xl p-3 text-center text-sm"
+      id="toast"></div>
+  </main>
+  <script>
+    function openStop() {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex')
+    }
+
+    function closeStop() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex')
+    }
+
+    function stop() {
+      closeStop();
+      toast('急停指令已发送，等待设备确认')
+    }
+
+    const ADMAT = [
+      { n: '夏季新品 · 竖屏轮播', d: 15 },
+      { n: '开业酬宾 · 15s 视频', d: 30 },
+      { n: '节日问候 · 静态海报', d: 10 }
+    ];
+    let adSel = 0, adMode = 'once', adTimes = 5;
+
+    function fmtDur(s) {
+      return s < 60 ? s + ' 秒' : Math.floor(s / 60) + ' 分 ' + (s % 60) + ' 秒'
+    }
+
+    function updateAd() {
+      adMats.innerHTML = ADMAT.map((m, i) => `<button onclick="adSel=${i};updateAd()" class="w-full text-left rounded-xl p-3 flex items-center gap-2 ${adSel === i ? 'border border-cyan-400/60 bg-cyan-500/10' : 'border border-slate-800 bg-slate-800/60'}"><span class="w-7 h-7 rounded-lg bg-slate-700 flex items-center justify-center"><iconify-icon icon="solar:gallery-wide-linear" width="14" class="text-amber-300"></iconify-icon></span><span class="flex-1 text-xs text-slate-200 truncate">${m.n}</span><span class="text-[10px] text-slate-500 shrink-0">${m.d}s</span><iconify-icon icon="solar:check-circle-bold" class="${adSel === i ? 'text-cyan-400' : 'hidden'}" width="15"></iconify-icon></button>`).join('');
+      document.querySelectorAll('#adMode button').forEach((b, i) => {
+        const on = (i === 0 && adMode === 'once') || (i === 1 && adMode === 'multi') || (i === 2 && adMode === 'forever');
+        b.className = 'rounded-xl px-2 py-2 text-xs ' + (on ? 'bg-cyan-500 text-slate-950 font-semibold' : 'bg-slate-800 text-slate-300')
+      });
+      adNumBox.classList.toggle('hidden', adMode !== 'multi');
+      const timesEl = document.getElementById('adTimes');
+      timesEl.textContent = adTimes;
+      const d = ADMAT[adSel].d;
+      adEst.textContent = adMode === 'once' ? '预估播放时长：约 ' + fmtDur(d)
+        : adMode === 'multi' ? '预估播放时长：' + adTimes + ' 次 × 单次 ' + d + 's ≈ ' + fmtDur(d * adTimes)
+          : '永久循环播放，直至手动停止'
+    }
+
+    function openAd() {
+      adSheet.classList.remove('hidden');
+      adSheet.classList.add('flex');
+      adMode = 'once';
+      adTimes = 5;
+      updateAd()
+    }
+
+    function closeAd() {
+      adSheet.classList.add('hidden');
+      adSheet.classList.remove('flex')
+    }
+
+    function modeAd(m) {
+      adMode = m;
+      updateAd()
+    }
+
+    function stepAd(k) {
+      adTimes = Math.min(999, Math.max(1, adTimes + k));
+      updateAd()
+    }
+
+    function adTiming(b) {
+      b.parentElement.querySelectorAll('button').forEach(x => {
+        x.classList.toggle('bg-cyan-500', x === b);
+        x.classList.toggle('text-slate-950', x === b);
+        x.classList.toggle('bg-slate-800', x !== b);
+        x.classList.toggle('text-slate-300', x !== b)
+      })
+    }
+
+    function submitAd() {
+      closeAd();
+      const m = adMode === 'once' ? '单次' : adMode === 'multi' ? adTimes + ' 次' : '永久循环';
+      toast('已提交：素材「' + ADMAT[adSel].n + '」' + m + ' 投放至 A03（单机）')
+    }
+
+    /* 口播任务（单机快捷）：输入文字 → 机器人语音播报 */
+    const VOICES = ['默认音色', '声纹 · 晓雅'];
+    let vTxt = '',
+      vVoice = 0,
+      vRepeat = 1;
+
+    function openVoice() {
+      voiceSheet.classList.remove('hidden');
+      voiceSheet.classList.add('flex');
+      vRepeat = 1;
+      paintVoice()
+    }
+
+    function closeVoice() {
+      voiceSheet.classList.add('hidden');
+      voiceSheet.classList.remove('flex')
+    }
+
+    function onVoiceText() {
+      const el = document.getElementById('vInput');
+      if (!el) return;
+      vTxt = el.value;
+      paintVoiceMeta()
+    }
+
+    function paintVoiceMeta() {
+      const n = vTxt.trim().length,
+        sec = Math.max(1, Math.ceil(n / 4));
+      document.getElementById('vMeta').textContent = n
+        ? n + ' 字 · 预计播报约 ' + sec + ' 秒'
+        : '支持中英文；建议 ≤ 200 字，超长会分段播报'
+    }
+
+    function pickVoice(i) {
+      vVoice = i;
+      paintVoice()
+    }
+
+    function pickVTimes(n) {
+      vRepeat = n;
+      paintVoice()
+    }
+
+    function paintVoice() {
+      const ta = document.getElementById('vInput');
+      if (ta && ta.value !== vTxt) ta.value = vTxt;
+      document.getElementById('vVoices').innerHTML = VOICES.map((v, i) => '<button onclick="pickVoice(' + i + ')" class="rounded-full px-3 py-1.5 text-xs ' + (vVoice === i ? 'bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-300') + '">' + v + '</button>').join('');
+      document.getElementById('vTimesBox').innerHTML = [1, 3, 5].map(n => '<button onclick="pickVTimes(' + n + ')" class="rounded-full px-3 py-1.5 text-xs ' + (vRepeat === n ? 'bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-300') + '">' + (n === 1 ? '单次' : '循环 ' + n + ' 次') + '</button>').join('');
+      paintVoiceMeta()
+    }
+
+    function submitVoice() {
+      if (!vTxt.trim()) {
+        toast('请先输入要播报的文字');
+        return
+      }
+      const n = vTxt.trim().length,
+        sec = Math.max(1, Math.ceil(n / 4));
+      closeVoice();
+      toast('已下发口播至 A03：' + VOICES[vVoice] + ' · ' + (vRepeat === 1 ? '单次' : '循环 ' + vRepeat + ' 次') + ' · ' + n + ' 字（约 ' + sec + ' 秒）')
+    }
+
+    function toast(t) {
+      let x = document.getElementById('toast');
+      x.textContent = t;
+      x.classList.remove('hidden');
+      setTimeout(() => x.classList.add('hidden'), 2600)
+    }
+  </script>
+</body>
+
+</html>

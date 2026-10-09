@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="w-full h-full overflow-hidden" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <title>新建任务 · 镋钯机器人</title>
+    <script src="https://modao.cc/agent-py/static/source/js/tailwindcss.js"></script>
+    <script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.js"></script>
+    <script src="mode.js"></script>
+    <style>
+        /* 拖动分配：仅在拖动过程中点亮的投放区样式（写死 CSS，不依赖 Tailwind 运行时生成） */
+        .drop-on {
+            border-style: dashed !important;
+            border-color: rgba(34, 211, 238, .5) !important;
+        }
+
+        .drop-over {
+            background: rgba(34, 211, 238, .16) !important;
+            border-color: rgba(34, 211, 238, .95) !important;
+        }
+    </style>
+</head>
+
+<body class="w-full h-full m-0 overflow-hidden flex items-center justify-center bg-slate-950 text-slate-100">
+    <main class="w-full h-full max-w-[393px] max-h-[852px] overflow-hidden flex flex-col bg-slate-950 relative">
+        <header class="px-5 pt-7 pb-3">
+            <div class="flex items-center gap-3">
+                <a aria-label="返回任务中心" href="task-center.html" title="返回任务中心"
+                    class="w-10 h-10 shrink-0 rounded-xl bg-slate-900 flex items-center justify-center text-slate-300"><svg
+                        aria-hidden="true" fill="none" height="20" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="20">
+                        <path d="M20 12H4M10 18L4 12L10 6" />
+                    </svg></a>
+                <h1 class="text-xl font-bold">新建任务</h1>
+            </div>
+            <!-- 步骤条（云模式 JS 渲染） -->
+            <div data-c id="steps" class="mt-3 flex items-center gap-1 text-[11px]"></div>
+        </header>
+
+        <!-- ====== 本地模式：能力清单轻量组合向导（v0.6.0） ====== -->
+        <section data-l
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6 space-y-4">
+            <div class="rounded-xl p-3 bg-amber-500/10 border border-amber-400/20 flex items-center gap-2">
+                <iconify-icon icon="solar:info-circle-linear" class="text-amber-300 shrink-0" width="16"></iconify-icon>
+                <p class="text-[11px] text-amber-100/90">本地模式：只能从<b
+                        class="text-amber-200">机器人已缓存的任务与素材</b>组合并立即下发（无云端库、不可上传/编排）。</p>
+            </div>
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-xs text-slate-400">① 选择目标机器人（内网可达 · 有能力清单）</p>
+                <div id="lDev" class="mt-2.5 space-y-2"></div>
+            </div>
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-xs text-slate-400">② 从 <span id="lDevName">该机</span> 缓存组合（任务 / 素材）</p>
+                <div id="lPick" class="mt-2.5 space-y-2"></div>
+            </div>
+            <div class="rounded-2xl bg-slate-900 p-4">
+                <p class="text-sm font-semibold mb-2">③ 立即下发</p>
+                <p class="text-[11px] text-slate-500">提交即本地判定占用：机器人空闲 → 执行中；被占用/不可达 → <b
+                        class="text-rose-300">拒绝该次执行</b>（无排队）。</p>
+                <button onclick="localSubmit()"
+                    class="mt-3 w-full rounded-xl bg-emerald-500 text-slate-950 py-3 text-sm font-semibold">提交 · 立即下发到
+                    <span id="lSubDev">A03</span></button>
+            </div>
+            <p class="text-[10px] text-slate-600">本地组合不产生云端任务记录；执行留痕存机器人本地。切换回云模式可在云端查看完整记录。</p>
+        </section>
+
+        <!-- ======= 第 1 步：选择任务类型（云模式） ======= -->
+        <section data-c id="step1"
+            class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6">
+            <p class="text-[11px] text-slate-500 mb-3">任务有四类：脚本 / 广告 / 跟随 / <b class="text-slate-300">口播</b>；脚本与素材由运营在
+                网页端编排，手机端选择并<b class="text-slate-300">绑定机器人</b>后由调度中心执行。口播任务在 手机端输入一段文字即可。<b
+                    class="text-slate-300">遥操、自主交互属于机器人模式</b>，在「机器人控制」页使用，不在这里创建。</p>
+            <div class="space-y-3">
+                <!-- 类型卡片（选中高亮） -->
+                <button onclick="pickType('script',this)"
+                    class="w-full text-left rounded-2xl bg-slate-900 p-4 border border-transparent">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center"><iconify-icon
+                                icon="solar:document-text-linear" width="22"></iconify-icon></span>
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">脚本任务</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5">选脚本 → 脚本含多个「虚拟角色」→ 为每个角色绑定物理机器人</p>
+                        </div>
+                        <iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 hidden sel-ic"
+                            width="20"></iconify-icon>
+                    </div>
+                </button>
+                <button onclick="pickType('ad',this)"
+                    class="w-full text-left rounded-2xl bg-slate-900 p-4 border border-transparent">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="w-10 h-10 rounded-xl bg-violet-500/15 text-violet-300 flex items-center justify-center"><iconify-icon
+                                icon="solar:gallery-wide-linear" width="22"></iconify-icon></span>
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">广告任务</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5">把内容素材投放到机器人屏幕，按排期轮播</p>
+                        </div>
+                        <iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 hidden sel-ic"
+                            width="20"></iconify-icon>
+                    </div>
+                </button>
+                <button onclick="pickType('follow',this)"
+                    class="w-full text-left rounded-2xl bg-slate-900 p-4 border border-transparent">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-300 flex items-center justify-center"><iconify-icon
+                                icon="solar:route-linear" width="22"></iconify-icon></span>
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">跟随任务</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5">指定跟随对象与策略，机器人自主跟随移动</p>
+                        </div>
+                        <iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 hidden sel-ic"
+                            width="20"></iconify-icon>
+                    </div>
+                </button>
+                <button onclick="pickType('voice',this)"
+                    class="w-full text-left rounded-2xl bg-slate-900 p-4 border border-transparent">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-300 flex items-center justify-center"><iconify-icon
+                                icon="solar:microphone-linear" width="22"></iconify-icon></span>
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">口播任务</p>
+                            <p class="text-[11px] text-slate-500 mt-0.5">输入一段文字 → 机器人用选定音色语音播报（只发声、不触发动作）</p>
+                        </div>
+                        <iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 hidden sel-ic"
+                            width="20"></iconify-icon>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- ======= 第 2 步：配置（按类型 JS 渲染 · 云模式） ======= -->
+        <section data-c id="step2"
+            class="hidden flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6">
+            <p id="cfgDesc" class="text-[11px] text-slate-500 mb-3"></p>
+            <div id="cfgList" class="space-y-3"></div>
+        </section>
+
+        <!-- ======= 第 3 步：执行设置（云模式） ======= -->
+        <section data-c id="step3"
+            class="hidden flex-1 min-h-0 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-5 pb-6">
+            <div id="summary" class="rounded-2xl bg-slate-900 p-4"></div>
+            <div class="mt-4 rounded-2xl bg-slate-900 p-4">
+                <p class="text-sm font-semibold mb-2">下发方式</p>
+                <div class="flex items-start gap-2 text-[11px] text-slate-400 leading-5"><iconify-icon
+                        icon="solar:bolt-linear" width="14" class="text-cyan-300 mt-0.5"></iconify-icon><span>提交即<b
+                            class="text-cyan-300">立即下发</b>：下发时检查机器人占用——机器人空闲 → 直接进入执行中；已被占用 / 离线 → <b
+                            class="text-rose-300">拒绝该次执行</b>（执行记录记失败并注明原因）。<b class="text-amber-300">无排队 /
+                            待执行</b>，再次执行请在任务中心操作。</span></div>
+            </div>
+            <p class="mt-4 text-[11px] text-slate-500">提交后立即由调度中心下发；网络瞬时失败自动重试 1 次；机器人占用 / 离线的拒绝不重试并记为失败。</p>
+        </section>
+
+        <!-- 角色绑定已内联到第 2 步（脚本配置）：左侧角色 / 右侧机器人 -->
+
+        <!-- ======= 广告任务：配置资源弹层（多选 + 调先后顺序） ======= -->
+        <div data-c id="adSheet" class="hidden absolute inset-0 z-30 bg-black/60 flex items-end"
+            onclick="if(event.target===this)closeAdRes()">
+            <div class="w-full bg-slate-900 rounded-t-3xl p-5 pb-6">
+                <div class="flex items-center justify-between">
+                    <p id="adSheetTitle" class="font-bold text-sm"></p>
+                    <button onclick="closeAdRes()" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear"
+                            width="22"></iconify-icon></button>
+                </div>
+                <p id="adSheetWarn" class="hidden text-[10px] text-amber-300 mt-1">所选机器原有资源不同，确认后会统一覆盖为下面这一组</p>
+                <p class="text-[10px] text-slate-400 mt-2">① 播放顺序（可用上下箭头调先后）</p>
+                <div id="adResList" class="mt-1.5 space-y-1.5 max-h-[24vh] overflow-y-auto"></div>
+                <p class="text-[10px] text-slate-400 mt-3">② 可选资源（点一下加入）</p>
+                <div id="adPickList" class="mt-1.5 space-y-1.5 max-h-[24vh] overflow-y-auto"></div>
+                <button id="adApplyBtn" onclick="applyAdRes()"
+                    class="mt-3 w-full rounded-xl bg-cyan-500 text-slate-950 py-3 text-sm font-semibold">请至少选择 1
+                    支资源</button>
+            </div>
+        </div>
+
+        <!-- ======= 广告任务：「＋ 添加机器」弹层 ======= -->
+        <div data-c id="adDevSheet" class="hidden absolute inset-0 z-30 bg-black/60 flex items-end"
+            onclick="if(event.target===this)closeAdDev()">
+            <div class="w-full bg-slate-900 rounded-t-3xl p-5 pb-6">
+                <div class="flex items-center justify-between">
+                    <p class="font-bold text-sm">添加投放机器</p>
+                    <button onclick="closeAdDev()" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear"
+                            width="22"></iconify-icon></button>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1 mb-3">可多选；已在列表中的不能重复添加，离线机器人不可下发</p>
+                <div id="adDevList" class="space-y-2 max-h-[38vh] overflow-y-auto"></div>
+                <button id="adDevApply" onclick="applyAdDev()"
+                    class="mt-3 w-full rounded-xl bg-cyan-500 text-slate-950 py-3 text-sm font-semibold">请选择要添加的机器</button>
+            </div>
+        </div>
+
+        <!-- 脚本角色：添加机器人弹层（多选） -->
+        <div id="addSheet" class="hidden absolute inset-0 z-30 bg-slate-950/70 backdrop-blur-sm flex items-end">
+            <div class="w-full bg-slate-900 rounded-t-3xl p-5 pb-6">
+                <div class="flex items-center justify-between">
+                    <p id="addSheetTitle" class="font-bold text-sm"></p>
+                    <button onclick="closeAddFor()" class="text-slate-500"><iconify-icon
+                            icon="solar:close-circle-linear" width="22"></iconify-icon></button>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1 mb-3">一台物理机同时只能属于一个脚本角色；离线与已被占用的机器人不可选</p>
+                <div id="addSheetList" class="space-y-2 max-h-[38vh] overflow-y-auto"></div>
+                <button id="addApplyBtn" onclick="applyAdd()"
+                    class="mt-3 w-full rounded-xl bg-cyan-500 text-slate-950 py-3 text-sm font-semibold">请选择要添加的机器人</button>
+            </div>
+        </div>
+
+        <!-- ======= 跟随任务：「＋ 添加机器」弹层 ======= -->
+        <div data-c id="fDevSheet" class="hidden absolute inset-0 z-30 bg-black/60 flex items-end"
+            onclick="if(event.target===this)closeFDev()">
+            <div class="w-full bg-slate-900 rounded-t-3xl p-5 pb-6">
+                <div class="flex items-center justify-between">
+                    <p class="font-bold text-sm">添加跟随机器</p>
+                    <button onclick="closeFDev()" class="text-slate-500"><iconify-icon icon="solar:close-circle-linear"
+                            width="22"></iconify-icon></button>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1 mb-3">可多选；加入后可按住行拖动调整跟随顺序（第 1 台为领队）</p>
+                <div id="fDevList" class="space-y-2 max-h-[38vh] overflow-y-auto"></div>
+                <button id="fDevApply" onclick="applyFDev()"
+                    class="mt-3 w-full rounded-xl bg-cyan-500 text-slate-950 py-3 text-sm font-semibold">请选择要加入的机器</button>
+            </div>
+        </div>
+
+        <!-- 底部操作栏（云模式向导） -->
+        <div data-c class="h-24 shrink-0 border-t border-slate-800 px-5 py-3 flex items-center gap-3">
+            <button id="btnBack" onclick="back()" class="hidden rounded-xl bg-slate-800 px-4 py-3 text-sm">上一步</button>
+            <button id="btnNext" onclick="next()"
+                class="flex-1 rounded-xl bg-cyan-500 text-slate-950 py-3 text-sm font-semibold">下一步</button>
+            <button id="btnSubmit" onclick="submit()"
+                class="hidden flex-1 rounded-xl bg-emerald-500 text-slate-950 py-3 text-sm font-semibold">提交任务</button>
+        </div>
+    </main>
+    <script>
+        let s = 1, type = null, script = null, curRole = 0, ads = [], adList = {}, adSel = [], adRes = [], adTargets = [], adAddSel = [], ft = null, fs = 0, fds = [], fDevSel = [], fFrom = null, im = '立即执行', vTxt = '', vVoice = 0, vRepeat = 1, vDevs = [], vOpen = false, selP = null, dragId = null, addFor = null, addSel = [];
+        const PHYS = [{ id: 'A03', model: '迎宾机器人 · tangpa', on: 1 }, { id: 'A05', model: '迎宾机器人 · tangpa', on: 0 }, { id: 'K12', model: '巡检机器人 · konka1', on: 1 }, { id: 'U2', model: '双轮足 · U2', on: 1 }, { id: 'D07', model: '配送机器人 · D07', on: 1 }];
+        const byId = id => PHYS.find(p => p.id === id);
+        const SCRIPTS = [
+            {
+                name: '迎宾导览 v3', tag: '自主互动', ic: 'solar:user-heart-rounded-linear', c: 'cyan', desc: '入口迎宾 → 导览讲解 → 合影互动', roles: [
+                    { name: '迎宾大使', duty: '入口问候、迎宾引导', bound: [] },
+                    { name: '导览讲解', duty: '随行讲解展厅内容', bound: [] },
+                    { name: '合影互动', duty: '互动点引导拍照', bound: [] }]
+            },
+            {
+                name: '群舞 · 品牌亮相', tag: '表演', ic: 'solar:music-notes-linear', c: 'violet', desc: '音乐起，多机同步编舞展示', roles: [
+                    { name: '主舞', duty: 'C 位主舞', bound: [] },
+                    { name: '伴舞 左', duty: '左侧伴舞', bound: [] },
+                    { name: '伴舞 右', duty: '右侧伴舞', bound: [] }]
+            },
+            {
+                name: '夜间巡检 v2', tag: '安防', ic: 'solar:map-point-route-linear', c: 'amber', desc: '按点位巡逻、拍照、异常上报', roles: [
+                    { name: '巡检员 1', duty: '主通道 / 大厅', bound: [] },
+                    { name: '巡检员 2', duty: '边角区域', bound: [] }]
+            }
+        ];
+        const AD = ['夏季新品 · 竖屏轮播', '开业酬宾 · 15s 视频', '节日问候 · 静态海报'];
+        const FOLLOW = ['固定引导员（佩戴 UWB 工牌）', '指定访客（手机定位标签）', '编队行进（按序跟队）'];
+        const FDESC = ['由工作人员带领，路线稳定可控', '跟随指定来宾手中的定位标签', '按上面排好的顺序排成一列跟进'];
+        const STRATEGY = ['贴身跟随 ~1.5m', '巡航跟随 ~3m', '侧后方跟随'];
+        const VOICES = ['默认音色', '声纹 · 晓雅', '声纹 · 阿远'];
+
+        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }
+        function onVText() {
+            const el = document.getElementById('vInput'); if (!el) return;
+            vTxt = el.value;
+            const n = vTxt.trim().length, sec = Math.max(1, Math.ceil(n / 4));
+            document.getElementById('vMeta').textContent = n
+                ? n + ' 字 · 预计播报约 ' + sec + ' 秒'
+                : '支持中英文；建议 ≤ 200 字，超长会分段播报'
+        }
+        function vAllDev() { vDevs = PHYS.filter(p => p.on).map(p => p.id); renderCfg() }
+
+        function stepL2() { return type === 'script' ? '脚本配置' : type === 'ad' ? '投放设置' : type === 'follow' ? '跟随设置' : type === 'voice' ? '口播设置' : '配置' }
+        function renderSteps() { const L = ['选择类型', stepL2(), '执行设置']; steps.innerHTML = L.map((l, i) => { const a = i < s - 1, c = i === s - 1; return `<i class="h-1 flex-1 rounded ${(a || c) ? 'bg-cyan-400' : 'bg-slate-700'} ${i ? ' ml-2' : ''}"></i><span class="${c ? 'text-cyan-300' : 'text-slate-500'} ml-1">${l}</span>` }).join('') }
+        function show(st) { s = st;['step1', 'step2', 'step3'].forEach((id, i) => document.getElementById(id).classList.toggle('hidden', i !== st - 1)); btnBack.classList.toggle('hidden', st === 1); btnNext.classList.toggle('hidden', st === 3); btnSubmit.classList.toggle('hidden', st !== 3); renderSteps(); if (st === 2) renderCfg(); if (st === 3) renderExec(); }
+        function pickType(t, el) { type = t; document.querySelectorAll('#step1 button').forEach(b => { const on = b === el; b.classList.toggle('border-cyan-400/60', on); b.querySelector('.sel-ic')?.classList.toggle('hidden', !on) }); }
+        function next() {
+            if (s === 1) { if (!type) { alert('请先选择任务类型'); return } show(2) }
+            else if (s === 2) {
+                if (type === 'script' && !script) { alert('请先选择一个脚本'); return }
+                if (type === 'ad' && ads.length === 0) { alert('请先「＋ 添加机器」至少加入一台投放机器人'); return }
+                if (type === 'ad' && ads.some(id => !adListOf(id).length)) { alert('还有机器没配置资源：可勾选多台后点「配置资源」一次配好，或点单台的「配置资源」'); return }
+                if (type === 'follow' && ft == null) { alert('请选择跟随对象'); return }
+                if (type === 'follow' && fds.length === 0) { alert('请先「＋ 添加机器」至少加入一台跟随机器'); return }
+                if (type === 'voice' && !vTxt.trim()) { alert('请输入要播报的文本'); return }
+                if (type === 'voice' && vDevs.length === 0) { alert('请至少选择一台播报机器人'); return }
+                show(3)
+            }
+        }
+        function back() { if (s > 1) show(s - 1) }
+        function timing(x) { im = x.textContent; x.parentElement.querySelectorAll('button').forEach(b => { b.classList.toggle('bg-cyan-500', b === x); b.classList.toggle('text-slate-950', b === x); b.classList.toggle('bg-slate-800', b !== x); b.classList.toggle('text-slate-300', b !== x) }); note.classList.toggle('hidden', im === '立即执行') }
+
+        /* 配置渲染：脚本列表 / 广告 / 跟随 */
+        function togVDev(id) { const i = vDevs.indexOf(id); i > -1 ? vDevs.splice(i, 1) : vDevs.push(id); renderCfg() }
+
+        /* ===== 广告任务：机器列表 × 每台一组资源（有序 · 顺序即播放顺序） ===== */
+        function adListOf(id) { return adList[id] = adList[id] || [] }
+        function adTogChk(id) { const i = adSel.indexOf(id); i > -1 ? adSel.splice(i, 1) : adSel.push(id); renderCfg() }
+        function adAll() { adSel = (ads.length && adSel.length === ads.length) ? [] : ads.slice(); renderCfg() }
+        function adDelSel() {
+            if (!adSel.length) return;
+            if (!confirm('从列表移除所勾选的 ' + adSel.length + ' 台机器人（含已配置资源）？')) return;
+            adSel.forEach(id => { const i = ads.indexOf(id); if (i > -1) ads.splice(i, 1); delete adList[id] });
+            adSel = []; renderCfg()
+        }
+        function adConfigSel() { if (!adSel.length) { alert('请先勾选要配置的机器（可用「全选」一次选中全部）'); return } openAdRes(adSel.slice()) }
+        function adRemoveRes(id, k) { adListOf(id).splice(k, 1); renderCfg() }
+        /* 「＋ 添加机器」弹层（多选；离线 / 已在列表 → 置灰） */
+        function openAdDev() { adAddSel = []; adDevSheet.classList.remove('hidden'); renderAdDevList() }
+        function closeAdDev() { adDevSheet.classList.add('hidden'); adAddSel = [] }
+        function togAdDev(id) { const i = adAddSel.indexOf(id); i > -1 ? adAddSel.splice(i, 1) : adAddSel.push(id); renderAdDevList() }
+        function renderAdDevList() {
+            adDevList.innerHTML = PHYS.map(p => {
+                const has = ads.includes(p.id), sel = adAddSel.includes(p.id), bad = has || !p.on;
+                const note = has ? '已在列表中' : p.on ? '在线 · 可添加' : '离线 · 不可下发';
+                return `<button ${bad ? 'disabled' : ''} onclick="togAdDev('${p.id}')" class="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 ${bad ? 'bg-slate-900 opacity-45' : sel ? 'bg-cyan-500/15 border border-cyan-400/50' : 'bg-slate-800/70'}"><span class="w-9 h-9 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-[10px] font-bold shrink-0">${p.id}</span><div class="flex-1 min-w-0"><p class="text-sm truncate ${sel ? 'text-cyan-200' : 'text-slate-100'}">${p.model}</p><p class="text-[10px] mt-0.5 ${p.on ? 'text-emerald-300' : 'text-slate-600'}">${note}</p></div>${sel ? '<iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 shrink-0" width="20"></iconify-icon>' : bad ? '' : '<span class="w-5 h-5 rounded-full border border-slate-600 shrink-0"></span>'}</button>`
+            }).join('');
+            adDevApply.textContent = adAddSel.length ? '添加 ' + adAddSel.length + ' 台机器' : '请选择要添加的机器'
+        }
+        function applyAdDev() {
+            if (!adAddSel.length) return;
+            adAddSel.forEach(id => { if (!ads.includes(id) && byId(id).on) ads.push(id) });
+            adDevSheet.classList.add('hidden'); adAddSel = []; renderCfg()
+        }
+        /* 配置资源弹层：targets = 要一起配置的机器；adRes = 有序资源下标（可上/下移调先后） */
+        function openAdRes(targets) {
+            adTargets = targets.slice();
+            const first = adListOf(adTargets[0]);
+            const same = adTargets.every(id => { const L = adListOf(id); return L.length === first.length && L.every((x, i) => x === first[i]) });
+            adRes = same ? first.slice() : [];
+            adSheet.classList.remove('hidden');
+            adSheetWarn.classList.toggle('hidden', same);
+            renderAdRes()
+        }
+        function closeAdRes() { adSheet.classList.add('hidden'); adRes = []; adTargets = [] }
+        function adResAdd(i) { if (!adRes.includes(i)) adRes.push(i); renderAdRes() }
+        function adResDel(k) { adRes.splice(k, 1); renderAdRes() }
+        function adResMove(k, d) { const j = k + d; if (j < 0 || j >= adRes.length) return; const t = adRes[k]; adRes[k] = adRes[j]; adRes[j] = t; renderAdRes() }
+        function renderAdRes() {
+            const n = adTargets.length;
+            adSheetTitle.textContent = n > 1 ? '为选中的 ' + n + ' 台机器配置资源' : '为「' + adTargets[0] + '」配置资源';
+            adResList.innerHTML = adRes.length ? adRes.map((mi, k) => `<div class="flex items-center gap-2 rounded-xl bg-slate-800/70 px-3 py-2.5"><span class="w-5 h-5 rounded bg-slate-700 text-[10px] text-slate-300 flex items-center justify-center shrink-0">${k + 1}</span><span class="text-xs text-slate-100 flex-1 truncate">${AD[mi]}</span><button aria-label="上移" onclick="adResMove(${k},-1)" class="shrink-0 text-slate-400 ${k ? '' : 'opacity-30'}"><iconify-icon icon="solar:alt-arrow-up-linear" width="15"></iconify-icon></button><button aria-label="下移" onclick="adResMove(${k},1)" class="shrink-0 text-slate-400 ${k < adRes.length - 1 ? '' : 'opacity-30'}"><iconify-icon icon="solar:alt-arrow-down-linear" width="15"></iconify-icon></button><button aria-label="移除" onclick="adResDel(${k})" class="shrink-0 text-slate-500"><iconify-icon icon="solar:close-circle-linear" width="14"></iconify-icon></button></div>`).join('') : `<p class="py-2 text-center text-[10px] text-slate-600">还没有资源 · 从下面点选加入</p>`;
+            adPickList.innerHTML = AD.map((a, i) => { const has = adRes.includes(i); return `<button ${has ? 'disabled' : ''} onclick="adResAdd(${i})" class="w-full text-left rounded-xl px-3 py-2.5 flex items-center gap-3 ${has ? 'bg-slate-900 opacity-45' : 'bg-slate-800/70'}"><span class="w-8 h-8 rounded-lg bg-violet-500/15 text-violet-300 flex items-center justify-center shrink-0"><iconify-icon icon="solar:video-frame-play-horizontal-linear" width="16"></iconify-icon></span><span class="flex-1 min-w-0"><span class="block text-xs text-slate-100 truncate">${a}</span><span class="block text-[10px] mt-0.5 text-slate-500">${has ? '已加入' : '内容中心提供'}</span></span><span class="text-[10px] shrink-0 ${has ? 'text-slate-600' : 'text-cyan-300'}">${has ? '' : '＋ 加入'}</span></button>` }).join('');
+            adApplyBtn.textContent = adRes.length ? '应用到 ' + n + ' 台机器（' + adRes.length + ' 支 · 顺序即播放顺序）' : '请至少选择 1 支资源'
+        }
+        function applyAdRes() {
+            if (!adRes.length) return;
+            adTargets.forEach(id => adList[id] = adRes.slice());
+            adSheet.classList.add('hidden'); adRes = []; adTargets = []; adSel = []; renderCfg()
+        }
+        /* ===== 跟随任务：机器队列（＋ 添加 + 拖动排序）+ 策略 + 跟随对象 ===== */
+        function fRemove(id) { const i = fds.indexOf(id); if (i > -1) fds.splice(i, 1); renderCfg() }
+        function openFDev() { fDevSel = []; fDevSheet.classList.remove('hidden'); renderFDevList() }
+        function closeFDev() { fDevSheet.classList.add('hidden'); fDevSel = [] }
+        function togFDev(id) { const i = fDevSel.indexOf(id); i > -1 ? fDevSel.splice(i, 1) : fDevSel.push(id); renderFDevList() }
+        function renderFDevList() {
+            fDevList.innerHTML = PHYS.map(p => {
+                const has = fds.includes(p.id), sel = fDevSel.includes(p.id), bad = has || !p.on;
+                const note = has ? '已在队列中' : p.on ? '在线 · 可添加' : '离线 · 不可下发';
+                return `<button ${bad ? 'disabled' : ''} onclick="togFDev('${p.id}')" class="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 ${bad ? 'bg-slate-900 opacity-45' : sel ? 'bg-cyan-500/15 border border-cyan-400/50' : 'bg-slate-800/70'}"><span class="w-9 h-9 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-[10px] font-bold shrink-0">${p.id}</span><div class="flex-1 min-w-0"><p class="text-sm truncate ${sel ? 'text-cyan-200' : 'text-slate-100'}">${p.model}</p><p class="text-[10px] mt-0.5 ${p.on ? 'text-emerald-300' : 'text-slate-600'}">${note}</p></div>${sel ? '<iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 shrink-0" width="20"></iconify-icon>' : bad ? '' : '<span class="w-5 h-5 rounded-full border border-slate-600 shrink-0"></span>'}</button>`
+            }).join('');
+            fDevApply.textContent = fDevSel.length ? '加入队列（' + fDevSel.length + ' 台）' : '请选择要加入的机器'
+        }
+        function applyFDev() {
+            if (!fDevSel.length) return;
+            fDevSel.forEach(id => { if (!fds.includes(id) && byId(id).on) fds.push(id) });
+            fDevSheet.classList.add('hidden'); fDevSel = []; renderCfg()
+        }
+        /* 拖动排序：行 = 队列位置；松手即插到该行的位置，后面的依次后移 */
+        function fDragStart(e, i) { fFrom = i; try { e.dataTransfer.setData('text/plain', String(i)); e.dataTransfer.effectAllowed = 'move' } catch (_) { } document.querySelectorAll('[data-row]').forEach(el => el.classList.add('drop-on')) }
+        function fDragOver(e, el) { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'; document.querySelectorAll('[data-row]').forEach(x => x.classList.remove('drop-over')); el.classList.add('drop-over') }
+        function fDrop(e, to) { e.preventDefault(); const from = fFrom !== null ? fFrom : parseInt(e.dataTransfer && e.dataTransfer.getData('text/plain'), 10); if (!isNaN(from) && from !== to) { const id = fds.splice(from, 1)[0]; fds.splice(to > from ? to - 1 : to, 0, id) } fFrom = null; renderCfg() }
+        function fDragEnd() { fFrom = null; renderCfg() }
+
+        function renderCfg() {
+            if (type === 'script') {
+                cfgDesc.textContent = '给每个脚本角色分配机器人：点角色分组里的「＋ 添加机器人」选机器人加入；已分配的机器人可拖到其它角色标签下改派。';
+                const total = script ? script.roles.reduce((a, r) => a + r.bound.length, 0) : 0;
+                let h = `<div class="rounded-2xl bg-slate-900 p-4">
+                    <div class="flex items-center justify-between"><p class="text-sm font-semibold">当前脚本</p><span class="text-[10px] text-slate-500">由运营在 Web 编排</span></div>
+                    <button onclick="vOpen=!vOpen;renderCfg()" class="mt-2 w-full flex items-center gap-3 rounded-xl bg-slate-800 px-3.5 py-3 text-left">
+                        <span class="w-8 h-8 rounded-lg bg-${script ? script.c : 'slate'}-500/15 text-${script ? script.c : 'slate'}-300 flex items-center justify-center shrink-0"><iconify-icon icon="${script ? script.ic : 'solar:document-text-linear'}" width="18"></iconify-icon></span>
+                        <span class="flex-1 min-w-0"><span class="block text-sm font-semibold truncate">${script ? script.name : '请选择脚本'}</span><span class="block text-[10px] text-slate-500 mt-0.5 truncate">${script ? script.tag + ' · ' + script.roles.length + ' 个虚拟角色' : '点此展开脚本列表'}</span></span>
+                        <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="text-slate-500 shrink-0"></iconify-icon>
+                    </button>` + (vOpen ? `<div class="mt-2 space-y-2">` + SCRIPTS.map((sc, i) => `<button onclick="pickScript(${i})" class="w-full text-left rounded-xl px-3.5 py-3 flex items-center gap-3 ${script === sc ? 'bg-cyan-500/15 border border-cyan-400/50' : 'bg-slate-800/60'}"><span class="w-8 h-8 rounded-lg bg-${sc.c}-500/15 text-${sc.c}-300 flex items-center justify-center shrink-0"><iconify-icon icon="${sc.ic}" width="18"></iconify-icon></span><span class="flex-1 min-w-0"><span class="block text-xs text-slate-200 truncate">${sc.name}<span class="ml-1 text-[10px] text-slate-400">${sc.tag}</span></span><span class="block text-[10px] text-slate-500 mt-0.5 truncate">${sc.desc} · ${sc.roles.length} 个虚拟角色</span></span>${script === sc ? '<iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 shrink-0" width="18"></iconify-icon>' : ''}</button>`).join('') + `</div>` : '') + `</div>`;
+                if (script) {
+                    h += `<div class="rounded-2xl bg-slate-900 p-4">
+                        <div class="flex items-center justify-between"><p class="text-sm font-semibold">角色机器人</p><span class="text-[10px] text-slate-500">已添加 <b class="text-cyan-300">${total}</b> 台</span></div>
+                        <p id="dragHint" class="mt-1 text-[10px] text-slate-500">${selP ? '已选中 ' + selP + ' · 点一个角色标签即可分配' : '点角色里的「＋ 添加机器人」选机器人加入；已分配的机器人可拖到其它角色标签下'}</p>
+                        <div class="mt-3 flex gap-2">
+                            <div id="roleNav" class="w-[88px] shrink-0 space-y-2">` + script.roles.map((r, k) => `<button data-drop="${k}" ondragover="dragOver(event,this)" ondrop="dropTo(event,${k})" onclick="jumpRole(${k})" class="w-full text-left rounded-xl px-2 py-2 border ${k === curRole ? 'border-cyan-400/70 bg-cyan-500/10' : 'border-slate-800 bg-slate-900'}"><span class="block text-[11px] font-semibold truncate ${k === curRole ? 'text-cyan-200' : 'text-slate-300'}">${r.name}</span><span class="block text-[10px] mt-0.5 ${k === curRole ? 'text-cyan-300/80' : 'text-slate-500'}">${r.bound.length} 台</span></button>`).join('') + `</div>
+                            <div id="roleGroups" class="flex-1 min-w-0 space-y-3">` + script.roles.map((r, k) => `<div id="rgrp${k}" data-drop="${k}" ondragover="dragOver(event,this)" ondrop="dropTo(event,${k})" class="rounded-xl bg-slate-800/50 p-3 border ${k === curRole ? 'border-cyan-400/50' : 'border-transparent'}">
+                                <div class="flex items-center justify-between"><p class="text-xs font-semibold truncate ${r.bound.length ? 'text-slate-100' : 'text-slate-400'}">${r.name}</p><span class="text-[10px] text-slate-500 shrink-0">${r.bound.length} 台</span></div>
+                                <button onclick="openAddFor(${k})" class="mt-2 w-full rounded-lg border border-dashed border-slate-700 py-1.5 text-[10px] text-cyan-300">＋ 添加机器人</button>` +
+                        (r.bound.length ? `<div class="mt-2 space-y-2">` + r.bound.map(id => {
+                            const p = byId(id), sel = selP === id;
+                            return `<div id="row-${p.id}" draggable="${p.on ? 'true' : 'false'}" ondragstart="dragStart(event,'${p.id}')" ondragend="dragEnd()" onclick="pickRobot('${p.id}')" class="rounded-xl border bg-slate-900 px-2.5 py-2 flex items-center gap-2 cursor-grab ${sel ? 'border-cyan-400/70' : 'border-slate-800'}"><span class="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 text-[10px] font-bold flex items-center justify-center shrink-0">${p.id}</span><span class="flex-1 min-w-0"><span class="block text-[11px] text-slate-100 truncate">${p.model}</span><span class="block text-[9px] mt-0.5 ${p.on ? 'text-emerald-300' : 'text-rose-300'}">${p.on ? '在线 · 可执行' : '离线 · 下发将被拒绝'}</span></span><button aria-label="移出角色" onclick="event.stopPropagation();removeFrom(${k},'${p.id}')" class="w-[18px] h-[18px] rounded-full bg-rose-500/15 text-rose-300 flex items-center justify-center shrink-0"><iconify-icon icon="solar:minus-circle-linear" width="12"></iconify-icon></button></div>`
+                        }).join('') + `</div>` : '') + `</div>`).join('') + `</div>
+                        </div>
+                    </div>`
+                }
+                cfgList.innerHTML = h
+            }
+            else if (type === 'ad') {
+                cfgDesc.textContent = '先「＋ 添加机器」把要投放的机器加进来；每台可配置多支资源（顺序即播放顺序）。勾选多台后点「配置资源」可一次配同一组，也可点单台的「配置资源」单独配。';
+                const allSel = ads.length > 0 && adSel.length === ads.length;
+                let h = `<div class="rounded-2xl bg-slate-900 p-4">
+                    <div class="flex items-center justify-between"><p class="text-sm font-semibold">投放机器 <span class="ml-1 text-[10px] text-slate-500 font-normal">已添加 ${ads.length} 台</span></p><span class="text-[10px] ${adSel.length ? 'text-cyan-300' : 'text-slate-500'}">${adSel.length ? '已勾选 ' + adSel.length + ' 台' : '勾选后可批量操作'}</span></div>
+                    <div class="mt-2 flex items-center gap-2">
+                        <button onclick="adAll()" class="px-2.5 py-1.5 rounded-lg text-[11px] ${allSel ? 'bg-cyan-500 text-slate-950 font-semibold' : 'bg-slate-800 text-slate-300'}">${allSel ? '取消全选' : '全选'}</button>
+                        <button onclick="adConfigSel()" class="px-2.5 py-1.5 rounded-lg text-[11px] ${adSel.length ? 'bg-violet-500 text-slate-950 font-semibold' : 'bg-slate-800 text-slate-500'}">配置资源${adSel.length ? '（' + adSel.length + '）' : ''}</button>
+                        <button onclick="adDelSel()" class="px-2.5 py-1.5 rounded-lg text-[11px] ${adSel.length ? 'bg-rose-500/20 text-rose-300' : 'bg-slate-800 text-slate-500'}">删除${adSel.length ? '（' + adSel.length + '）' : ''}</button>
+                    </div>
+                    <button onclick="openAdDev()" class="mt-2 w-full rounded-lg border border-dashed border-slate-700 py-1.5 text-[10px] text-cyan-300">＋ 添加机器</button>`;
+                if (!ads.length) h += `<p class="mt-2 text-[10px] text-slate-600">还没有机器 · 点上面「＋ 添加机器」加入（离线机器不可下发）</p>`;
+                h += ads.map(id => {
+                    const p = byId(id), L = adListOf(id), chk = adSel.includes(id);
+                    return `<div class="mt-2 rounded-xl bg-slate-800/50 p-2.5">
+                        <div class="flex items-center gap-2">
+                            <button aria-label="勾选" onclick="adTogChk('${id}')" class="w-5 h-5 rounded-md border flex items-center justify-center shrink-0 ${chk ? 'bg-cyan-400 border-cyan-400 text-slate-950' : 'border-slate-600 text-transparent'}"><iconify-icon icon="solar:check-read-linear" width="12"></iconify-icon></button>
+                            <span class="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 text-[10px] font-bold flex items-center justify-center shrink-0">${p.id}</span>
+                            <span class="flex-1 min-w-0"><span class="block text-[11px] text-slate-100 truncate">${p.model}</span><span class="block text-[9px] mt-0.5 ${L.length ? 'text-cyan-300' : 'text-slate-500'}">${L.length ? L.length + ' 支资源 · 按序循环' : '未配置资源'}</span></span>
+                            <button onclick="openAdRes(['${id}'])" class="text-[10px] px-2 py-1 rounded-lg bg-violet-500/15 text-violet-300 shrink-0">${L.length ? '编辑资源' : '配置资源'}</button>
+                        </div>` +
+                        (L.length ? `<div class="mt-2 space-y-1.5">` + L.map((mi, k) => `<div class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-slate-700 text-[9px] text-slate-300 flex items-center justify-center shrink-0">${k + 1}</span><span class="text-[10px] text-slate-300 flex-1 truncate">${AD[mi]}</span><button onclick="adRemoveRes('${id}',${k})" class="text-slate-500 shrink-0"><iconify-icon icon="solar:close-circle-linear" width="13"></iconify-icon></button></div>`).join('') + `</div>` : '') +
+                        `</div>`
+                }).join('');
+                h += `<p class="mt-2 text-[10px] text-slate-600">顺序即播放顺序，循环轮播；各台资源可以不同，也可勾选多台一次配成同一组。</p></div>`;
+                cfgList.innerHTML = h
+            }
+            else if (type === 'voice') {
+                cfgDesc.textContent = '口播只发声、不触发动作：输入文本 → 选音色与播报机器人 → 立即播报（下发时同样按机器人占用规则判定）。';
+                const onDev = PHYS.filter(p => p.on);
+                cfgList.innerHTML = `<div class="rounded-2xl bg-slate-900 p-4"><div class="flex items-center justify-between"><p class="text-sm font-semibold">播报文本</p><button onclick="vAllDev()" class="text-[11px] text-cyan-300">全选在线机器人</button></div><textarea id="vInput" rows="4" oninput="onVText()" class="mt-2 w-full box-border bg-slate-800 rounded-xl p-3.5 text-sm leading-6 outline-none resize-none" placeholder="输入要播报的文字，例如：尊敬的来宾您好，展厅将于 17:30 闭馆，请携带好随身物品。">${esc(vTxt)}</textarea><p id="vMeta" class="mt-1.5 text-[10px] text-slate-500"></p></div>` +
+                    `<div class="rounded-2xl bg-slate-900 p-4"><p class="text-sm font-semibold">音色</p><div class="mt-2 flex flex-wrap gap-2">` + VOICES.map((v, i) => `<button onclick="vVoice=${i};renderCfg()" class="rounded-full px-3 py-1.5 text-xs ${vVoice === i ? 'bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-300'}">${v}</button>`).join('') + `</div><p class="mt-2 text-[10px] text-slate-600">声纹音色取自智能体配置；「默认音色」用机器人内置 语音合成。</p></div>` +
+                    `<div class="rounded-2xl bg-slate-900 p-4"><p class="text-sm font-semibold">播报机器人 <span class="ml-1 text-[10px] text-slate-500 font-normal">${vDevs.length}/${onDev.length} 已选</span></p><div class="mt-2 flex flex-wrap gap-2">` + onDev.map(p => `<button onclick="togVDev('${p.id}')" class="rounded-full px-3 py-1.5 text-xs ${vDevs.includes(p.id) ? 'bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-300'}">${p.id}</button>`).join('') + `</div></div>` +
+                    `<div class="rounded-2xl bg-slate-900 p-4"><p class="text-sm font-semibold">播报次数</p><div class="mt-2 flex flex-wrap gap-2">` + [1, 3, 5].map(n => `<button onclick="vRepeat=${n};renderCfg()" class="rounded-full px-3 py-1.5 text-xs ${vRepeat === n ? 'bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-300'}">${n === 1 ? '单次' : '循环 ' + n + ' 次'}</button>`).join('') + `</div></div>`;
+                setTimeout(onVText, 0)
+            }
+            else {
+                cfgDesc.textContent = '先「＋ 添加机器」加入执行机器、拖动排好跟随顺序，再选跟随策略与跟随对象。';
+                const rows = fds.map((id, k) => {
+                    const p = byId(id);
+                    return `<div data-row="${k}" draggable="true" ondragstart="fDragStart(event,${k})" ondragover="fDragOver(event,this)" ondrop="fDrop(event,${k})" ondragend="fDragEnd()" class="mt-2 rounded-xl bg-slate-900 border border-slate-800 px-2.5 py-2 flex items-center gap-2 cursor-grab"><span class="w-5 h-5 rounded-full bg-cyan-400 text-slate-950 text-[10px] font-bold flex items-center justify-center shrink-0">${k + 1}</span><span class="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 text-[10px] font-bold flex items-center justify-center shrink-0">${p.id}</span><span class="flex-1 min-w-0"><span class="block text-[11px] text-slate-100 truncate">${p.model}</span><span class="block text-[9px] mt-0.5 ${p.on ? 'text-emerald-300' : 'text-rose-300'}">第 ${k + 1} 台${k === 0 ? ' · 领队' : ''} · ${p.on ? '在线' : '离线 · 下发将被拒绝'}</span></span><span class="text-slate-600 shrink-0"><iconify-icon icon="solar:reorder-linear" width="14"></iconify-icon></span><button aria-label="移出" onclick="event.stopPropagation();fRemove('${p.id}')" class="w-[18px] h-[18px] rounded-full bg-rose-500/15 text-rose-300 flex items-center justify-center shrink-0"><iconify-icon icon="solar:minus-circle-linear" width="12"></iconify-icon></button></div>`
+                }).join('');
+                cfgList.innerHTML = `<div class="rounded-2xl bg-slate-900 p-4">
+                    <div class="flex items-center justify-between"><p class="text-sm font-semibold">① 执行机器 <span class="ml-1 text-[10px] text-slate-500 font-normal">已添加 ${fds.length} 台</span></p><span class="text-[10px] text-slate-500">从上到下 = 跟随顺序</span></div>
+                    <button onclick="openFDev()" class="mt-2 w-full rounded-lg border border-dashed border-slate-700 py-1.5 text-[10px] text-cyan-300">＋ 添加机器</button>
+                    <div class="mt-2 rounded-lg bg-cyan-500/10 px-2.5 py-2 flex items-start gap-1.5"><iconify-icon icon="solar:info-circle-linear" class="text-cyan-300 mt-0.5 shrink-0" width="13"></iconify-icon><span class="text-[10px] text-cyan-100/90 leading-4">队列方向：<b>从上到下 = 第 1、2、3… 台</b>，第 1 台在最前（领队），其余依次跟随；按住某一行可拖动调整顺序。</span></div>
+                    ${rows || `<p class="mt-2 text-[10px] text-slate-600">还没有机器 · 点上面「＋ 添加机器」加入</p>`}
+                </div>` +
+                    `<div class="rounded-2xl bg-slate-900 p-4"><p class="text-sm font-semibold">② 跟随策略</p><p class="mt-0.5 text-[10px] text-slate-500">与目标保持的距离与方位</p><div class="mt-2 flex flex-wrap gap-2">` + STRATEGY.map((st, i) => `<button onclick="fs=${i};renderCfg()" class="rounded-full px-3 py-1.5 text-xs ${fs === i ? 'bg-cyan-400 text-slate-950' : 'bg-slate-800 text-slate-300'}">${st}</button>`).join('') + `</div></div>` +
+                    `<div class="rounded-2xl bg-slate-900 p-4"><p class="text-sm font-semibold">③ 跟随对象</p><p class="mt-0.5 text-[10px] text-slate-500">机器人跟着谁走</p><div class="mt-2 space-y-2">` + FOLLOW.map((a, i) => `<button onclick="ft=${i};renderCfg()" class="w-full text-left rounded-xl bg-slate-800/70 p-3 flex items-center gap-3 border ${ft === i ? 'border-cyan-400/60' : 'border-transparent'}"><span class="w-9 h-9 rounded-lg bg-amber-500/15 text-amber-300 flex items-center justify-center shrink-0"><iconify-icon icon="solar:route-linear" width="18"></iconify-icon></span><span class="flex-1 min-w-0"><span class="block text-xs font-semibold text-slate-100">${a}</span><span class="block text-[10px] mt-0.5 text-slate-500">${FDESC[i]}</span></span><iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 ${ft === i ? '' : 'hidden'}" width="18"></iconify-icon></button>`).join('') + `</div></div>`
+            }
+        }
+
+        /* 脚本任务：左=角色快捷标签（点击滚动定位 / 可作投放区），右=各角色的机器人分组（初始为空，用「＋ 添加机器人」加入） */
+        function pickScript(i) { script = SCRIPTS[i]; curRole = 0; vOpen = false; selP = null; renderCfg() }
+        function ownerOf(id) { for (let k = 0; k < script.roles.length; k++) { if (script.roles[k].bound.includes(id)) return { k: k, name: script.roles[k].name } } return null }
+        function occupiedBy(id, except) { const o = ownerOf(id); return o && o.k !== except ? o.name : null }
+        function assignTo(k, id) {
+            const p = byId(id); if (!p || !p.on) return false;
+            const o = ownerOf(id); if (o && o.k === k) return false;
+            if (o) script.roles[o.k].bound.splice(script.roles[o.k].bound.indexOf(id), 1);
+            script.roles[k].bound.push(id); return true
+        }
+        function scrollToRole(k) { const el = document.getElementById('rgrp' + k); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }) }
+        function jumpRole(k) { curRole = k; if (selP && assignTo(k, selP)) selP = null; renderCfg(); scrollToRole(k) }
+        function pickRobot(id) { if (!byId(id).on) return; selP = selP === id ? null : id; renderCfg() }
+        function removeFrom(k, id) { const b = script.roles[k].bound, i = b.indexOf(id); if (i > -1) b.splice(i, 1); selP = null; renderCfg() }
+        /* 拖动分配：dragstart 只加样式类（不能重渲染，否则拖动会被打断），drop 时才改数据 */
+        function dragStart(e, id) {
+            if (!byId(id).on) { e.preventDefault(); return }
+            dragId = id;
+            try { e.dataTransfer.setData('text/plain', id); e.dataTransfer.effectAllowed = 'move' } catch (_) { }
+            document.querySelectorAll('[data-drop]').forEach(el => el.classList.add('drop-on'));
+            const hint = document.getElementById('dragHint'); if (hint) hint.textContent = '拖到另一个角色标签（或它的分组）上松手即可改派'
+        }
+        function dragOver(e, el) { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'move'; document.querySelectorAll('[data-drop]').forEach(x => x.classList.remove('drop-over')); el.classList.add('drop-over') }
+        function dropTo(e, k) { e.preventDefault(); const id = dragId || (e.dataTransfer && e.dataTransfer.getData('text/plain')); if (assignTo(k, id)) curRole = k; dragId = null; selP = null; renderCfg() }
+        function dragEnd() { dragId = null; renderCfg() }
+        /* 「＋ 添加机器人」弹层（多选；离线 / 已被其它角色占用 / 已在本角色 → 置灰） */
+        function openAddFor(k) { addFor = k; addSel = []; addSheet.classList.remove('hidden'); renderAddList() }
+        function closeAddFor() { addSheet.classList.add('hidden'); addFor = null; addSel = [] }
+        function togAddSel(id) { const i = addSel.indexOf(id); i > -1 ? addSel.splice(i, 1) : addSel.push(id); renderAddList() }
+        function renderAddList() {
+            const r = script.roles[addFor];
+            addSheetTitle.textContent = '为「' + r.name + '」添加机器人';
+            addSheetList.innerHTML = PHYS.map(p => {
+                const inThis = r.bound.includes(p.id), own = occupiedBy(p.id, addFor), sel = addSel.includes(p.id), bad = own || !p.on || inThis;
+                const note = inThis ? '已在本角色' : own ? '已被「' + own + '」占用' : p.on ? '在线 · 可添加' : '离线 · 不可下发';
+                return `<button ${bad ? 'disabled' : ''} onclick="togAddSel('${p.id}')" class="w-full text-left rounded-2xl p-3.5 flex items-center gap-3 ${bad ? 'bg-slate-900 opacity-45' : sel ? 'bg-cyan-500/15 border border-cyan-400/50' : 'bg-slate-800/70'}"><span class="w-9 h-9 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-[10px] font-bold shrink-0">${p.id}</span><div class="flex-1 min-w-0"><p class="text-sm truncate ${sel ? 'text-cyan-200' : 'text-slate-100'}">${p.model}</p><p class="text-[10px] mt-0.5 ${own ? 'text-rose-300' : p.on ? 'text-emerald-300' : 'text-slate-600'}">${note}</p></div>${sel ? '<iconify-icon icon="solar:check-circle-bold" class="text-cyan-400 shrink-0" width="20"></iconify-icon>' : bad ? '' : '<span class="w-5 h-5 rounded-full border border-slate-600 shrink-0"></span>'}</button>`
+            }).join('');
+            addApplyBtn.textContent = addSel.length ? '添加到「' + r.name + '」（' + addSel.length + ' 台）' : '请选择要添加的机器人'
+        }
+        function applyAdd() {
+            if (!addSel.length) return;
+            const k = addFor;
+            addSel.forEach(id => { const b = script.roles[k].bound; if (!occupiedBy(id, k) && byId(id).on && !b.includes(id)) b.push(id) });
+            addSheet.classList.add('hidden'); addFor = null; addSel = []; curRole = k; selP = null; renderCfg(); scrollToRole(k)
+        }
+
+        /* 执行摘要 + 提交 */
+        function renderExec() {
+            let h = ''; if (type === 'script') { const n = script.roles.reduce((a, r) => a + r.bound.length, 0); h = `<p class="text-xs text-slate-500">脚本任务</p><p class="mt-1 font-semibold">${script.name}</p><div class="mt-2 pt-2 border-t border-slate-800 space-y-1.5">` + script.roles.map(r => `<div class="flex justify-between text-xs"><span class="text-slate-300">${r.name}</span><span class="text-slate-500">${r.bound.length ? r.bound.join('、') : '未绑定（跳过）'}</span></div>`).join('') + `</div><p class="mt-2 text-[11px] text-cyan-300">共 ${n} 台物理机参与执行</p>` }
+            else if (type === 'ad') { h = `<p class="text-xs text-slate-500">广告任务 · 共 ${ads.length} 台机器人</p><p class="mt-1 font-semibold">每台一组广告 · 按序循环轮播</p><div class="mt-2 pt-2 border-t border-slate-800 space-y-1.5">` + ads.map(id => `<div class="flex justify-between text-xs gap-2"><span class="text-slate-300 shrink-0">${id}</span><span class="text-violet-300 text-right">${adListOf(id).map(k => AD[k]).join('、')}（${adListOf(id).length} 支）</span></div>`).join('') + `</div>` }
+            else if (type === 'voice') { const n = vTxt.trim().length, sec = Math.max(1, Math.ceil(n / 4)); h = `<p class="text-xs text-slate-500">口播任务 · 共 ${vDevs.length} 台机器人</p><p class="mt-1 font-semibold">${VOICES[vVoice]} · ${vRepeat === 1 ? '单次播报' : '循环 ' + vRepeat + ' 次'}</p><div class="mt-2 pt-2 border-t border-slate-800"><p class="text-xs text-slate-300 leading-5">${esc(vTxt)}</p><p class="mt-1 text-[11px] text-slate-500">${n} 字 · 约 ${sec} 秒 · 机器人：${vDevs.join('、')}</p></div>` }
+            else { h = `<p class="text-xs text-slate-500">跟随任务 · 共 ${fds.length} 台机器</p><p class="mt-1 font-semibold">${FOLLOW[ft]}</p><p class="mt-2 text-xs text-slate-400">策略：${STRATEGY[fs == null ? 0 : fs]}</p><div class="mt-2 pt-2 border-t border-slate-800 space-y-1.5">` + fds.map((id, k) => `<div class="flex justify-between text-xs"><span class="text-slate-300">第 ${k + 1} 台${k === 0 ? '（领队）' : ''}</span><span class="text-amber-300">${id}</span></div>`).join('') + `</div>` }
+            summary.innerHTML = h
+        }
+        function submit() {
+            if (type === 'script') { const n = script.roles.reduce((a, r) => a + r.bound.length, 0); if (!n) { alert('请至少为一个虚拟角色绑定物理机器人'); return } alert(`任务已提交：脚本「${script.name}」· 共 ${n} 台物理机 · ${im}`) }
+            else if (type === 'ad') { const tot = ads.reduce((a, id) => a + adListOf(id).length, 0); const t = ads.map(id => `${id}(${adListOf(id).length}支)`).join('、'); alert(`任务已提交：广告轮播 ${ads.length} 台机器人 · 共 ${tot} 支素材 · ${t} · ${im}`) }
+            else if (type === 'voice') { const n = vTxt.trim().length; alert(`任务已提交：口播「${vTxt.trim().slice(0, 14)}${n > 14 ? '…' : ''}」· ${VOICES[vVoice]} · ${vRepeat === 1 ? '单次' : '循环 ' + vRepeat + ' 次'} · ${vDevs.length} 台机器人 · ${im}`) }
+            else { alert(`任务已提交：跟随「${FOLLOW[ft]}」· 队列 ${fds.join(' → ')} · ${STRATEGY[fs == null ? 0 : fs]} · ${im}`) }
+        }
+        show(1);
+
+        /* 本地模式：能力清单轻量组合（v0.6.0） */
+        const LCACHE = [
+            { id: 'A03', mat: ['夏季新品 · 15s', '开业酬宾 · 20s'], tasks: ['大厅迎宾 · 秋日主题（脚本）', '品牌快闪 · 广告轮播'], busy: false },
+            { id: 'K12', mat: ['夜间巡检点位图'], tasks: ['B1 动线巡检'], busy: true },
+            { id: 'U2', mat: ['VIP 路线图'], tasks: ['贵宾厅 VIP 跟随'], busy: false }
+        ];
+        let lDev = 'A03', lSel = [];
+        function renderLocal() {
+            if (!window.__isLocal) return;
+            const dl = document.getElementById('lDev'), pk = document.getElementById('lPick'), dn = document.getElementById('lDevName'), sd = document.getElementById('lSubDev');
+            dl.innerHTML = LCACHE.map(d => `<button onclick="lpickDev('${d.id}')" class="w-full text-left rounded-xl bg-slate-800/60 px-3 py-2.5 flex items-center gap-2 ${lDev === d.id ? 'border border-cyan-400/60' : 'border border-transparent'}"><span class="w-7 h-7 rounded-lg bg-slate-800 text-[10px] font-bold text-cyan-300 flex items-center justify-center">${d.id}</span><span class="flex-1 text-xs text-slate-200">${d.busy ? '执行本地任务中（占用）' : '空闲 · 缓存 ' + (d.tasks.length + d.mat.length) + ' 项'}</span>${d.busy ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-300">占用</span>' : ''}</button>`).join('');
+            const d = LCACHE.find(x => x.id === lDev);
+            dn.textContent = d ? d.id : 'A03'; sd.textContent = d ? d.id : 'A03';
+            pk.innerHTML = (d ? [...d.tasks.map(n => ({ t: '任务', n })), ...d.mat.map(n => ({ t: '素材', n }))] : []).map(it => { const on = lSel.indexOf(it.n) > -1; return `<button onclick="ltog(this.dataset.n)" data-n="${it.n}" class="w-full text-left rounded-xl px-3 py-2.5 flex items-center gap-2 ${on ? 'bg-cyan-500/15 border border-cyan-400/50' : 'bg-slate-800/60'}"><span class="text-[10px] text-slate-500 w-12 shrink-0">${it.t}</span><span class="flex-1 text-xs text-slate-200">${it.n}</span><span class="w-5 h-5 rounded-full border ${on ? 'border-cyan-400' : 'border-slate-600'} flex items-center justify-center">${on ? '<i class="w-2.5 h-2.5 rounded-full bg-cyan-400"></i>' : ''}</span></button>` }).join('') || '<p class="text-xs text-slate-600">请先选择左侧机器人</p>'
+        }
+        function lpickDev(id) { lDev = lDev === id ? null : id; lSel = []; renderLocal() }
+        function ltog(n) { const i = lSel.indexOf(n); i > -1 ? lSel.splice(i, 1) : lSel.push(n); renderLocal() }
+        function localSubmit() {
+            const d = LCACHE.find(x => x.id === lDev) || LCACHE[0];
+            if (!lSel.length) { alert('请至少选择一项本地任务或素材'); return }
+            alert('已下发到 ' + d.id + '（本地判定占用' + (d.busy ? '：机器人正忙，拒绝该次执行，不排队' : '：通过，开始执行') + '）· 共 ' + lSel.length + ' 项缓存内容')
+        }
+        renderLocal();
+    </script>
+</body>
+
+</html>
