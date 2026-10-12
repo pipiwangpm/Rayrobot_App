@@ -1,0 +1,122 @@
+.task-picker-tools {
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 3px 0 5px;
+}
+.task-picker-tools .task-picker-select-all,
+.task-ad-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: #e7eff1;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.task-picker-tools .task-picker-select-all span {
+  margin-right: 0;
+  color: inherit;
+  font-size: inherit;
+}
+.task-picker-tools .task-picker-select-all .task-picker-all-box {
+  color: #171f22;
+}
+.task-picker-tools .task-picker-select-all:disabled,
+.task-ad-all:disabled {
+  opacity: .45;
+}
+.task-picker-all-box,
+.task-ad-all-box,
+.task-ad-checkbox span {
+  display: grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  flex: none;
+  border: 1px solid #718087;
+  border-radius: 5px;
+  color: #171f22;
+  font-size: 13px;
+  line-height: 1;
+}
+.task-picker-select-all[aria-checked="true"] .task-picker-all-box,
+.task-picker-select-all[aria-checked="mixed"] .task-picker-all-box,
+.task-ad-all[aria-checked="true"] .task-ad-all-box,
+.task-ad-all[aria-checked="mixed"] .task-ad-all-box,
+.task-ad-checkbox.checked span {
+  border-color: #ff7042;
+  background: #ff7042;
+}
+.task-picker-tools small {
+  color: #93a4aa;
+  font-size: 11px;
+  text-align: right;
+}
+.task-ad-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 0 7px;
+  padding: 0 2px;
+}
+.task-ad-list-head small {
+  color: #9eafb5;
+  font-size: 11px;
+}
+.task-ad-list {
+  overflow: hidden;
+  border: 1px solid #425158;
+  border-radius: 11px;
+  background: #202c32;
+}
+.task-ad-robot-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 61px;
+  padding: 10px 11px;
+}
+.task-ad-robot-row + .task-ad-robot-row {
+  border-top: 1px solid #3b4a51;
+}
+.task-ad-checkbox {
+  flex: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.task-ad-robot-info {
+  min-width: 0;
+  flex: 1;
+}
+.task-ad-robot-info strong {
+  display: block;
+  color: #ecf2f3;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.task-ad-robot-info small {
+  display: block;
+  overflow: hidden;
+  color: #97a8af;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.task-ad-single {
+  flex: none;
+  border: 1px solid #53626a;
+  border-radius: 7px;
+  background: #2a373e;
+  color: #ffb496;
+  padding: 8px 9px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.task-ad-list > .task-playback-empty {
+  margin: 0;
+  padding: 16px 11px;
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>任务执行 · 镋钯</title><link rel="stylesheet" href="assets/device-flow.css"><link rel="stylesheet" href="assets/phone-frame-v18.css"><link rel="stylesheet" href="assets/device-v19.css"><link rel="stylesheet" href="assets/task-execution-v19.css"></head>
+<body><script src="assets/device-flow.js"></script><script>
+const {device:d,id,href,icon,esc,shell,toast,confirmAction,save:saveDevice,$}=Fleet;
+const preset=id==='A03'?['秋日迎宾','早间迎宾','品牌快闪 · 广告轮播']:id==='K12'?['展厅接待','贵宾引导','闭馆提醒']:['迎宾接待','访客导览','闭馆提醒'];
+const storageKey='fleet-execution-'+id;
+let state;try{state=JSON.parse(localStorage.getItem(storageKey)||'null')}catch(e){state=null}
+if(!state||typeof state!=='object')state={current:d.state==='online'?d.task:'',history:[]};
+function save(){localStorage.setItem(storageKey,JSON.stringify(state))}
+function render(){
+ const choices=preset.map((name,index)=>`<label class="task-choice"><input type="radio" name="task" value="${esc(name)}" ${index===0?'checked':''}><span class="task-choice-icon">${icon(index===2?'video':'task',20)}</span><span><strong>${esc(name)}</strong><small>${index===2?'广告任务':'脚本任务'}</small></span></label>`).join('');
+ const current=state.current&&state.current!=='无运行任务'&&state.current!=='无任务'?esc(state.current):'暂无执行任务';
+ const history=state.history.length?state.history.map(x=>`<div class="info-row"><span>${esc(x.time)}</span><strong>${esc(x.name)} · ${esc(x.status)}</strong></div>`).join(''):id==='A03'||id==='K12'?`<div class="info-row"><span>${id==='A03'?'今天 10:02':'今天 10:08'}</span><strong>${esc(d.task)} · 执行中</strong></div>`:'<div class="info-row"><span>执行记录</span><strong>暂无</strong></div>';
+ const content=`<div class="page-intro"><h1>任务执行</h1><p>${esc(d.name)}</p></div>
+ <section class="current-task"><span>当前任务</span><strong>${current}</strong><div class="current-state">${icon('task',16)} ${current==='暂无执行任务'?'待执行':'执行中'}</div></section>
+ <section class="flow-section"><div class="section-head"><h2>选择任务</h2></div><div class="task-list">${choices}</div></section>
+ <div class="button-row"><button class="button secondary" id="stopTask" ${current==='暂无执行任务'?'disabled':''}>停止任务</button><button class="button primary" id="runTask" ${d.state!=='online'?'disabled':''}>开始执行</button></div>
+ <section class="flow-section"><div class="section-head"><h2>执行记录</h2></div><div class="panel">${history}</div></section>
+ <a class="text-button task-all-link" href="task-center.html">查看全部任务 →</a>`;
+ shell('任务执行',content,'<span class="head-spacer" aria-hidden="true"></span>',href('device'));
+ $('runTask').onclick=()=>{const name=document.querySelector('input[name="task"]:checked')?.value;if(!name)return;confirmAction('开始执行“'+name+'”？','当前任务将切换为所选任务。',()=>{state.current=name;state.history.unshift({time:'刚刚',name,status:'执行中'});save();saveDevice({task:name,mode:'任务执行中'});render();toast('任务已开始')})};
+ $('stopTask').onclick=()=>confirmAction('停止当前任务？','停止后可重新选择并执行任务。',()=>{state.history.unshift({time:'刚刚',name:state.current,status:'已停止'});state.current='';save();saveDevice({task:'无运行任务',mode:'待机'});render();toast('任务已停止')});
+}
+render();
+</script></body></html>

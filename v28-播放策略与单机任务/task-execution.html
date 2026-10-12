@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>任务执行 · 镋钯</title>
+  <link rel="stylesheet" href="assets/device-flow.css">
+  <link rel="stylesheet" href="assets/phone-frame-v18.css">
+  <link rel="stylesheet" href="assets/device-v19.css">
+  <link rel="stylesheet" href="assets/task-execution-v19.css">
+  <style>
+    .single-task-list{display:grid;gap:10px}
+    .single-task-entry{display:flex;align-items:center;gap:12px;min-height:78px;padding:14px;border:1px solid #405058;border-radius:13px;background:#202b31;color:#edf2f3;text-decoration:none}
+    .single-task-entry svg{color:#ff845d;flex:none}
+    .single-task-entry span{flex:1;min-width:0}
+    .single-task-entry strong{display:block;font-size:14px}
+    .single-task-entry small{display:block;color:#9caeb5;font-size:11px;margin-top:4px}
+    .single-task-entry b{color:#ff9a78;font-size:20px;font-weight:400}
+    .single-task-note{color:#95a6ae;font-size:11px;line-height:1.5;margin:12px 1px 0}
+    .single-task-busy{color:#e9be8d}
+    .single-task-record .info-row{align-items:flex-start}
+    .single-task-record .info-row strong{text-align:right}
+  </style>
+</head>
+<body>
+  <script src="assets/device-flow.js"></script>
+  <script src="assets/task-flow-v28.js"></script>
+  <script>
+    const {device:d,id,href,icon,esc,shell,toast,confirmAction,save:saveDevice,$}=Fleet;
+    function render(){
+      const tasks=TaskFlow.load();
+      const related=tasks.filter(task=>task.robots.includes(id));
+      const currentTask=related.find(task=>TaskFlow.latest(task)?.status==='执行中');
+      const current=currentTask?esc(currentTask.name):'暂无执行任务';
+      const records=related.flatMap(task=>task.runs.map(run=>({task,run}))).slice(0,6);
+      const history=records.length?records.map(({task,run})=>`<div class="info-row"><span>${esc(run.time)}</span><strong>${esc(task.name)} · ${esc(run.status)}</strong></div>`).join(''):'<div class="info-row"><span>执行记录</span><strong>暂无</strong></div>';
+      const adUrl='task-create.html?type=ad&robot='+encodeURIComponent(id);
+      const voiceUrl='task-create.html?type=voice&robot='+encodeURIComponent(id);
+      const content=`<div class="page-intro"><h1>任务执行</h1><p>${esc(d.name)}</p></div>
+        <section class="current-task"><span>当前任务</span><strong>${current}</strong><div class="current-state">${icon('task',16)} ${currentTask?'执行中':'待执行'}</div></section>
+        ${currentTask?'<p class="single-task-note single-task-busy">当前机器人正在执行任务。下发新任务前需先停止当前任务。</p>':''}
+        <section class="flow-section"><div class="section-head"><h2>为此机器人新建任务</h2></div>
+          <div class="single-task-list">
+            <a class="single-task-entry" href="${adUrl}">${icon('video',22)}<span><strong>广告任务</strong><small>配置素材、播放方式与单条规则</small></span><b>›</b></a>
+            <a class="single-task-entry" href="${voiceUrl}">${icon('volume',22)}<span><strong>口播任务</strong><small>输入文案并设置音色与播报次数</small></span><b>›</b></a>
+          </div>
+          <p class="single-task-note">脚本与跟随任务请到任务 Tab 创建，便于安排多机器人协作。</p>
+        </section>
+        <div class="button-row"><button class="button secondary" id="stopTask" ${currentTask?'':'disabled'}>停止当前任务</button><a class="button primary" href="task-center.html">查看任务 Tab</a></div>
+        <section class="flow-section single-task-record"><div class="section-head"><h2>执行记录</h2></div><div class="panel">${history}</div></section>`;
+      shell('任务执行',content,'<span class="head-spacer" aria-hidden="true"></span>',href('device'));
+      $('stopTask').onclick=()=>{
+        if(!currentTask)return;
+        confirmAction('停止当前任务？','停止后可重新创建并执行任务。',()=>{
+          const run=TaskFlow.latest(currentTask);
+          run.status='已停止';run.duration='—';run.note='从机器人详情停止';
+          TaskFlow.save(tasks);
+          saveDevice({task:'无运行任务',mode:'待机'});
+          render();toast('任务已停止');
+        });
+      };
+    }
+    render();
+  </script>
+</body>
+</html>
